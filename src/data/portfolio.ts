@@ -119,11 +119,7 @@ export const classProjects = [
       { id: 7,  name: "Lava Lamp",                glbFileUrl: "/glb/lava-lamp.glb" },
       { id: 8,  name: "Spur Gear",                glbFileUrl: "/glb/gear.glb" },
       { id: 9,  name: "Front Sprocket",           glbFileUrl: "/glb/front-sprocket.glb" },
-      { id: 10, name: "Top Rod Assembly",         glbFileUrl: "/glb/top-rod-assembly.glb" },
-      { id: 11, name: "Reduced Frame v1",         glbFileUrl: "/glb/reduced-frame.glb" },
-      { id: 12, name: "Reduced Frame v1.2",       glbFileUrl: "/glb/reduced-frame-v2.glb" },
-      { id: 13, name: "UAV Design v2",            glbFileUrl: "/glb/uav-v2.glb" },
-      { id: 14, name: "Full Drone",               glbFileUrl: "/glb/full-drone.glb" },
+      { id: 10, name: "UAV Design v2",            glbFileUrl: "/glb/uav-v2.glb" },
     ],
   },
 ];
