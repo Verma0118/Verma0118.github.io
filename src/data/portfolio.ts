@@ -80,6 +80,17 @@ export const cadProjects = [
     tags: ["Structural Design", "SolidWorks", "FEA", "Drivetrain", "ANSYS"],
     glbFileUrl: "/glb/reduced-frame.glb",
   },
+  {
+    id: 6,
+    title: "Volant Demo Drone",
+    organization: "Volant (Personal Startup)",
+    role: "Founder & Designer",
+    dateRange: "2025–Present",
+    location: "UIUC",
+    description: "Designed a palm-sized demo drone airframe in Autodesk Fusion as the hardware reference platform for Volant — a B2B SaaS fleet operations platform for drone and eVTOL operators. Modeled to FDM 3D-printing tolerances for a fully printable, field-deployable prototype. Intended to operate in a 10-drone swarm networked through Volant's real-time telemetry, mission dispatch, and fleet management software.",
+    tags: ["Autodesk Fusion", "3D Printing", "DFM", "UAV", "Volant"],
+    glbFileUrl: "/glb/volant-mini-drone.glb",
+  },
 ];
 
 // Software projects — link to GitHub repos
