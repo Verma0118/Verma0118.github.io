@@ -60,37 +60,55 @@ export const cadProjects = [
   },
   {
     id: 4,
-    // Guessing these are GHOST project parts — update title/description when you export GHOST GLBs from Replit
+    title: "Swingarm Assembly",
+    organization: "TODO: Organization / Team",
+    role: "TODO: Your role",
+    dateRange: "TODO: Date range",
+    location: "UIUC",
+    description: "TODO: Describe this project.",
+    tags: ["Mechanical Design", "NX Siemens"],
+    glbFileUrl: "/glb/swingarm.glb",
+  },
+  {
+    id: 5,
+    // Update title/description when you export GHOST GLBs from Replit
     title: "GHOST — Reduced Frame v1",
     organization: "TODO: Organization / Team",
     role: "TODO: Your role",
     dateRange: "TODO: Date range",
     location: "UIUC",
     description: "TODO: Describe the GHOST project and what this frame design represents.",
-    tags: ["Structural Design", "NX Siemens", "TODO: Add tags"],
+    tags: ["Structural Design", "NX Siemens"],
     glbFileUrl: "/glb/reduced-frame.glb",
   },
 ];
 
 // Software projects — link to GitHub repos
 export const softwareProjects = [
-  // TODO: Add your software projects. Example:
-  // {
-  //   id: 1,
-  //   title: "Volant Fleet Management",
-  //   description: "B2B SaaS fleet operations platform for eVTOL and drone operators.",
-  //   githubUrl: "https://github.com/Verma0118/volant",
-  //   tags: ["React", "TypeScript", "Node.js", "PostgreSQL"],
-  //   thumbnailUrl: null,
-  // },
+  {
+    id: 1,
+    title: "TVC Simulator",
+    description: "Thrust Vector Control simulator built in Python. Models gimbal-actuated rocket engine dynamics for attitude control during powered flight.",
+    githubUrl: "https://github.com/Verma0118/TVC_Simulator_V1",
+    tags: ["Python", "Simulation", "Controls", "Aerospace"],
+    thumbnailUrl: null,
+  },
+  {
+    id: 2,
+    title: "Volant",
+    description: "B2B SaaS fleet operations platform for drone and eVTOL operators — the Samsara for autonomous aviation. Real-time telemetry, mission dispatch, and fleet management.",
+    githubUrl: "https://github.com/Verma0118/volant",
+    tags: ["React", "TypeScript", "Node.js", "PostgreSQL"],
+    thumbnailUrl: null,
+  },
 ];
 
 // Class work — grouped by course. GLB files are in /public/glb/
 export const classProjects = [
   {
     id: 1,
-    code: "TODO: Course Code",  // e.g. "AE 199"
-    name: "TODO: Course Name",  // e.g. "Intro to Aerospace Engineering"
+    code: "AE 140",
+    name: "Introduction to CAD for Aerospace Engineers",
     models: [
       { id: 1,  name: "Chapter 7 — Exercise 2",  glbFileUrl: "/glb/c07exe2.glb" },
       { id: 2,  name: "Chapter 7 — Tutorial 3",  glbFileUrl: "/glb/c07tut3.glb" },
@@ -100,28 +118,12 @@ export const classProjects = [
       { id: 6,  name: "Homework 6 Model",         glbFileUrl: "/glb/hw06.glb" },
       { id: 7,  name: "Lava Lamp",                glbFileUrl: "/glb/lava-lamp.glb" },
       { id: 8,  name: "Spur Gear",                glbFileUrl: "/glb/gear.glb" },
-    ],
-  },
-  {
-    id: 2,
-    code: "TODO: Course Code",  // e.g. "ME 270"
-    name: "TODO: Course Name — Vehicle Components",
-    models: [
-      { id: 9,  name: "Swingarm",                    glbFileUrl: "/glb/swingarm.glb" },
-      { id: 10, name: "Front Sprocket",               glbFileUrl: "/glb/front-sprocket.glb" },
-      { id: 11, name: "Top Rod Assembly",             glbFileUrl: "/glb/top-rod-assembly.glb" },
-      { id: 12, name: "Reduced Frame v1",             glbFileUrl: "/glb/reduced-frame.glb" },
-      { id: 13, name: "Reduced Frame v1.2",           glbFileUrl: "/glb/reduced-frame-v2.glb" },
-    ],
-  },
-  {
-    id: 3,
-    code: "Other",
-    name: "Independent Design Work",
-    models: [
-      { id: 14, name: "UAV Design v2",               glbFileUrl: "/glb/uav-v2.glb" },
-      { id: 15, name: "Full Drone",                   glbFileUrl: "/glb/full-drone.glb" },
-      { id: 16, name: "Button Head Hex Drive Screw",  glbFileUrl: "/glb/button-head-screw.glb" },
+      { id: 9,  name: "Front Sprocket",           glbFileUrl: "/glb/front-sprocket.glb" },
+      { id: 10, name: "Top Rod Assembly",         glbFileUrl: "/glb/top-rod-assembly.glb" },
+      { id: 11, name: "Reduced Frame v1",         glbFileUrl: "/glb/reduced-frame.glb" },
+      { id: 12, name: "Reduced Frame v1.2",       glbFileUrl: "/glb/reduced-frame-v2.glb" },
+      { id: 13, name: "UAV Design v2",            glbFileUrl: "/glb/uav-v2.glb" },
+      { id: 14, name: "Full Drone",               glbFileUrl: "/glb/full-drone.glb" },
     ],
   },
 ];
