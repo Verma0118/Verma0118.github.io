@@ -91,7 +91,7 @@ export default function Home() {
         <FractalBackground />
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse 55% 50% at 50% 52%, rgba(245,244,240,0.07) 0%, transparent 65%), radial-gradient(ellipse 80% 70% at 50% 50%, transparent 35%, hsl(var(--background)) 100%)" }}
+          style={{ background: "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 35%, hsl(var(--background)) 100%)" }}
         />
 
         <div className="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto">

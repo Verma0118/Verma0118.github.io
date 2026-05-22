@@ -99,7 +99,7 @@ export function FractalBackground() {
           const dx = pts[i].x - pts[j].x; const dy = pts[i].y - pts[j].y;
           const d = Math.sqrt(dx * dx + dy * dy);
           if (d > CONNECTION_DIST) continue;
-          const alpha = (1 - d / CONNECTION_DIST) * 0.45;
+          const alpha = (1 - d / CONNECTION_DIST) * 0.55;
           const midX = (pts[i].x + pts[j].x) / 2; const midY = (pts[i].y + pts[j].y) / 2;
           const md = Math.hypot(midX - mx, midY - my);
           const boost = md < MOUSE_RADIUS ? (1 - md / MOUSE_RADIUS) * 0.4 : 0;
@@ -110,7 +110,7 @@ export function FractalBackground() {
             const dik = Math.hypot(pts[i].x - pts[k].x, pts[i].y - pts[k].y);
             const djk = Math.hypot(pts[j].x - pts[k].x, pts[j].y - pts[k].y);
             if (dik < CONNECTION_DIST && djk < CONNECTION_DIST) {
-              const triAlpha = (1 - (d + dik + djk) / (CONNECTION_DIST * 3)) * 0.04;
+              const triAlpha = (1 - (d + dik + djk) / (CONNECTION_DIST * 3)) * 0.01;
               ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
               ctx.lineTo(pts[k].x, pts[k].y); ctx.closePath();
               ctx.fillStyle = rgba(CREAM.r, CREAM.g, CREAM.b, triAlpha + boost * 0.05); ctx.fill();
@@ -139,5 +139,5 @@ export function FractalBackground() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.45 }} />;
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.65 }} />;
 }
