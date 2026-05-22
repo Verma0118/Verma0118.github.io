@@ -11,7 +11,7 @@ import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+const FORMSPREE_ENDPOINT = "https://formspree.io/vermaa0118@gmail.com";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -53,8 +53,8 @@ export default function Home() {
     try {
       const res = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json" },
+        body: new URLSearchParams(data).toString(),
       });
       if (!res.ok) throw new Error();
       toast({ title: "Message sent", description: "Thanks for reaching out. I'll get back to you soon." });
