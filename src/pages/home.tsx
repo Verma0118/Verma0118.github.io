@@ -4,12 +4,15 @@ import { ModelViewerWrapper } from "@/components/ui/model-viewer-wrapper";
 import { FractalBackground } from "@/components/ui/fractal-background";
 import { ScrollFade } from "@/components/ui/scroll-fade";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Download, Send, ArrowDown } from "lucide-react";
+import { Github, Linkedin, Mail, Download, Send, ArrowDown, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+// Get your free key at web3forms.com — paste it here
+const WEB3FORMS_KEY = "YOUR_ACCESS_KEY";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -24,6 +27,7 @@ const CAD_GRID = cadProjects.slice(1, 5);
 
 export default function Home() {
   const { toast } = useToast();
+  const [isSending, setIsSending] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
@@ -45,12 +49,29 @@ export default function Home() {
     }
   }, []);
 
-  const onContactSubmit = (data: ContactFormValues) => {
-    const subject = encodeURIComponent(`Portfolio Contact — ${data.name}`);
-    const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`);
-    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
-    toast({ title: "Opening email client", description: "Your email app will open with the message pre-filled." });
-    reset();
+  const onContactSubmit = async (data: ContactFormValues) => {
+    setIsSending(true);
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: `Portfolio Contact — ${data.name}`,
+          name: data.name,
+          email: data.email,
+          message: data.message,
+        }),
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message);
+      toast({ title: "Message sent", description: "Thanks for reaching out. I'll get back to you soon." });
+      reset();
+    } catch {
+      toast({ variant: "destructive", title: "Failed to send", description: "Something went wrong. Please email directly." });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const fadeUp = {
@@ -607,10 +628,13 @@ export default function Home() {
                 </div>
                 <button
                   type="submit"
-                  className="mt-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#f5f4f0] text-[#111110] font-medium hover:bg-[#eeecea] transition-colors text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
-                  aria-label="Send message"
+                  disabled={isSending}
+                  className="mt-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#f5f4f0] text-[#111110] font-medium hover:bg-[#eeecea] transition-colors disabled:opacity-50 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
+                  aria-label={isSending ? "Sending message" : "Send message"}
                 >
-                  <Send className="w-4 h-4" aria-hidden="true" /> Send Message
+                  {isSending
+                    ? <><Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /><span>Sending…</span></>
+                    : <><Send className="w-4 h-4" aria-hidden="true" /> Send Message</>}
                 </button>
               </form>
 

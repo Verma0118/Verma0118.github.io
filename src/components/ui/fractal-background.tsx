@@ -5,8 +5,6 @@ interface Particle {
 }
 
 const CREAM = { r: 240, g: 237, b: 232 };
-const PARTICLE_COUNT = 90;
-const CONNECTION_DIST = 175;
 const MOUSE_RADIUS = 140;
 const MOUSE_STRENGTH = 0.12;
 
@@ -14,14 +12,14 @@ function rgba(r: number, g: number, b: number, a: number) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
-function initParticles(w: number, h: number): Particle[] {
+function initParticles(w: number, h: number, count: number): Particle[] {
   const particles: Particle[] = [];
-  const cols = Math.ceil(Math.sqrt((PARTICLE_COUNT * w) / h));
-  const rows = Math.ceil(PARTICLE_COUNT / cols);
+  const cols = Math.ceil(Math.sqrt((count * w) / h));
+  const rows = Math.ceil(count / cols);
   const cellW = w / cols;
   const cellH = h / rows;
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
+  for (let i = 0; i < count; i++) {
     const col = i % cols;
     const row = Math.floor(i / cols);
     const x = cellW * col + cellW * 0.2 + Math.random() * cellW * 0.6;
@@ -41,6 +39,13 @@ export function FractalBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const isMobile = window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches;
+    const PARTICLE_COUNT = isMobile ? 32 : 90;
+    const CONNECTION_DIST = isMobile ? 110 : 175;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -48,7 +53,7 @@ export function FractalBackground() {
       canvas.width = canvas.offsetWidth * devicePixelRatio;
       canvas.height = canvas.offsetHeight * devicePixelRatio;
       ctx.scale(devicePixelRatio, devicePixelRatio);
-      particlesRef.current = initParticles(canvas.offsetWidth, canvas.offsetHeight);
+      particlesRef.current = initParticles(canvas.offsetWidth, canvas.offsetHeight, PARTICLE_COUNT);
     };
 
     setSize();

@@ -12,7 +12,7 @@ interface ScrollFadeProps {
 
 export function ScrollFade({ children, className, style, delay = 0, direction = "up", amount = 0.12 }: ScrollFadeProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: false, amount });
+  const isInView = useInView(ref, { once: true, amount });
 
   const hidden = { opacity: 0, y: direction === "up" ? 28 : 0, x: direction === "left" ? -24 : direction === "right" ? 24 : 0 };
   const visible = { opacity: 1, y: 0, x: 0 };
