@@ -91,7 +91,7 @@ export default function Home() {
         <FractalBackground />
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 35%, hsl(var(--background)) 100%)" }}
+          style={{ background: "radial-gradient(ellipse 55% 50% at 50% 52%, rgba(245,244,240,0.07) 0%, transparent 65%), radial-gradient(ellipse 80% 70% at 50% 50%, transparent 35%, hsl(var(--background)) 100%)" }}
         />
 
         <div className="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto">
@@ -122,7 +122,7 @@ export default function Home() {
               <a
                 href="#cad-projects"
                 onClick={heroScroll("#cad-projects")}
-                className="inline-flex items-center gap-2 px-7 py-3 bg-[#f5f4f0] text-[#111110] font-medium rounded-lg hover:bg-[#eeecea] transition-colors text-sm tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
+                className="inline-flex items-center gap-2 px-7 py-3 bg-[#f5f4f0] text-[#111110] font-medium hover:bg-[#eeecea] transition-colors text-sm tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
               >
                 View Projects
               </a>
@@ -130,7 +130,7 @@ export default function Home() {
                 href="/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-7 py-3 bg-transparent border border-[#2e3328] text-[#8a8f84] font-medium rounded-lg hover:border-[#f5f4f0]/30 hover:text-[#f5f4f0] transition-all text-sm tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8a8f84]"
+                className="inline-flex items-center gap-2 px-7 py-3 bg-transparent border border-[#2e3328] text-[#8a8f84] font-medium hover:border-[#f5f4f0]/30 hover:text-[#f5f4f0] transition-all text-sm tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8a8f84]"
               >
                 Resume
               </a>

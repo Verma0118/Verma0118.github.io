@@ -67,7 +67,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm font-medium px-4 py-1.5 bg-[#f5f4f0] text-[#111110] rounded-lg hover:bg-[#eeecea] transition-colors"
+                  className="text-sm font-medium px-4 py-1.5 bg-[#f5f4f0] text-[#111110] hover:bg-[#eeecea] transition-colors"
                 >
                   {link.label}
                 </a>
