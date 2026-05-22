@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
 
 // Get your free key at web3forms.com — paste it here
-const WEB3FORMS_KEY = "YOUR_ACCESS_KEY";
+const WEB3FORMS_KEY = "51cec2da-9568-4d72-a5ce-5523d3c2a7c8";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is required"),
