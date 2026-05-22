@@ -401,42 +401,45 @@ export default function Home() {
       {/* ── ABOUT ── light, editorial */}
       <section id="about" className="py-24" style={{ borderTop: '1px solid #d0cec9', backgroundColor: '#eeecea' }}>
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
 
-            <ScrollFade direction="left" className="lg:col-span-5">
-              {/* Portrait photo — place your photo at /public/photo.jpg */}
-              <div className="mb-10 overflow-hidden" style={{ border: '1px solid #d0cec9' }}>
+            {/* Photo */}
+            <ScrollFade direction="left" className="lg:col-span-3">
+              <div className="overflow-hidden" style={{ border: '1px solid #d0cec9' }}>
                 <img
                   src="/photo.jpg"
                   alt="Aarav Verma"
-                  className="w-full object-cover object-top"
-                  style={{ aspectRatio: '4/3', display: 'block', objectPosition: 'center 20%' }}
+                  className="w-full object-cover"
+                  style={{ aspectRatio: '3/4', display: 'block', objectPosition: 'center 12%' }}
                 />
               </div>
+            </ScrollFade>
 
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-0.5 h-10 flex-shrink-0" style={{ backgroundColor: '#d0cec9' }} aria-hidden="true" />
+            {/* Bio + info */}
+            <ScrollFade className="lg:col-span-4 flex flex-col justify-center">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-0.5 h-8 flex-shrink-0" style={{ backgroundColor: '#d0cec9' }} aria-hidden="true" />
                 <p className="text-[10px] tracking-[0.25em] uppercase" style={{ color: '#6b6966' }}>About</p>
               </div>
-              <h2 className="text-4xl md:text-5xl font-display font-normal mb-8" style={{ color: '#111110', fontWeight: 400 }}>
+              <h2 className="text-3xl md:text-4xl font-display font-normal mb-5" style={{ color: '#111110', fontWeight: 400 }}>
                 About Me
               </h2>
-              <p className="text-base leading-relaxed mb-10" style={{ color: '#6b6966' }}>{personalInfo.bio}</p>
+              <p className="text-sm leading-relaxed mb-8" style={{ color: '#6b6966' }}>{personalInfo.bio}</p>
 
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div>
-                  <p className="text-[10px] tracking-[0.2em] uppercase mb-2" style={{ color: '#6b6966' }}>Education</p>
+                  <p className="text-[10px] tracking-[0.2em] uppercase mb-1.5" style={{ color: '#6b6966' }}>Education</p>
                   <p className="text-sm" style={{ color: '#111110' }}>{personalInfo.education}</p>
                 </div>
                 {personalInfo.currentFocus && (
                   <div>
-                    <p className="text-[10px] tracking-[0.2em] uppercase mb-2" style={{ color: '#6b6966' }}>Current Focus</p>
+                    <p className="text-[10px] tracking-[0.2em] uppercase mb-1.5" style={{ color: '#6b6966' }}>Current Focus</p>
                     <p className="text-sm" style={{ color: '#111110' }}>{personalInfo.currentFocus}</p>
                   </div>
                 )}
                 {personalInfo.organizations.length > 0 && (
                   <div>
-                    <p className="text-[10px] tracking-[0.2em] uppercase mb-2" style={{ color: '#6b6966' }}>Organizations</p>
+                    <p className="text-[10px] tracking-[0.2em] uppercase mb-1.5" style={{ color: '#6b6966' }}>Organizations</p>
                     <ul className="space-y-1">
                       {personalInfo.organizations.map(org => (
                         <li key={org} className="text-sm flex items-center gap-2.5" style={{ color: '#111110' }}>
@@ -454,7 +457,7 @@ export default function Home() {
                   href={personalInfo.resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-10 inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16] cursor-pointer"
+                  className="mt-8 inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16] cursor-pointer"
                   style={{ backgroundColor: '#1a1e16', color: '#f5f4f0' }}
                 >
                   <Download className="w-4 h-4" aria-hidden="true" /> Download Resume
@@ -462,15 +465,16 @@ export default function Home() {
               )}
             </ScrollFade>
 
-            <ScrollFade direction="right" className="lg:col-span-7 flex flex-col justify-start lg:pt-24">
-              <div className="space-y-8">
+            {/* Skills */}
+            <ScrollFade direction="right" className="lg:col-span-5 flex flex-col justify-center">
+              <div className="space-y-6">
                 {[
                   { label: "CAD & Simulation", skills: personalInfo.skills.cadSimulation },
                   { label: "Software & Programming", skills: personalInfo.skills.software },
                   { label: "Manufacturing & Hardware", skills: personalInfo.skills.manufacturing },
                 ].map(({ label, skills }) => (
-                  <div key={label} className="border-t pt-6" style={{ borderColor: '#d0cec9' }}>
-                    <p className="text-[10px] tracking-[0.2em] uppercase mb-4" style={{ color: '#6b6966' }}>{label}</p>
+                  <div key={label} className="border-t pt-5" style={{ borderColor: '#d0cec9' }}>
+                    <p className="text-[10px] tracking-[0.2em] uppercase mb-3" style={{ color: '#6b6966' }}>{label}</p>
                     <div className="flex flex-wrap gap-2" role="list" aria-label={`${label} skills`}>
                       {skills.map(skill => (
                         <span
