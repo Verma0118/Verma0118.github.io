@@ -255,7 +255,7 @@ export default function Home() {
                   className="flex flex-col flex-grow hover:bg-[#232820] transition-colors duration-300"
                   aria-label={project.title}
                 >
-                  <div className="h-[260px] relative bg-black/40">
+                  <div className="h-[340px] relative bg-black/40">
                     <ModelViewerWrapper src={project.glbFileUrl} alt={project.title} className="w-full h-full" />
                     <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-1.5" role="list" aria-label="Technologies">
                       {project.tags.slice(0, 3).map(tag => (

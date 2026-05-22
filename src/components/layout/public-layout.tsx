@@ -48,13 +48,13 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-[#2e3328] ${
           scrolled
-            ? "bg-[#1a1e16]/95 backdrop-blur-sm py-3 shadow-lg shadow-black/30"
-            : "bg-transparent py-5"
+            ? "bg-[#1a1e16]/60 backdrop-blur-xl backdrop-saturate-150 py-3 shadow-lg shadow-black/30"
+            : "bg-[#1a1e16]/20 backdrop-blur-md py-5"
         }`}
       >
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="font-display text-base text-foreground/80 group-hover:text-foreground transition-colors" style={{ fontWeight: 400 }}>
+            <span className="font-display text-xl text-foreground/80 group-hover:text-foreground transition-colors" style={{ fontWeight: 400 }}>
               Aarav Verma
             </span>
           </Link>
