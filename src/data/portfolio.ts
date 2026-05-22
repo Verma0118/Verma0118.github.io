@@ -14,8 +14,9 @@ export const personalInfo = {
   education: "B.S. Aerospace Engineering — University of Illinois Urbana-Champaign (2024–2028)",
   currentFocus: "eVTOL fleet management software and autonomous UAV systems",
   organizations: [
-    "TODO: Add your orgs (e.g. AIAA Student Chapter)",
-    "Illinois Space Society",
+    "NOBE — Project Manager",
+    "Ghost Electric Motorcycles — Drivetrain Engineer",
+    "Illinois Space Society — Space Shot Structural Engineer",
   ],
   resumeUrl: "/resume.pdf",
   email: "vermaa0118@gmail.com",

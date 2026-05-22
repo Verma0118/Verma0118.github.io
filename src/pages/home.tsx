@@ -4,14 +4,12 @@ import { ModelViewerWrapper } from "@/components/ui/model-viewer-wrapper";
 import { FractalBackground } from "@/components/ui/fractal-background";
 import { ScrollFade } from "@/components/ui/scroll-fade";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Download, Send, ArrowDown, Loader2 } from "lucide-react";
+import { Github, Linkedin, Mail, Download, Send, ArrowDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
-
-const FORMSPREE_ENDPOINT = "https://formspree.io/vermaa0118@gmail.com";
+import { useEffect } from "react";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -26,7 +24,6 @@ const CAD_GRID = cadProjects.slice(1, 5);
 
 export default function Home() {
   const { toast } = useToast();
-  const [isSending, setIsSending] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
@@ -48,22 +45,12 @@ export default function Home() {
     }
   }, []);
 
-  const onContactSubmit = async (data: ContactFormValues) => {
-    setIsSending(true);
-    try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json" },
-        body: new URLSearchParams(data).toString(),
-      });
-      if (!res.ok) throw new Error();
-      toast({ title: "Message sent", description: "Thanks for reaching out. I'll get back to you soon." });
-      reset();
-    } catch {
-      toast({ variant: "destructive", title: "Failed to send", description: "Something went wrong. Please email directly." });
-    } finally {
-      setIsSending(false);
-    }
+  const onContactSubmit = (data: ContactFormValues) => {
+    const subject = encodeURIComponent(`Portfolio Contact — ${data.name}`);
+    const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`);
+    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+    toast({ title: "Opening email client", description: "Your email app will open with the message pre-filled." });
+    reset();
   };
 
   const fadeUp = {
@@ -396,6 +383,16 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
 
             <ScrollFade direction="left" className="lg:col-span-5">
+              {/* Portrait photo — place your photo at /public/photo.jpg */}
+              <div className="mb-10 overflow-hidden" style={{ border: '1px solid #d0cec9' }}>
+                <img
+                  src="/photo.jpg"
+                  alt="Aarav Verma"
+                  className="w-full object-cover object-top"
+                  style={{ aspectRatio: '4/3', display: 'block' }}
+                />
+              </div>
+
               <div className="flex items-center gap-4 mb-8">
                 <div className="w-0.5 h-10 flex-shrink-0" style={{ backgroundColor: '#d0cec9' }} aria-hidden="true" />
                 <p className="text-[10px] tracking-[0.25em] uppercase" style={{ color: '#6b6966' }}>About</p>
@@ -492,14 +489,14 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-              <div className="rounded-xl border border-[#2e3328] bg-[#232820] p-7 flex flex-col gap-6">
+              <div className="border border-[#2e3328] bg-[#232820] p-7 flex flex-col gap-6">
                 <h3 className="font-display font-normal text-foreground text-base" style={{ fontWeight: 400 }}>Contact</h3>
                 <div className="space-y-4">
                   <a
                     href={`mailto:${personalInfo.email}`}
-                    className="flex items-center gap-3 group rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
+                    className="flex items-center gap-3 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
                   >
-                    <div className="w-9 h-9 rounded-md bg-[#1a1e16] border border-[#2e3328] flex items-center justify-center group-hover:border-[#f5f4f0]/20 transition-colors" aria-hidden="true">
+                    <div className="w-9 h-9 bg-[#1a1e16] border border-[#2e3328] flex items-center justify-center group-hover:border-[#f5f4f0]/20 transition-colors" aria-hidden="true">
                       <Mail className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                     </div>
                     <div>
@@ -511,9 +508,9 @@ export default function Home() {
                     href={personalInfo.linkedinUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 group rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
+                    className="flex items-center gap-3 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
                   >
-                    <div className="w-9 h-9 rounded-md bg-[#1a1e16] border border-[#2e3328] flex items-center justify-center group-hover:border-[#f5f4f0]/20 transition-colors" aria-hidden="true">
+                    <div className="w-9 h-9 bg-[#1a1e16] border border-[#2e3328] flex items-center justify-center group-hover:border-[#f5f4f0]/20 transition-colors" aria-hidden="true">
                       <Linkedin className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                     </div>
                     <div>
@@ -527,9 +524,9 @@ export default function Home() {
                     href={personalInfo.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 group rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
+                    className="flex items-center gap-3 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
                   >
-                    <div className="w-9 h-9 rounded-md bg-[#1a1e16] border border-[#2e3328] flex items-center justify-center group-hover:border-[#f5f4f0]/20 transition-colors" aria-hidden="true">
+                    <div className="w-9 h-9 bg-[#1a1e16] border border-[#2e3328] flex items-center justify-center group-hover:border-[#f5f4f0]/20 transition-colors" aria-hidden="true">
                       <Github className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                     </div>
                     <div>
@@ -545,7 +542,7 @@ export default function Home() {
               <form
                 onSubmit={handleSubmit(onContactSubmit)}
                 noValidate
-                className="rounded-xl border border-[#2e3328] bg-[#232820] p-7 flex flex-col gap-4"
+                className="border border-[#2e3328] bg-[#232820] p-7 flex flex-col gap-4"
                 aria-label="Contact form"
               >
                 <h3 className="font-display font-normal text-foreground text-base" style={{ fontWeight: 400 }}>Send a Message</h3>
@@ -558,7 +555,7 @@ export default function Home() {
                     id="contact-name"
                     type="text"
                     autoComplete="name"
-                    className="w-full bg-[#1a1e16] border border-[#2e3328] rounded-md py-2.5 px-3 text-foreground text-sm focus:border-[#f5f4f0]/30 focus:ring-1 focus:ring-[#f5f4f0]/10 outline-none transition-all"
+                    className="w-full bg-[#1a1e16] border border-[#2e3328] py-2.5 px-3 text-foreground text-sm focus:border-[#f5f4f0]/30 focus:ring-1 focus:ring-[#f5f4f0]/10 outline-none transition-all"
                     placeholder="Jane Smith"
                     aria-invalid={errors.name ? "true" : undefined}
                     aria-describedby={errors.name ? "name-error" : undefined}
@@ -578,7 +575,7 @@ export default function Home() {
                     id="contact-email"
                     type="email"
                     autoComplete="email"
-                    className="w-full bg-[#1a1e16] border border-[#2e3328] rounded-md py-2.5 px-3 text-foreground text-sm focus:border-[#f5f4f0]/30 focus:ring-1 focus:ring-[#f5f4f0]/10 outline-none transition-all"
+                    className="w-full bg-[#1a1e16] border border-[#2e3328] py-2.5 px-3 text-foreground text-sm focus:border-[#f5f4f0]/30 focus:ring-1 focus:ring-[#f5f4f0]/10 outline-none transition-all"
                     placeholder="jane@example.com"
                     aria-invalid={errors.email ? "true" : undefined}
                     aria-describedby={errors.email ? "email-error" : undefined}
@@ -610,14 +607,10 @@ export default function Home() {
                 </div>
                 <button
                   type="submit"
-                  disabled={isSending}
-                  className="mt-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#f5f4f0] text-[#111110] font-medium rounded-lg hover:bg-[#eeecea] transition-colors disabled:opacity-50 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
-                  aria-label={isSending ? "Sending message" : "Send message"}
+                  className="mt-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#f5f4f0] text-[#111110] font-medium hover:bg-[#eeecea] transition-colors text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
+                  aria-label="Send message"
                 >
-                  {isSending
-                    ? <><Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /><span>Sending…</span></>
-                    : <><Send className="w-4 h-4" aria-hidden="true" /> Send Message</>
-                  }
+                  <Send className="w-4 h-4" aria-hidden="true" /> Send Message
                 </button>
               </form>
 
