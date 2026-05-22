@@ -389,7 +389,7 @@ export default function Home() {
                   src="/photo.jpg"
                   alt="Aarav Verma"
                   className="w-full object-cover object-top"
-                  style={{ aspectRatio: '4/3', display: 'block' }}
+                  style={{ aspectRatio: '4/3', display: 'block', objectPosition: 'center 20%' }}
                 />
               </div>
 
