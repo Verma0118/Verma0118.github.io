@@ -13,13 +13,10 @@ export default function ClassProjects() {
     <PublicLayout>
       <div className="container mx-auto px-6 py-16 max-w-7xl">
         <motion.div initial="hidden" animate="visible" variants={fadeUp} className="mb-14">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-xs font-mono text-primary/60 tracking-widest">03</span>
-            <div className="h-px flex-1 max-w-[40px] bg-primary/30" />
-          </div>
-          <h1 className="text-4xl md:text-5xl font-display font-semibold text-foreground mb-3">Class Projects</h1>
+          <p className="text-xs font-medium tracking-[0.18em] uppercase mb-3 text-muted-foreground">Class Work</p>
+          <h1 className="text-4xl md:text-5xl font-display font-normal text-foreground mb-3">Class Projects</h1>
           <p className="text-muted-foreground max-w-xl">
-            CAD models from my engineering coursework — all built in NX Siemens. Drag to rotate, scroll to zoom.
+            CAD models from my engineering coursework. Drag to rotate, scroll to zoom.
           </p>
         </motion.div>
 
@@ -32,7 +29,7 @@ export default function ClassProjects() {
               transition={{ delay: ci * 0.1, duration: 0.5 }}
             >
               <div className="flex items-baseline gap-4 mb-8">
-                <span className="text-2xl md:text-3xl font-display font-semibold text-foreground">{course.code}</span>
+                <span className="text-2xl md:text-3xl font-display font-normal text-foreground">{course.code}</span>
                 <span className="text-muted-foreground text-sm md:text-base">{course.name}</span>
                 <div className="h-px flex-1 bg-border" />
                 <span className="text-xs text-muted-foreground/50 tabular-nums">
@@ -47,10 +44,10 @@ export default function ClassProjects() {
                     initial={{ opacity: 0, scale: 0.97 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: ci * 0.1 + mi * 0.06, duration: 0.4 }}
-                    className="group rounded-xl border border-border bg-card/40 overflow-hidden hover:border-primary/30 transition-colors"
+                    className="group rounded-xl border border-[#2e3328] bg-[#232820] overflow-hidden hover:shadow-[0_4px_24px_rgba(0,0,0,0.4)] transition-shadow duration-300"
                   >
-                    <ModelViewerWrapper src={model.glbFileUrl} alt={model.name} className="h-64 w-full bg-black/60" />
-                    <div className="px-4 py-3 border-t border-border/50">
+                    <ModelViewerWrapper src={model.glbFileUrl} alt={model.name} className="h-64 w-full bg-black/40" />
+                    <div className="px-4 py-3 border-t border-[#2e3328]">
                       <p className="text-sm font-medium text-foreground">{model.name}</p>
                     </div>
                   </motion.div>

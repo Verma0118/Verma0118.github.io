@@ -4,12 +4,13 @@ import { motion, useInView } from "framer-motion";
 interface ScrollFadeProps {
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   delay?: number;
   direction?: "up" | "left" | "right";
   amount?: number;
 }
 
-export function ScrollFade({ children, className, delay = 0, direction = "up", amount = 0.12 }: ScrollFadeProps) {
+export function ScrollFade({ children, className, style, delay = 0, direction = "up", amount = 0.12 }: ScrollFadeProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: false, amount });
 
@@ -20,6 +21,7 @@ export function ScrollFade({ children, className, delay = 0, direction = "up", a
     <motion.div
       ref={ref}
       className={className}
+      style={style}
       animate={isInView ? visible : hidden}
       initial={hidden}
       transition={{ duration: 0.5, ease: "easeOut", delay: isInView ? delay : 0 }}

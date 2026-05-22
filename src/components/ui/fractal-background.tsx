@@ -4,7 +4,7 @@ interface Particle {
   x: number; y: number; vx: number; vy: number; ox: number; oy: number; size: number;
 }
 
-const ORANGE = { r: 249, g: 115, b: 22 };
+const CREAM = { r: 240, g: 237, b: 232 };
 const PARTICLE_COUNT = 90;
 const CONNECTION_DIST = 175;
 const MOUSE_RADIUS = 140;
@@ -104,7 +104,7 @@ export function FractalBackground() {
           const md = Math.hypot(midX - mx, midY - my);
           const boost = md < MOUSE_RADIUS ? (1 - md / MOUSE_RADIUS) * 0.4 : 0;
           ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
-          ctx.strokeStyle = rgba(ORANGE.r, ORANGE.g, ORANGE.b, alpha + boost);
+          ctx.strokeStyle = rgba(CREAM.r, CREAM.g, CREAM.b, alpha + boost);
           ctx.lineWidth = 0.8; ctx.stroke();
           for (let k = j + 1; k < pts.length; k++) {
             const dik = Math.hypot(pts[i].x - pts[k].x, pts[i].y - pts[k].y);
@@ -113,7 +113,7 @@ export function FractalBackground() {
               const triAlpha = (1 - (d + dik + djk) / (CONNECTION_DIST * 3)) * 0.04;
               ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
               ctx.lineTo(pts[k].x, pts[k].y); ctx.closePath();
-              ctx.fillStyle = rgba(ORANGE.r, ORANGE.g, ORANGE.b, triAlpha + boost * 0.05); ctx.fill();
+              ctx.fillStyle = rgba(CREAM.r, CREAM.g, CREAM.b, triAlpha + boost * 0.05); ctx.fill();
             }
           }
         }
@@ -124,7 +124,7 @@ export function FractalBackground() {
         const d = Math.sqrt(dx * dx + dy * dy);
         const glow = d < MOUSE_RADIUS ? (1 - d / MOUSE_RADIUS) : 0;
         ctx.beginPath(); ctx.arc(p.x, p.y, p.size + glow * 2, 0, Math.PI * 2);
-        ctx.fillStyle = rgba(ORANGE.r, ORANGE.g, ORANGE.b, 0.5 + glow * 0.5); ctx.fill();
+        ctx.fillStyle = rgba(CREAM.r, CREAM.g, CREAM.b, 0.5 + glow * 0.5); ctx.fill();
       }
 
       rafRef.current = requestAnimationFrame(draw);
@@ -139,5 +139,5 @@ export function FractalBackground() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.75 }} />;
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.45 }} />;
 }

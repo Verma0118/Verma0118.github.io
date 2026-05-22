@@ -46,16 +46,15 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col relative">
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-[#2e3328] ${
           scrolled
-            ? "bg-background/95 backdrop-blur-sm border-b border-border py-3 shadow-lg shadow-black/40"
+            ? "bg-[#1a1e16]/95 backdrop-blur-sm py-3 shadow-lg shadow-black/30"
             : "bg-transparent py-5"
         }`}
       >
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary group-hover:scale-125 transition-transform" />
-            <span className="font-display font-semibold text-sm tracking-wide text-foreground/80 group-hover:text-foreground transition-colors">
+            <span className="font-display text-base text-foreground/80 group-hover:text-foreground transition-colors" style={{ fontWeight: 400 }}>
               Aarav Verma
             </span>
           </Link>
@@ -68,7 +67,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm font-semibold px-4 py-1.5 border border-primary/50 text-primary rounded hover:bg-primary hover:text-primary-foreground transition-all"
+                  className="text-sm font-medium px-4 py-1.5 bg-[#f5f4f0] text-[#111110] rounded-lg hover:bg-[#eeecea] transition-colors"
                 >
                   {link.label}
                 </a>
@@ -130,10 +129,10 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
             <p className="text-muted-foreground text-xs mt-0.5">Aerospace Engineering · UIUC · {new Date().getFullYear()}</p>
           </div>
           <div className="flex items-center gap-5">
-            <a href={`mailto:${personalInfo.email}`} className="text-muted-foreground hover:text-primary transition-colors" aria-label="Email">
+            <a href={`mailto:${personalInfo.email}`} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Email">
               <Mail className="w-4 h-4" />
             </a>
-            <a href={personalInfo.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-blue-400 transition-colors" aria-label="LinkedIn">
+            <a href={personalInfo.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="LinkedIn">
               <Linkedin className="w-4 h-4" />
             </a>
             <a href={personalInfo.githubUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="GitHub">
