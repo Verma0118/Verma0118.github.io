@@ -5,7 +5,7 @@ export const personalInfo = {
   title: "Aerospace Engineering Student",
   school: "University of Illinois Urbana-Champaign",
   major: "Aerospace Engineering, CS Minor",
-  bio: "TODO: Add your bio here — a few sentences about who you are, what you work on, and what drives you.",
+  bio: "Aerospace Engineering student at UIUC. I build hardware that flies and moves — currently leading drone development at NOBE, engineering drivetrain systems at Ghost Electric Motorcycles, and founding Volant, a fleet operations platform for drone and eVTOL operators.",
   skills: {
     cadSimulation: ["NX Siemens", "SolidWorks", "CATIA V5", "ANSYS", "MATLAB", "Simulink"],
     software: ["Python", "TypeScript", "React", "C++", "Git", "ROS"],
@@ -21,7 +21,7 @@ export const personalInfo = {
   resumeUrl: "/resume.pdf",
   email: "vermaa0118@gmail.com",
   githubUrl: "https://github.com/Verma0118",
-  linkedinUrl: "https://linkedin.com/in/aarav-verma", // TODO: update with your actual LinkedIn URL
+  linkedinUrl: "https://www.linkedin.com/in/aaravverma0118",
 };
 
 // Featured on homepage — add title, org, role, date, description, tags, and GLB path
