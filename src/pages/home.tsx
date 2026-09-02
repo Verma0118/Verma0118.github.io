@@ -1,10 +1,10 @@
-import { personalInfo, cadProjects, softwareProjects } from "@/data/portfolio";
+import { personalInfo, cadProjects, softwareProjects, simulationProjects } from "@/data/portfolio";
 import { PublicLayout } from "@/components/layout/public-layout";
 import { ModelViewerWrapper } from "@/components/ui/model-viewer-wrapper";
 import { FractalBackground } from "@/components/ui/fractal-background";
 import { ScrollFade } from "@/components/ui/scroll-fade";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Download, Send, ArrowDown, Loader2 } from "lucide-react";
+import { Github, Linkedin, Mail, Download, Send, ArrowDown, Loader2, FunctionSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -398,6 +398,61 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── SIMULATION & ANALYSIS ── dark */}
+      <section id="simulation-projects" className="py-24 border-t border-[#2e3328]">
+        <div className="container mx-auto px-6">
+
+          <ScrollFade className="mb-12">
+            <div className="flex items-center gap-4 mb-5">
+              <div className="w-0.5 h-10 flex-shrink-0 bg-[#2e3328]" aria-hidden="true" />
+              <p className="text-[10px] tracking-[0.25em] uppercase text-[#8a8f84]">Simulation</p>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-display font-normal text-foreground mb-2" style={{ fontWeight: 400 }}>
+              Simulation &amp; Analysis
+            </h2>
+            <p className="text-base leading-relaxed text-muted-foreground">
+              MATLAB and Simulink work — controls modeling, FEA validation, mesh convergence.
+            </p>
+          </ScrollFade>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list">
+            {simulationProjects.map(project => (
+              <ScrollFade key={project.id}>
+                <article
+                  aria-label={project.title}
+                  role="listitem"
+                  className="h-full border border-[#2e3328] bg-[#232820] p-6 flex flex-col gap-4"
+                >
+                  <div className="w-9 h-9 bg-[#1a1e16] border border-[#2e3328] flex items-center justify-center" aria-hidden="true">
+                    <FunctionSquare className="w-4 h-4 text-muted-foreground" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] tracking-[0.2em] uppercase block mb-1.5 text-[#8a8f84]">
+                      {project.category}
+                    </span>
+                    <h3 className="text-lg font-display font-normal text-foreground mb-2" style={{ fontWeight: 400 }}>
+                      {project.title}
+                    </h3>
+                    <p className="text-sm leading-relaxed text-muted-foreground">{project.description}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 mt-auto pt-2" role="list" aria-label="Technologies used">
+                    {project.tags.map(tag => (
+                      <span
+                        key={tag}
+                        className="text-xs px-2.5 py-1 bg-[#1a1e16] text-[#8a8f84]"
+                        role="listitem"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </article>
+              </ScrollFade>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── ABOUT ── light, editorial */}
       <section id="about" className="py-24" style={{ borderTop: '1px solid #d0cec9', backgroundColor: '#eeecea' }}>
         <div className="container mx-auto px-6">
@@ -455,17 +510,30 @@ export default function Home() {
                   )}
                 </div>
 
-                {personalInfo.resumeUrl && (
-                  <a
-                    href={personalInfo.resumeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-8 inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16] cursor-pointer"
-                    style={{ backgroundColor: '#1a1e16', color: '#f5f4f0' }}
-                  >
-                    <Download className="w-4 h-4" aria-hidden="true" /> Download Resume
-                  </a>
-                )}
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {personalInfo.resumeUrl && (
+                    <a
+                      href={personalInfo.resumeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16] cursor-pointer"
+                      style={{ backgroundColor: '#1a1e16', color: '#f5f4f0' }}
+                    >
+                      <Download className="w-4 h-4" aria-hidden="true" /> Download Resume
+                    </a>
+                  )}
+                  {personalInfo.portfolioPdfUrl && (
+                    <a
+                      href={personalInfo.portfolioPdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium border hover:bg-[#1a1e16] hover:text-[#f5f4f0] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16] cursor-pointer"
+                      style={{ borderColor: '#1a1e16', color: '#1a1e16' }}
+                    >
+                      <Download className="w-4 h-4" aria-hidden="true" /> Download Portfolio PDF
+                    </a>
+                  )}
+                </div>
               </ScrollFade>
             </div>
 
