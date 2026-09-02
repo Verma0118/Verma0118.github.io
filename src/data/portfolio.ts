@@ -11,7 +11,7 @@ export const personalInfo = {
     software: ["Python", "TypeScript", "React", "C++", "Git", "ROS"],
     manufacturing: ["FDM 3D Printing", "CNC Machining", "Laser Cutting", "Sheet Metal Fabrication"],
   },
-  education: "B.S. Aerospace Engineering — University of Illinois Urbana-Champaign (2024–2028)",
+  education: "B.S. Aerospace Engineering — University of Illinois Urbana-Champaign (2025–2029)",
   currentFocus: "eVTOL fleet management software and autonomous UAV systems",
   organizations: [
     "NOBE — Project Manager",
