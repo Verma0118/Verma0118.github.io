@@ -128,6 +128,10 @@ export const softwareProjects = [
     githubUrl: "https://github.com/Verma0118/haylon-intercept-sim" as string | null,
     tags: ["JavaScript", "Three.js", "Vite", "Guidance", "State Machine"],
     steps: ["Detect", "Stabilize", "Track", "Guide"] as string[] | undefined,
+    images: [
+      { src: "/projects/sim-guidance.jpg", alt: "Haylon Intercept Sim during the guidance phase, with the interceptor tracking an inbound target along its trajectory", label: "Guidance" },
+      { src: "/projects/sim-hit.jpg", alt: "Haylon Intercept Sim showing a completed intercept with the HIT result", label: "Intercept" },
+    ] as { src: string; alt: string; label: string }[] | undefined,
   },
   {
     id: 2,
@@ -137,6 +141,7 @@ export const softwareProjects = [
     githubUrl: "https://github.com/Verma0118/volant" as string | null,
     tags: ["React", "TypeScript", "Node.js", "PostgreSQL"],
     steps: undefined as string[] | undefined,
+    images: undefined as { src: string; alt: string; label: string }[] | undefined,
   },
   {
     id: 3,
@@ -146,6 +151,7 @@ export const softwareProjects = [
     githubUrl: "https://github.com/Verma0118/email-autopilot" as string | null,
     tags: ["Python", "Gmail API", "React", "Claude"],
     steps: undefined as string[] | undefined,
+    images: undefined as { src: string; alt: string; label: string }[] | undefined,
   },
   {
     id: 4,
@@ -155,6 +161,7 @@ export const softwareProjects = [
     githubUrl: "https://github.com/Verma0118/TVC_Simulator_V1" as string | null,
     tags: ["Python", "Simulation", "Controls", "Aerospace"],
     steps: undefined as string[] | undefined,
+    images: undefined as { src: string; alt: string; label: string }[] | undefined,
   },
 ];
 
@@ -167,6 +174,10 @@ export const simulationProjects = [
     dateRange: "2026",
     description: "Built a multi-axis PID attitude-control system in Simulink from first principles, derived plant transfer functions from Newton's second law, tuned via manual and Ziegler-Nichols methods, then restructured pitch into a cascaded inner-rate/outer-angle architecture matching real flight-controller designs (Betaflight, PX4). Diagnosed and fixed derivative-kick and noise-amplification issues by isolating root cause (excessive D gain) rather than patching with filters, and validated disturbance rejection against injected wind-gust and sensor-noise models.",
     tags: ["Simulink", "PID Control", "MATLAB", "Controls Theory"],
+    images: [
+      { src: "/projects/simulink-response.png", alt: "Plot of the pitch angle response to a step command with sensor noise and a wind disturbance", label: "Response" },
+      { src: "/projects/simulink-diagram.png", alt: "Simulink block diagram of the cascaded angle and rate controller with sensor noise and wind injection", label: "Block diagram" },
+    ],
   },
   {
     id: 2,
@@ -175,6 +186,9 @@ export const simulationProjects = [
     dateRange: "2026",
     description: "Generated NACA 0012 airfoil geometry programmatically in MATLAB, built the 3D solid in Fusion 360, and imported it into MATLAB's Structural Mechanics FEA solver for stress/displacement analysis under applied load. Ran a formal mesh convergence study, caught a stress singularity at an unfilleted corner, and corrected it through CAD redesign, then re-validated smooth convergence on the fixed geometry.",
     tags: ["MATLAB", "FEA", "Fusion 360", "Mesh Convergence"],
+    images: [
+      { src: "/projects/airfoil-profile.png", alt: "NACA 0012 airfoil profile plotted from the 4-digit equation", label: "Profile" },
+    ],
   },
   {
     id: 3,
@@ -183,6 +197,10 @@ export const simulationProjects = [
     dateRange: "2026",
     description: "Designed a dimensioned sheet-metal cantilever bracket and independently hand-calculated tip deflection and bending stress before simulating, then diagnosed a 10x discrepancy between hand calc and FEA by tracing it to an incorrect assumed load-face area, fixed by querying the true face area directly from the solved mesh. Reconciled the corrected FEA output against hand theory, attributing the remaining gap to bend-fillet compliance and hole stress concentration.",
     tags: ["MATLAB", "FEA", "Mechanics of Materials", "Fusion 360"],
+    images: [
+      { src: "/projects/cantilever-stress.png", alt: "von Mises stress contour on the cantilever bracket under a 50 newton load", label: "FEA result" },
+      { src: "/projects/cantilever-drawing.png", alt: "Dimensioned engineering drawing of the sheet-metal cantilever bracket", label: "Drawing" },
+    ],
   },
 ];
 

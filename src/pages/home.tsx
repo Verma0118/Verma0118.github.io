@@ -3,9 +3,10 @@ import { PublicLayout } from "@/components/layout/public-layout";
 import { ModelViewerWrapper } from "@/components/ui/model-viewer-wrapper";
 import { FractalBackground } from "@/components/ui/fractal-background";
 import { ScrollFade } from "@/components/ui/scroll-fade";
+import { ImageTabs } from "@/components/ui/image-tabs";
 import { ProjectCarousel } from "@/components/ui/project-carousel";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Download, Send, Loader2, FunctionSquare, ArrowRight, ArrowUpRight } from "lucide-react";
+import { Github, Linkedin, Mail, Download, Send, Loader2, ArrowRight, ArrowUpRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -303,6 +304,8 @@ export default function Home() {
                 </h3>
                 <p className="text-base leading-relaxed text-[#a9ada3] max-w-[52ch] mb-10">{softwareProjects[0].description}</p>
 
+                <ImageTabs images={softwareProjects[0].images!} className="mb-10" />
+
                 <ol className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-10 text-foreground font-display text-xl" aria-label="Control sequence">
                   {softwareProjects[0].steps!.map((step, i, all) => (
                     <li key={step} className="flex items-center gap-3">
@@ -394,9 +397,7 @@ export default function Home() {
                   role="listitem"
                   className="h-full border border-[#2e3328] bg-[#232820] p-6 flex flex-col gap-4"
                 >
-                  <div className="w-9 h-9 bg-[#1a1e16] border border-[#2e3328] flex items-center justify-center" aria-hidden="true">
-                    <FunctionSquare className="w-4 h-4 text-muted-foreground" />
-                  </div>
+                  <ImageTabs images={project.images} />
                   <div>
                     <span className="text-sm block mb-1.5 text-[#8a8f84]">
                       {project.category}
