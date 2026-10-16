@@ -5,7 +5,7 @@ import { FractalBackground } from "@/components/ui/fractal-background";
 import { ScrollFade } from "@/components/ui/scroll-fade";
 import { ProjectCarousel } from "@/components/ui/project-carousel";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Download, Send, Loader2, FunctionSquare, ArrowRight, ArrowUpRight, Lock } from "lucide-react";
+import { Github, Linkedin, Mail, Download, Send, Loader2, FunctionSquare, ArrowRight, ArrowUpRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -318,9 +318,16 @@ export default function Home() {
                       <span key={tag} className="text-xs px-2.5 py-1 bg-[#232820] text-[#a9ada3]" role="listitem">{tag}</span>
                     ))}
                   </div>
-                  <span className="inline-flex items-center gap-2 text-sm text-[#8a8f84]">
-                    <Lock className="w-4 h-4" aria-hidden="true" /> Private repository
-                  </span>
+                  {softwareProjects[0].githubUrl && (
+                    <a
+                      href={softwareProjects[0].githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm text-foreground hover:text-[#e8a33d] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e8a33d]"
+                    >
+                      View on GitHub <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                    </a>
+                  )}
                 </div>
               </article>
             </ScrollFade>

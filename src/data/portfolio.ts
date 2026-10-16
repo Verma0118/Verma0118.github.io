@@ -118,14 +118,14 @@ export const cadProjects = [
   },
 ];
 
-// Software projects. githubUrl null means a private repo (shown without a link)
+// Software projects. githubUrl null means no link is shown
 export const softwareProjects = [
   {
     id: 1,
     title: "Haylon Intercept Sim",
     kind: "Simulation",
     description: "A browser simulation of the Haylon interceptor's control idea. Throw a target, pick straight, weaving, or erratic evasion, and watch the guidance law track and chase it in 3D. Built before any CAD or hardware existed, so the control logic was proven first.",
-    githubUrl: null as string | null,
+    githubUrl: "https://github.com/Verma0118/haylon-intercept-sim" as string | null,
     tags: ["JavaScript", "Three.js", "Vite", "Guidance", "State Machine"],
     steps: ["Detect", "Stabilize", "Track", "Guide"] as string[] | undefined,
   },
