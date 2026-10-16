@@ -3,6 +3,7 @@ import { PublicLayout } from "@/components/layout/public-layout";
 import { ModelViewerWrapper } from "@/components/ui/model-viewer-wrapper";
 import { FractalBackground } from "@/components/ui/fractal-background";
 import { ScrollFade } from "@/components/ui/scroll-fade";
+import { ProjectCarousel } from "@/components/ui/project-carousel";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Download, Send, ArrowDown, Loader2, FunctionSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -181,6 +182,14 @@ export default function Home() {
               const isReversed = idx % 2 === 1;
               return (
                 <ScrollFade key={project.id} delay={idx * 0.1}>
+                  {"slides" in project ? (
+                    <ProjectCarousel
+                      organization={project.organization}
+                      dateRange={project.dateRange}
+                      slides={(project as any).slides}
+                      reversed={isReversed}
+                    />
+                  ) : (
                   <article
                     className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden"
                     style={{ border: '1px solid #d0cec9' }}
@@ -230,6 +239,7 @@ export default function Home() {
                       </div>
                     </div>
                   </article>
+                  )}
                 </ScrollFade>
               );
             })}
