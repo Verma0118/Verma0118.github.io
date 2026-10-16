@@ -77,7 +77,7 @@ export function ModelViewerWrapper({ src, alt, className = "" }: ModelViewerProp
       </model-viewer>
       {status === "loaded" && (
         <div className="absolute bottom-2 right-2 px-2 py-1 rounded bg-black/60 border border-white/10 text-[10px] text-white/60 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-          Drag to rotate · Scroll to zoom
+          Drag to rotate, scroll to zoom
         </div>
       )}
     </div>

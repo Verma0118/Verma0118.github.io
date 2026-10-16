@@ -126,7 +126,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
             <p className="text-foreground text-sm font-medium">Aarav Verma</p>
-            <p className="text-muted-foreground text-xs mt-0.5">Aerospace Engineering · UIUC · {new Date().getFullYear()}</p>
+            <p className="text-muted-foreground text-xs mt-0.5">Aerospace Engineering at UIUC, {new Date().getFullYear()}</p>
           </div>
           <div className="flex items-center gap-5">
             <a href={`mailto:${personalInfo.email}`} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Email">

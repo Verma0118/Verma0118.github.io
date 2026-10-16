@@ -65,12 +65,11 @@ export function ProjectCarousel({ organization, dateRange, slides, reversed = fa
         style={{ backgroundColor: "#e4e2de", ...(reversed ? { borderRight: "1px solid #d0cec9" } : { borderLeft: "1px solid #d0cec9" }) }}
         aria-live="polite"
       >
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-0.5 h-7 flex-shrink-0" style={{ backgroundColor: "#d0cec9" }} aria-hidden="true" />
-          <span className="text-[10px] tracking-[0.2em] uppercase" style={{ color: "#6b6966" }}>
-            {organization} · {dateRange}
-          </span>
-        </div>
+        <p className="text-sm mb-5" style={{ color: "#6b6966" }}>
+          {organization}
+          <br />
+          {dateRange}
+        </p>
         <h3 className="text-2xl md:text-3xl font-display font-normal mb-4" style={{ color: "#111110", fontWeight: 400 }}>
           {slide.title}
         </h3>

@@ -5,14 +5,14 @@ import { FractalBackground } from "@/components/ui/fractal-background";
 import { ScrollFade } from "@/components/ui/scroll-fade";
 import { ProjectCarousel } from "@/components/ui/project-carousel";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Download, Send, ArrowDown, Loader2, FunctionSquare } from "lucide-react";
+import { Github, Linkedin, Mail, Download, Send, Loader2, FunctionSquare, ArrowRight, ArrowUpRight, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
 
-// Get your free key at web3forms.com — paste it here
+// Get your free key at web3forms.com, paste it here
 const WEB3FORMS_KEY = "51cec2da-9568-4d72-a5ce-5523d3c2a7c8";
 
 const contactSchema = z.object({
@@ -23,7 +23,7 @@ const contactSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactSchema>;
 
-const FEATURED = [cadProjects[0], cadProjects[5]];
+const FEATURED = [cadProjects[5], cadProjects[0]];
 const CAD_GRID = cadProjects.slice(1, 5);
 
 export default function Home() {
@@ -58,7 +58,7 @@ export default function Home() {
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
         body: JSON.stringify({
           access_key: WEB3FORMS_KEY,
-          subject: `Portfolio Contact — ${data.name}`,
+          subject: `Portfolio Contact from ${data.name}`,
           name: data.name,
           email: data.email,
           message: data.message,
@@ -107,8 +107,8 @@ export default function Home() {
           <motion.div initial="hidden" animate="visible" variants={stagger} className="flex flex-col items-center">
 
             <motion.div variants={fadeUp} className="mb-8">
-              <span className="inline-flex items-center px-4 py-1.5 rounded-full border border-[#2e3328] bg-[#232820]/80 text-[#8a8f84] text-[11px] tracking-[0.18em] uppercase">
-                Aerospace Engineer · Startup Founder
+              <span className="text-sm md:text-base tracking-wide text-[#8a8f84]">
+                Aerospace Engineer and Startup Founder
               </span>
             </motion.div>
 
@@ -122,9 +122,11 @@ export default function Home() {
 
             <motion.p
               variants={fadeUp}
-              className="text-[11px] md:text-xs tracking-[0.2em] uppercase text-muted-foreground mb-14"
+              className="flex flex-wrap justify-center gap-x-10 gap-y-2 text-sm md:text-base tracking-wide text-muted-foreground mb-14"
             >
-              NOBE · Ghost Electric Motorcycles · UIUC · Class of 2029
+              <span>NOBE</span>
+              <span>UAV@Illinois</span>
+              <span>Incoming L3Harris Intern</span>
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4">
@@ -148,27 +150,13 @@ export default function Home() {
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground/50"
-          aria-hidden="true"
-        >
-          <span className="text-[10px] tracking-widest uppercase">Scroll</span>
-          <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
-        </motion.div>
       </section>
 
       {/* ── FEATURED PROJECTS ── light */}
-      <section id="cad-projects" className="py-24" style={{ backgroundColor: '#eeecea' }}>
+      <section id="cad-projects" className="py-28 md:py-32" style={{ backgroundColor: '#eeecea' }}>
         <div className="container mx-auto px-6">
 
           <ScrollFade className="mb-16">
-            <div className="flex items-center gap-4 mb-5">
-              <div className="w-0.5 h-10 flex-shrink-0" style={{ backgroundColor: '#d0cec9' }} aria-hidden="true" />
-              <p className="text-[10px] tracking-[0.25em] uppercase" style={{ color: '#6b6966' }}>Featured Work</p>
-            </div>
             <h2 className="text-4xl md:text-5xl font-display font-normal mb-4" style={{ color: '#111110', fontWeight: 400 }}>
               Hardware Design
             </h2>
@@ -213,12 +201,7 @@ export default function Home() {
                           : { borderLeft: '1px solid #d0cec9' }),
                       }}
                     >
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="w-0.5 h-7 flex-shrink-0" style={{ backgroundColor: '#d0cec9' }} aria-hidden="true" />
-                        <span className="text-[10px] tracking-[0.2em] uppercase" style={{ color: '#6b6966' }}>
-                          {project.organization} · {project.dateRange}
-                        </span>
-                      </div>
+                      <p className="text-sm mb-5" style={{ color: '#6b6966' }}>{project.organization}<br />{project.dateRange}</p>
                       <h3 className="text-2xl md:text-3xl font-display font-normal mb-4" style={{ color: '#111110', fontWeight: 400 }}>
                         {project.title}
                       </h3>
@@ -248,14 +231,10 @@ export default function Home() {
       </section>
 
       {/* ── CAD GRID (4 projects) ── dark */}
-      <section className="py-24" style={{ borderTop: '1px solid #2e3328', backgroundColor: '#1a1e16' }}>
+      <section className="py-28 md:py-32" style={{ borderTop: '1px solid #2e3328', backgroundColor: '#1a1e16' }}>
         <div className="container mx-auto px-6">
 
           <ScrollFade className="mb-12">
-            <div className="flex items-center gap-4 mb-5">
-              <div className="w-0.5 h-10 flex-shrink-0 bg-[#2e3328]" aria-hidden="true" />
-              <p className="text-[10px] tracking-[0.25em] uppercase text-[#8a8f84]">More Hardware</p>
-            </div>
             <h2 className="text-3xl md:text-4xl font-display font-normal text-foreground" style={{ fontWeight: 400 }}>
               Engineering Projects
             </h2>
@@ -288,9 +267,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="p-6 border-t border-[#2e3328] flex flex-col flex-grow">
-                    <p className="text-[10px] tracking-[0.18em] uppercase text-[#8a8f84] mb-2">
-                      {project.organization} · {project.dateRange}
-                    </p>
+                    <p className="text-sm text-[#8a8f84] mb-3">{project.organization}<br />{project.dateRange}</p>
                     <h3 className="text-lg font-display font-normal text-foreground mb-3" style={{ fontWeight: 400 }}>
                       {project.title}
                     </h3>
@@ -304,124 +281,101 @@ export default function Home() {
       </section>
 
       {/* ── SOFTWARE PROJECTS ── light */}
-      <section id="software-projects" className="py-24" style={{ borderTop: '1px solid #d0cec9', backgroundColor: '#eeecea' }}>
+      <section id="software-projects" className="py-28 md:py-32" style={{ borderTop: '1px solid #d0cec9', backgroundColor: '#eeecea' }}>
         <div className="container mx-auto px-6">
 
-          <ScrollFade className="mb-12">
-            <div className="flex items-center gap-4 mb-5">
-              <div className="w-0.5 h-10 flex-shrink-0" style={{ backgroundColor: '#d0cec9' }} aria-hidden="true" />
-              <p className="text-[10px] tracking-[0.25em] uppercase" style={{ color: '#6b6966' }}>Software</p>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-display font-normal mb-2" style={{ color: '#111110', fontWeight: 400 }}>
+          <ScrollFade className="mb-14">
+            <h2 className="text-4xl md:text-5xl font-display font-normal mb-4" style={{ color: '#111110', fontWeight: 400 }}>
               Software Projects
             </h2>
-            <p className="text-base leading-relaxed" style={{ color: '#6b6966' }}>
-              Flight software, simulation tools, and engineering applications.
+            <p className="text-base leading-relaxed max-w-xl" style={{ color: '#6b6966' }}>
+              Simulation, flight software, and tools I use every day.
             </p>
           </ScrollFade>
 
-          {/* Volant — featured */}
-          <ScrollFade className="mb-4">
-            <article
-              aria-label={softwareProjects[1].title}
-              style={{ border: '1px solid #d0cec9', backgroundColor: '#e4e2de' }}
-            >
-              <div className="p-8 md:p-12">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-0.5 h-7 flex-shrink-0" style={{ backgroundColor: '#d0cec9' }} aria-hidden="true" />
-                  <span className="text-[10px] tracking-[0.2em] uppercase" style={{ color: '#6b6966' }}>Startup · B2B SaaS</span>
-                </div>
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-5">
-                  <h3 className="text-2xl md:text-3xl font-display font-normal" style={{ color: '#111110', fontWeight: 400 }}>
-                    {softwareProjects[1].title}
-                  </h3>
-                  <a
-                    href={softwareProjects[1].githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm font-medium hover:opacity-60 transition-opacity shrink-0 mt-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111110] cursor-pointer"
-                    style={{ color: '#111110' }}
-                    aria-label="View Volant on GitHub"
-                  >
-                    <Github className="w-4 h-4" aria-hidden="true" /> View on GitHub
-                  </a>
-                </div>
-                <p className="text-sm md:text-base leading-relaxed mb-8 max-w-2xl" style={{ color: '#6b6966' }}>
-                  {softwareProjects[1].description}
-                </p>
-                <div className="flex flex-wrap gap-2" role="list" aria-label="Technologies used">
-                  {softwareProjects[1].tags.map(tag => (
-                    <span
-                      key={tag}
-                      className="text-xs px-2.5 py-1"
-                      style={{ backgroundColor: '#d0cec9', color: '#6b6966' }}
-                      role="listitem"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </article>
-          </ScrollFade>
-
-          {/* TVC Simulator — secondary */}
-          <ScrollFade>
-            <article
-              aria-label={softwareProjects[0].title}
-              className="flex flex-col md:flex-row md:items-center gap-6 p-6 md:p-8"
-              style={{ border: '1px solid #d0cec9', borderTop: 'none', backgroundColor: '#e4e2de' }}
-            >
-              <div className="flex-1 min-w-0">
-                <span className="text-[10px] tracking-[0.2em] uppercase block mb-1.5" style={{ color: '#6b6966' }}>
-                  Simulation Tool
-                </span>
-                <h3 className="text-lg font-display font-normal mb-2" style={{ color: '#111110', fontWeight: 400 }}>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            {/* Haylon Intercept Sim: lead project */}
+            <ScrollFade className="lg:col-span-7">
+              <article aria-label={softwareProjects[0].title} className="h-full flex flex-col p-8 md:p-12" style={{ backgroundColor: '#1a1e16', border: '1px solid #2e3328' }}>
+                <p className="text-sm text-[#8a8f84] mb-6">{softwareProjects[0].kind}</p>
+                <h3 className="text-3xl md:text-4xl font-display font-normal text-foreground mb-5" style={{ fontWeight: 400 }}>
                   {softwareProjects[0].title}
                 </h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#6b6966' }}>{softwareProjects[0].description}</p>
-              </div>
-              <div className="flex flex-wrap gap-1.5 shrink-0" role="list" aria-label="Technologies used">
-                {softwareProjects[0].tags.map(tag => (
-                  <span
-                    key={tag}
-                    className="text-xs px-2.5 py-1"
-                    style={{ backgroundColor: '#d0cec9', color: '#6b6966' }}
-                    role="listitem"
-                  >
-                    {tag}
+                <p className="text-base leading-relaxed text-[#a9ada3] max-w-[52ch] mb-10">{softwareProjects[0].description}</p>
+
+                <ol className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-10 text-foreground font-display text-xl" aria-label="Control sequence">
+                  {softwareProjects[0].steps!.map((step, i, all) => (
+                    <li key={step} className="flex items-center gap-3">
+                      <span style={{ fontWeight: 400 }}>{step}</span>
+                      {i < all.length - 1 && <ArrowRight className="w-4 h-4 text-[#e8a33d]" aria-hidden="true" />}
+                    </li>
+                  ))}
+                </ol>
+
+                <div className="mt-auto flex flex-wrap items-end justify-between gap-6">
+                  <div className="flex flex-wrap gap-2" role="list" aria-label="Technologies used">
+                    {softwareProjects[0].tags.map(tag => (
+                      <span key={tag} className="text-xs px-2.5 py-1 bg-[#232820] text-[#a9ada3]" role="listitem">{tag}</span>
+                    ))}
+                  </div>
+                  <span className="inline-flex items-center gap-2 text-sm text-[#8a8f84]">
+                    <Lock className="w-4 h-4" aria-hidden="true" /> Private repository
                   </span>
-                ))}
-              </div>
-              <a
-                href={softwareProjects[0].githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-medium hover:opacity-60 transition-opacity shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111110] cursor-pointer"
-                style={{ color: '#111110' }}
-                aria-label="View TVC Simulator on GitHub"
-              >
-                <Github className="w-4 h-4" aria-hidden="true" /> GitHub
-              </a>
-            </article>
-          </ScrollFade>
+                </div>
+              </article>
+            </ScrollFade>
+
+            {/* Other repos */}
+            <div className="lg:col-span-5 flex flex-col gap-4">
+              {softwareProjects.slice(1).map((project, idx) => (
+                <ScrollFade key={project.id} delay={idx * 0.08} className="flex-1">
+                  <article
+                    aria-label={project.title}
+                    className="h-full flex flex-col p-7 transition-colors duration-300 hover:bg-[#dedbd6]"
+                    style={{ border: '1px solid #d0cec9', backgroundColor: '#e4e2de' }}
+                  >
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <div>
+                        <p className="text-sm mb-1" style={{ color: '#6b6966' }}>{project.kind}</p>
+                        <h3 className="text-2xl font-display font-normal" style={{ color: '#111110', fontWeight: 400 }}>{project.title}</h3>
+                      </div>
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`View ${project.title} on GitHub`}
+                          className="shrink-0 h-11 w-11 -mr-2 -mt-2 flex items-center justify-center hover:opacity-60 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111110]"
+                          style={{ color: '#111110' }}
+                        >
+                          <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
+                        </a>
+                      )}
+                    </div>
+                    <p className="text-sm leading-relaxed mb-5" style={{ color: '#6b6966' }}>{project.description}</p>
+                    <div className="flex flex-wrap gap-1.5 mt-auto" role="list" aria-label="Technologies used">
+                      {project.tags.map(tag => (
+                        <span key={tag} className="text-xs px-2.5 py-1" style={{ backgroundColor: '#d0cec9', color: '#55534f' }} role="listitem">{tag}</span>
+                      ))}
+                    </div>
+                  </article>
+                </ScrollFade>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ── SIMULATION & ANALYSIS ── dark */}
-      <section id="simulation-projects" className="py-24 border-t border-[#2e3328]">
+      <section id="simulation-projects" className="py-28 md:py-32 border-t border-[#2e3328]">
         <div className="container mx-auto px-6">
 
           <ScrollFade className="mb-12">
-            <div className="flex items-center gap-4 mb-5">
-              <div className="w-0.5 h-10 flex-shrink-0 bg-[#2e3328]" aria-hidden="true" />
-              <p className="text-[10px] tracking-[0.25em] uppercase text-[#8a8f84]">Simulation</p>
-            </div>
             <h2 className="text-3xl md:text-4xl font-display font-normal text-foreground mb-2" style={{ fontWeight: 400 }}>
               Simulation &amp; Analysis
             </h2>
             <p className="text-base leading-relaxed text-muted-foreground">
-              MATLAB and Simulink work — controls modeling, FEA validation, mesh convergence.
+              MATLAB and Simulink work in controls modeling, FEA validation, mesh convergence.
             </p>
           </ScrollFade>
 
@@ -437,7 +391,7 @@ export default function Home() {
                     <FunctionSquare className="w-4 h-4 text-muted-foreground" />
                   </div>
                   <div>
-                    <span className="text-[10px] tracking-[0.2em] uppercase block mb-1.5 text-[#8a8f84]">
+                    <span className="text-sm block mb-1.5 text-[#8a8f84]">
                       {project.category}
                     </span>
                     <h3 className="text-lg font-display font-normal text-foreground mb-2" style={{ fontWeight: 400 }}>
@@ -464,7 +418,7 @@ export default function Home() {
       </section>
 
       {/* ── ABOUT ── light, editorial */}
-      <section id="about" className="py-24" style={{ borderTop: '1px solid #d0cec9', backgroundColor: '#eeecea' }}>
+      <section id="about" className="py-28 md:py-32" style={{ borderTop: '1px solid #d0cec9', backgroundColor: '#eeecea' }}>
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
 
@@ -485,10 +439,6 @@ export default function Home() {
             {/* Bio + info */}
             <div className="lg:col-span-4">
               <ScrollFade>
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-0.5 h-8 flex-shrink-0" style={{ backgroundColor: '#d0cec9' }} aria-hidden="true" />
-                  <p className="text-[10px] tracking-[0.25em] uppercase" style={{ color: '#6b6966' }}>About</p>
-                </div>
                 <h2 className="text-3xl md:text-4xl font-display font-normal mb-5" style={{ color: '#111110', fontWeight: 400 }}>
                   About Me
                 </h2>
@@ -496,22 +446,21 @@ export default function Home() {
 
                 <div className="space-y-4">
                   <div>
-                    <p className="text-[10px] tracking-[0.2em] uppercase mb-1.5" style={{ color: '#6b6966' }}>Education</p>
+                    <p className="text-sm mb-1.5" style={{ color: '#6b6966' }}>Education</p>
                     <p className="text-sm" style={{ color: '#111110' }}>{personalInfo.education}</p>
                   </div>
                   {personalInfo.currentFocus && (
                     <div>
-                      <p className="text-[10px] tracking-[0.2em] uppercase mb-1.5" style={{ color: '#6b6966' }}>Current Focus</p>
+                      <p className="text-sm mb-1.5" style={{ color: '#6b6966' }}>Current Focus</p>
                       <p className="text-sm" style={{ color: '#111110' }}>{personalInfo.currentFocus}</p>
                     </div>
                   )}
                   {personalInfo.organizations.length > 0 && (
                     <div>
-                      <p className="text-[10px] tracking-[0.2em] uppercase mb-1.5" style={{ color: '#6b6966' }}>Organizations</p>
+                      <p className="text-sm mb-1.5" style={{ color: '#6b6966' }}>Organizations</p>
                       <ul className="space-y-1">
                         {personalInfo.organizations.map(org => (
-                          <li key={org} className="text-sm flex items-center gap-2.5" style={{ color: '#111110' }}>
-                            <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: '#6b6966' }} aria-hidden="true" />
+                          <li key={org} className="text-sm" style={{ color: '#111110' }}>
                             {org}
                           </li>
                         ))}
@@ -557,7 +506,7 @@ export default function Home() {
                     { label: "Manufacturing & Hardware", skills: personalInfo.skills.manufacturing },
                   ].map(({ label, skills }) => (
                     <div key={label} className="border-t pt-5" style={{ borderColor: '#d0cec9' }}>
-                      <p className="text-[10px] tracking-[0.2em] uppercase mb-3" style={{ color: '#6b6966' }}>{label}</p>
+                      <p className="text-sm mb-3" style={{ color: '#6b6966' }}>{label}</p>
                       <div className="flex flex-wrap gap-2" role="list" aria-label={`${label} skills`}>
                         {skills.map(skill => (
                           <span
@@ -580,14 +529,10 @@ export default function Home() {
       </section>
 
       {/* ── CONTACT ── dark */}
-      <section id="contact" className="py-24 border-t border-[#2e3328]">
+      <section id="contact" className="py-28 md:py-32 border-t border-[#2e3328]">
         <div className="container mx-auto px-6">
           <ScrollFade className="max-w-4xl mx-auto">
             <div className="mb-12">
-              <div className="flex items-center gap-4 mb-5">
-                <div className="w-0.5 h-10 flex-shrink-0 bg-[#2e3328]" aria-hidden="true" />
-                <p className="text-[10px] tracking-[0.25em] uppercase text-[#8a8f84]">Contact</p>
-              </div>
               <h2 className="text-3xl md:text-4xl font-display font-normal text-foreground mb-3" style={{ fontWeight: 400 }}>
                 Get in Touch
               </h2>
