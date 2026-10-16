@@ -5,7 +5,7 @@ export const personalInfo = {
   title: "Aerospace Engineering Student",
   school: "University of Illinois Urbana-Champaign",
   major: "Aerospace Engineering, CS Minor",
-  bio: "Aerospace Engineering student at UIUC. I build hardware that flies and moves. Currently leading drone development at NOBE and founding Volant, a fleet operations platform for drone and eVTOL operators.",
+  bio: "Aerospace Engineering student at UIUC. I build hardware that flies and moves. Project Manager at NOBE leading interceptor technology development, and Build Team Engineer at UAV@Illinois building race-ready FPV drones.",
   skills: {
     cadSimulation: ["NX Siemens", "SolidWorks", "Fusion", "CATIA V5", "ANSYS", "MATLAB", "Simulink"],
     software: ["Python", "TypeScript", "React", "C++", "Git", "ROS"],
