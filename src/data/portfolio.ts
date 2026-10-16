@@ -203,7 +203,7 @@ export const simulationProjects = [
     tags: ["MATLAB", "FEA", "Mechanics of Materials", "Fusion 360"],
     images: [
       { src: "/projects/cantilever-stress.png", alt: "von Mises stress contour on the cantilever bracket under a 50 newton load", label: "FEA result" },
-      { src: "/projects/cantilever-drawing.png", alt: "Dimensioned engineering drawing of the sheet-metal cantilever bracket", label: "Drawing" },
+      { src: "/projects/cantilever-drawing-v2.png", alt: "Dimensioned engineering drawing of the sheet-metal cantilever bracket", label: "Drawing" },
     ],
   },
 ];
