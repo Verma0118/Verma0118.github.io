@@ -475,6 +475,18 @@ export default function Home() {
                       </ul>
                     </div>
                   )}
+                  {personalInfo.previousWork.length > 0 && (
+                    <div>
+                      <p className="text-sm mb-1.5" style={{ color: '#6b6966' }}>Previous Work</p>
+                      <ul className="space-y-1">
+                        {personalInfo.previousWork.map(job => (
+                          <li key={job} className="text-sm" style={{ color: '#111110' }}>
+                            {job}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-8 flex flex-wrap gap-3">

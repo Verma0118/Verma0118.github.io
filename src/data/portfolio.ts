@@ -5,9 +5,9 @@ export const personalInfo = {
   title: "Aerospace Engineering Student",
   school: "University of Illinois Urbana-Champaign",
   major: "Aerospace Engineering, CS Minor",
-  bio: "Aerospace Engineering student at UIUC. I build hardware that flies and moves. Currently leading drone development at NOBE, engineering drivetrain systems at Ghost Electric Motorcycles, and founding Volant, a fleet operations platform for drone and eVTOL operators.",
+  bio: "Aerospace Engineering student at UIUC. I build hardware that flies and moves. Currently leading drone development at NOBE and founding Volant, a fleet operations platform for drone and eVTOL operators.",
   skills: {
-    cadSimulation: ["NX Siemens", "SolidWorks", "CATIA V5", "ANSYS", "MATLAB", "Simulink"],
+    cadSimulation: ["NX Siemens", "SolidWorks", "Fusion", "CATIA V5", "ANSYS", "MATLAB", "Simulink"],
     software: ["Python", "TypeScript", "React", "C++", "Git", "ROS"],
     manufacturing: ["FDM 3D Printing", "CNC Machining", "Laser Cutting", "Sheet Metal Fabrication"],
   },
@@ -15,12 +15,16 @@ export const personalInfo = {
   currentFocus: "eVTOL fleet management software and autonomous UAV systems",
   organizations: [
     "NOBE, Project Manager",
+    "UAV@Illinois, Build Team Engineer",
+  ],
+  previousWork: [
     "Ghost Electric Motorcycles, Drivetrain Engineer",
     "Illinois Space Society, Space Shot Structural Engineer",
+    "Tarform, Part Time Engineer Intern",
   ],
   resumeUrl: "/resume.pdf",
   portfolioPdfUrl: "/Aarav_Verma_Portfolio.pdf",
-  email: "vermaa0118@gmail.com",
+  email: "aarav.verma.eng0118@gmail.com",
   githubUrl: "https://github.com/Verma0118",
   linkedinUrl: "https://www.linkedin.com/in/aaravverma0118",
 };
