@@ -95,14 +95,14 @@ export const cadProjects = [
     location: "UIUC",
     description: "Haylon Technologies builds hybrid battery management systems for defense and electric aerospace, and partnered with NOBE to develop a small interceptor drone. As project manager of a six-developer team, I built the 12-week roadmap, wrote every weekly deliverable and rubric, reviewed every developer's CAD and code, and ran the design competition that chose the final airframe. It uses a streamlined fuselage with four motor nacelles, screw-on winglets, and strap slots that lock the battery in place.",
     tags: ["Autodesk Fusion", "3D Printing", "UAV", "Project Management", "NOBE"],
-    glbFileUrl: "/glb/interceptor.glb",
+    glbFileUrl: "/glb/interceptor-v2.glb",
     slides: [
       {
         label: "Interceptor",
         title: "Haylon Technologies Interceptor Drone",
         description: "Haylon Technologies builds hybrid battery management systems for defense and electric aerospace, and partnered with NOBE to develop a small interceptor drone. As project manager of a six-developer team, I built the 12-week roadmap, wrote every weekly deliverable and rubric, reviewed every developer's CAD and code, and ran the design competition that chose the final airframe. It uses a streamlined fuselage with four motor nacelles, screw-on winglets, and strap slots that lock the battery in place.",
         tags: ["Autodesk Fusion", "3D Printing", "UAV", "Project Management"],
-        glbFileUrl: "/glb/interceptor.glb",
+        glbFileUrl: "/glb/interceptor-v2.glb",
       },
       {
         label: "Electronics",
