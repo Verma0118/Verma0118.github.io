@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { Link } from "wouter";
 import { ModelViewerWrapper } from "@/components/ui/model-viewer-wrapper";
 
 export type CarouselSlide = {
@@ -15,13 +16,14 @@ interface ProjectCarouselProps {
   dateRange: string;
   slides: CarouselSlide[];
   reversed?: boolean;
+  link?: { href: string; label: string };
 }
 
 const btn =
   "h-11 w-11 flex items-center justify-center bg-[#1a1e16]/85 border border-[#2e3328] text-[#f5f4f0] hover:border-[#f5f4f0]/40 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]";
 
 // Featured-card layout with a 3D viewer that cycles through several models, each with its own text.
-export function ProjectCarousel({ organization, dateRange, slides, reversed = false }: ProjectCarouselProps) {
+export function ProjectCarousel({ organization, dateRange, slides, reversed = false, link }: ProjectCarouselProps) {
   const [i, setI] = useState(0);
   const slide = slides[i];
   const go = (n: number) => setI((n + slides.length) % slides.length);
@@ -83,6 +85,15 @@ export function ProjectCarousel({ organization, dateRange, slides, reversed = fa
             </span>
           ))}
         </div>
+        {link && (
+          <Link
+            href={link.href}
+            className="group mt-8 inline-flex items-center gap-2 self-start px-5 h-11 text-sm font-medium bg-[#1a1e16] text-[#f5f4f0] hover:bg-[#2e3328] active:scale-[0.98] transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16]"
+          >
+            {link.label}
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+          </Link>
+        )}
       </div>
     </article>
   );

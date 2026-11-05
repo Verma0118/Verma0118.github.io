@@ -176,6 +176,7 @@ export default function Home() {
                       organization={project.organization}
                       dateRange={project.dateRange}
                       slides={(project as any).slides}
+                      link={(project as any).link}
                       reversed={isReversed}
                     />
                   ) : (

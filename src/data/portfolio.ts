@@ -96,6 +96,7 @@ export const cadProjects = [
     description: "Haylon Technologies builds hybrid battery management systems for defense and electric aerospace, and partnered with NOBE to develop a small interceptor drone. As project manager of a six-developer team, I built the 12-week roadmap, wrote every weekly deliverable and rubric, reviewed every developer's CAD and code, and ran the design competition that chose the final airframe. V2 reworks the winglet joint with a redesigned female-to-male adapter for better structural stability, encloses the winglet on all four sides, and adds fillets to every sharp corner based on MATLAB results.",
     tags: ["Autodesk Fusion", "3D Printing", "UAV", "Project Management", "NOBE"],
     glbFileUrl: "/glb/interceptor-winglet-v2.glb",
+    link: { href: "/haylon-fea", label: "View FEA results" },
     slides: [
       {
         label: "Interceptor V2",
@@ -235,3 +236,178 @@ export const classProjects = [
     ],
   },
 ];
+
+// Haylon interceptor FEA (Deliverable 6). Source: Interceptor_UAV_FEA_Summary.pdf, Nov 2026.
+// Rendered at /haylon-fea. status: "pass" | "flag" | "preliminary"
+export type FeaStatus = "pass" | "flag" | "preliminary";
+
+export const haylonFea = {
+  title: "Interceptor Structural Analysis",
+  route: "/haylon-fea",
+  intro:
+    "Deliverable 6 of the Haylon interceptor build. I wrote the deliverable and rubric, each developer ran a MATLAB PDE Toolbox stress simulation on the part they designed, and I reviewed and compiled the results. The fillet recommendations from this round went straight into Interceptor V2.",
+  assumptions: [
+    { value: "PLA", label: "Material, 3D printed" },
+    { value: "3,500 MPa", label: "Young's modulus" },
+    { value: "0.36", label: "Poisson's ratio" },
+    { value: "50 MPa", label: "Yield strength" },
+    { value: "2 mm", label: "Mesh element size" },
+    { value: "2.0", label: "Required safety factor" },
+  ],
+  parts: [
+    {
+      id: "fuselage",
+      name: "Fuselage Body",
+      developer: "Tharun Velavan",
+      peakStress: "1.01 MPa",
+      safetyFactor: "49.5",
+      status: "pass" as FeaStatus,
+      statusLabel: "Pass",
+      summary:
+        "The cylindrical central structure. It holds the battery through two strap-slot blocks and carries the four arms on bolted mounting tabs, so every load on the drone passes through it.",
+      loadCase: "Full throttle",
+      loadDetail:
+        "Battery strap-slot blocks fixed, since they react the lift load in flight. Load applied at the 8 arm bolt holes: max thrust from four iFlight XING2 1404 motors at 100% throttle, 4.80 N each and 19.19 N total, giving a traction of 0.0857 MPa over 224.03 mm².",
+      metrics: [
+        { label: "Max von Mises stress", value: "1.01 MPa" },
+        { label: "Max principal strain", value: "5.58e-4" },
+        { label: "Max displacement", value: "0.0093 mm" },
+        { label: "Safety factor", value: "49.5" },
+      ],
+      images: [
+        { src: "/projects/fea/fuselage-stress.png", alt: "Von Mises stress plot of the fuselage at full throttle with peak stress at the arm tab roots", caption: "Von Mises stress. Peak of about 1.0 MPa at the arm tab roots where they meet the tube wall." },
+        { src: "/projects/fea/fuselage-setup.png", alt: "Fuselage load setup with loaded arm bolt holes in red and fixed battery strap blocks in blue", caption: "Load setup. Red marks the loaded arm bolt holes, blue marks the fixed strap-slot blocks." },
+        { src: "/projects/fea/fuselage-displacement.png", alt: "Displacement plot of the fuselage at full throttle viewed along the tube", caption: "Displacement, viewed along the tube. Max 0.0093 mm at the tab farthest from the strap slots." },
+      ],
+      verdict:
+        "Peak stress sits at the base of the arm tabs, where each tab acts like a short cantilever and the sharp corner concentrates bending. At 1.01 MPa against 50 MPa yield, the fuselage has a 49x margin at full throttle. The hard-landing case is still to be run.",
+      improvements: [
+        "Fillet the tab roots (1 to 2 mm radius) where each arm tab meets the tube wall.",
+        "Add gussets or move the strap slots so the four arms share load more evenly.",
+        "Consider thinner walls or lower infill once the hard-landing case confirms margin.",
+      ],
+    },
+    {
+      id: "electronics",
+      name: "Electronics Mounting Plate",
+      developer: "PK",
+      peakStress: "0.016 MPa",
+      safetyFactor: "> 2,000",
+      status: "pass" as FeaStatus,
+      statusLabel: "Pass",
+      summary:
+        "Mounts the ESP32 and SpeedyBee flight controller inside the nose cap. Two screws into heat-set inserts hold it to the cap, and four printed standoffs run between the two plates for rigidity.",
+      loadCase: "5 g hard landing",
+      loadDetail:
+        "Electronics stack of about 20 g at 5 g gives 0.981 N, applied as a downward traction of 0.00520 MPa over the two screw-hole faces (188.476 mm²).",
+      metrics: [
+        { label: "Max von Mises stress", value: "0.016 MPa" },
+        { label: "Safety factor", value: "> 2,000" },
+        { label: "Standoffs", value: "Not modeled" },
+      ],
+      images: [
+        { src: "/projects/fea/electronics-stress.png", alt: "Von Mises stress plot of the electronics mounting plate with peak stress at the screw hole edges", caption: "Von Mises stress at 5 g. Peak at the screw-hole edges, scale x10⁻³ MPa." },
+      ],
+      verdict:
+        "The plate deforms in the direction the standoffs will resist, so real stiffness is well above the simulation. The only concern is the screw-hole edges, which are already filleted.",
+      improvements: [
+        "Re-run with the standoffs modeled as rigid supports for a tighter safety factor.",
+        "Keep the screw-hole fillet radius on reprints and watch those edges in physical testing.",
+      ],
+    },
+    {
+      id: "winglet",
+      name: "Winglet",
+      developer: "Revanth Karthikeyan",
+      peakStress: "0.0248 MPa",
+      safetyFactor: "2,013",
+      status: "pass" as FeaStatus,
+      statusLabel: "Pass",
+      summary:
+        "Teardrop-shaped pieces that connect the fuselage to the motor nacelles, attached with two screws into heat-set inserts. In flight the top face takes aerodynamic pressure from forward travel.",
+      loadCase: "Airflow at 35 m/s",
+      loadDetail:
+        "Dynamic pressure ½ρv² = 750 Pa, times a 1.2 drag factor for 900 Pa. Applied only to faces pointing into the flow with a custom windLoad function, over 872.6 mm² for a total of 0.79 N.",
+      metrics: [
+        { label: "Max von Mises stress", value: "0.0248 MPa" },
+        { label: "Max principal strain", value: "9.42e-6" },
+        { label: "Max displacement", value: "1.49e-4 mm" },
+        { label: "Safety factor", value: "2,013" },
+      ],
+      images: [
+        { src: "/projects/fea/winglet-stress.png", alt: "Von Mises stress plot of the winglet under 35 meter per second airflow with peak at the top corners", caption: "Von Mises stress. Peak of about 0.0248 MPa at the top attachment corners." },
+        { src: "/projects/fea/winglet-displacement.png", alt: "Displacement plot of the winglet with the largest displacement at the base near the motor attachment", caption: "Displacement. Peak 1.49e-4 mm at the base near the motor attachment." },
+      ],
+      verdict:
+        "A safety factor above 2,000 under flight loads. The stress peak at the sharp attachment corners is mesh-dependent but negligible, and it is the reason V2 fillets those corners and redesigns the winglet adapter.",
+      improvements: [
+        "Fillet the attachment corners (1 to 2 mm) to remove mesh-sensitive stress concentrations.",
+        "Wall thickness can come down to save weight, the margin easily absorbs it.",
+      ],
+    },
+    {
+      id: "camera",
+      name: "Camera Mount",
+      developer: "Revanth Karthikeyan",
+      peakStress: "50.26 MPa",
+      safetyFactor: "0.99",
+      status: "flag" as FeaStatus,
+      statusLabel: "Flag, reinforce",
+      summary:
+        "Sits on top of the nose cap, held by two screws into heat-set inserts, and protects the AKK BA3 camera during intercept collisions. Reusing the drone depends on this part surviving impact.",
+      loadCase: "Side impact at 35 m/s",
+      loadDetail:
+        "Drone mass of 0.25 kg stopping from 35 m/s in 5 ms gives 1,750 N, applied sideways over the 107 mm² side face as a 16.36 MPa traction. A deliberately conservative worst case.",
+      metrics: [
+        { label: "Max von Mises stress", value: "50.26 MPa" },
+        { label: "Max principal strain", value: "0.0250" },
+        { label: "Max displacement", value: "0.0433 mm" },
+        { label: "Safety factor", value: "0.99" },
+      ],
+      images: [
+        { src: "/projects/fea/camera-stress.png", alt: "Von Mises stress plot of the camera mount under side impact with peak near 50 megapascals at the attachment corner", caption: "Von Mises stress under a 1,750 N side impact. Peak of about 50.3 MPa at the attachment corner, right at PLA yield." },
+        { src: "/projects/fea/camera-displacement.png", alt: "Displacement plot of the camera mount with peak displacement at the protruding side face", caption: "Displacement. Peak 0.04 mm at the protruding side face." },
+      ],
+      verdict:
+        "The one part that failed the check. At 50.26 MPa it sits right at PLA's 50 MPa yield, because the impact lands on an unsupported face with only the screw holes reacting it. It has to be reinforced before flight.",
+      improvements: [
+        "Fillet all external edges (2 to 3 mm). The mount is currently fully square.",
+        "Widen the contact face across the full side so impact spreads into more material.",
+        "Add wall thickness or ribs on the side face to raise the section modulus.",
+        "Print it in PETG or ABS for better impact toughness, since it sits in the collision path.",
+      ],
+    },
+    {
+      id: "nacelle",
+      name: "Nacelle",
+      developer: "Solange",
+      peakStress: "0.977 MPa",
+      safetyFactor: "51.2",
+      status: "preliminary" as FeaStatus,
+      statusLabel: "Pass, preliminary",
+      summary:
+        "Houses the motor at the tip of each arm and passes motor torque and thrust reaction into the arm assembly.",
+      loadCase: "Preliminary surface traction",
+      loadDetail:
+        "Mounting surface fixed, 0.05 MPa traction applied in the -Z direction. A placeholder load, not yet tied to real motor thrust or torque.",
+      metrics: [
+        { label: "Max von Mises stress", value: "0.977 MPa" },
+        { label: "Max principal strain", value: "5.01e-4" },
+        { label: "Max displacement", value: "0.0033 mm" },
+        { label: "Safety factor", value: "51.2" },
+      ],
+      images: [
+        { src: "/projects/fea/nacelle-stress.png", alt: "Von Mises stress plot of the nacelle under the preliminary load with peak near 0.98 megapascals", caption: "Von Mises stress under the preliminary load. Peak of about 0.977 MPa." },
+        { src: "/projects/fea/nacelle-displacement.png", alt: "Displacement plot of the nacelle under the preliminary load with max 0.0033 millimeters", caption: "Displacement under the same load. Max 0.0033 mm." },
+      ],
+      verdict:
+        "Passes the preliminary load, but that does not yet prove the nacelle survives full motor thrust or torque at the screw holes. A second load case is required.",
+      improvements: [
+        "Compute the real traction from iFlight XING2 1404 thrust data and re-run.",
+        "Add a motor-torque case at the screw holes.",
+        "Repair the arm and motor-mount STL geometry, then run a finer mesh to rule out mesh artifacts.",
+        "Fillet sharp transitions and thicken the walls around attachment points.",
+      ],
+    },
+  ],
+};

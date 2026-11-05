@@ -1,0 +1,227 @@
+import { useEffect, useRef } from "react";
+import { useLocation } from "wouter";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowLeft, CheckCircle2, AlertTriangle, Clock } from "lucide-react";
+import { PublicLayout } from "@/components/layout/public-layout";
+import { haylonFea, type FeaStatus } from "@/data/portfolio";
+
+const STATUS: Record<FeaStatus, { color: string; Icon: typeof CheckCircle2 }> = {
+  pass: { color: "#9cc59a", Icon: CheckCircle2 },
+  flag: { color: "#ef8f7d", Icon: AlertTriangle },
+  preliminary: { color: "#e8b14f", Icon: Clock },
+};
+
+function StatusBadge({ status, label }: { status: FeaStatus; label: string }) {
+  const { color, Icon } = STATUS[status];
+  return (
+    <span className="inline-flex items-center gap-1.5 text-sm whitespace-nowrap" style={{ color }}>
+      <Icon className="w-4 h-4 shrink-0" aria-hidden="true" />
+      {label}
+    </span>
+  );
+}
+
+export default function HaylonFea() {
+  const [, setLocation] = useLocation();
+  const reduce = useReducedMotion();
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  // New route: start at the top and move focus to the page heading.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    headingRef.current?.focus();
+    document.title = `${haylonFea.title} | Aarav Verma`;
+  }, []);
+
+  const backToProject = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    sessionStorage.setItem("scrollTarget", "#cad-projects");
+    setLocation("/");
+  };
+
+  const reveal = (delay = 0) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.15 },
+          transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] },
+        };
+
+  return (
+    <PublicLayout>
+      <div className="container mx-auto px-6 pt-28 pb-24 max-w-6xl lining-nums">
+        {/* Header */}
+        <motion.header {...reveal()} className="mb-16">
+          <a
+            href="/"
+            onClick={backToProject}
+            className="inline-flex items-center gap-2 text-sm text-[#a9ada3] hover:text-[#f5f4f0] transition-colors mb-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f5f4f0]"
+          >
+            <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+            Back to Haylon Interceptor
+          </a>
+          <p className="text-sm mb-3 text-[#a9ada3]">NOBE, UIUC for Haylon Technologies</p>
+          <h1
+            ref={headingRef}
+            tabIndex={-1}
+            className="text-4xl md:text-6xl font-display font-normal text-[#f5f4f0] leading-[1.05] mb-6 outline-none"
+            style={{ fontWeight: 400 }}
+          >
+            {haylonFea.title}
+          </h1>
+          <p className="text-base leading-relaxed text-[#c9ccc4] max-w-[65ch]">{haylonFea.intro}</p>
+        </motion.header>
+
+        {/* Assumptions */}
+        <motion.section {...reveal(0.05)} aria-labelledby="assumptions-heading" className="mb-20">
+          <h2 id="assumptions-heading" className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-6" style={{ fontWeight: 400 }}>
+            Shared assumptions
+          </h2>
+          <dl className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+            {haylonFea.assumptions.map((a) => (
+              <div key={a.label} className="p-5 flex flex-col-reverse gap-1" style={{ backgroundColor: "#1a1e16" }}>
+                <dt className="text-xs text-[#a9ada3]">{a.label}</dt>
+                <dd className="text-xl md:text-2xl font-display text-[#f5f4f0] lining-nums tabular-nums">{a.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </motion.section>
+
+        {/* Results overview */}
+        <motion.section {...reveal(0.05)} aria-labelledby="results-heading" className="mb-24">
+          <h2 id="results-heading" className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-6" style={{ fontWeight: 400 }}>
+            Results at a glance
+          </h2>
+          <div className="overflow-x-auto" style={{ border: "1px solid #2e3328" }}>
+            <table className="w-full text-sm min-w-[560px]">
+              <caption className="sr-only">Peak stress, safety factor, and result for each interceptor part</caption>
+              <thead>
+                <tr className="text-left text-[#a9ada3]" style={{ backgroundColor: "#232820" }}>
+                  <th scope="col" className="font-medium px-5 py-3">Part</th>
+                  <th scope="col" className="font-medium px-5 py-3">Peak stress</th>
+                  <th scope="col" className="font-medium px-5 py-3">Safety factor</th>
+                  <th scope="col" className="font-medium px-5 py-3">Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                {haylonFea.parts.map((p) => (
+                  <tr key={p.id} style={{ borderTop: "1px solid #2e3328" }}>
+                    <th scope="row" className="font-normal text-left px-5 py-4">
+                      <a
+                        href={`#${p.id}`}
+                        className="text-[#f5f4f0] underline decoration-[#5a6052] underline-offset-4 hover:decoration-[#f5f4f0] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
+                      >
+                        {p.name}
+                      </a>
+                    </th>
+                    <td className="px-5 py-4 text-[#c9ccc4] tabular-nums">{p.peakStress}</td>
+                    <td className="px-5 py-4 text-[#c9ccc4] tabular-nums">{p.safetyFactor}</td>
+                    <td className="px-5 py-4"><StatusBadge status={p.status} label={p.statusLabel} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </motion.section>
+
+        {/* Per-part detail */}
+        <div className="space-y-28">
+          {haylonFea.parts.map((p, idx) => {
+            const flipped = idx % 2 === 1;
+            const oddImages = p.images.length % 2 === 1 && p.images.length > 1;
+            return (
+              <motion.section
+                key={p.id}
+                id={p.id}
+                {...reveal()}
+                aria-labelledby={`${p.id}-heading`}
+                className="scroll-mt-28 pt-10"
+                style={{ borderTop: "1px solid #2e3328" }}
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+                  {/* Text */}
+                  <div className={`lg:col-span-5 ${flipped ? "lg:order-2" : ""}`}>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
+                      <StatusBadge status={p.status} label={p.statusLabel} />
+                      <span className="text-sm text-[#a9ada3]">Analysis by {p.developer}</span>
+                    </div>
+                    <h2
+                      id={`${p.id}-heading`}
+                      className="text-3xl md:text-4xl font-display font-normal text-[#f5f4f0] mb-4"
+                      style={{ fontWeight: 400 }}
+                    >
+                      {p.name}
+                    </h2>
+                    <p className="text-sm leading-relaxed text-[#c9ccc4] mb-8">{p.summary}</p>
+
+                    <h3 className="text-lg font-display text-[#f5f4f0] mb-2">Load case: {p.loadCase}</h3>
+                    <p className="text-sm leading-relaxed text-[#a9ada3] mb-8">{p.loadDetail}</p>
+
+                    <dl className="grid grid-cols-2 gap-px" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+                      {p.metrics.map((m) => (
+                        <div key={m.label} className="p-4 flex flex-col-reverse gap-1" style={{ backgroundColor: "#1a1e16" }}>
+                          <dt className="text-xs text-[#a9ada3]">{m.label}</dt>
+                          <dd className="text-lg font-display text-[#f5f4f0] lining-nums tabular-nums">{m.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+
+                  {/* Plots */}
+                  <div className={`lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 content-start ${flipped ? "lg:order-1" : ""}`}>
+                    {p.images.map((img, n) => (
+                      <figure
+                        key={img.src}
+                        className={p.images.length === 1 || (oddImages && n === 0) ? "sm:col-span-2" : ""}
+                      >
+                        <a
+                          href={img.src}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block relative aspect-[4/3] overflow-hidden group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
+                          style={{ backgroundColor: "#111410", border: "1px solid #2e3328" }}
+                        >
+                          <img
+                            src={img.src}
+                            alt={img.alt}
+                            loading="lazy"
+                            className="absolute inset-0 w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-[1.02]"
+                          />
+                          <span className="sr-only"> (opens full size in a new tab)</span>
+                        </a>
+                        <figcaption className="text-xs leading-relaxed text-[#a9ada3] mt-2">{img.caption}</figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Verdict + improvements */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-px mt-12" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+                  <div className="p-6 md:p-8" style={{ backgroundColor: "#232820" }}>
+                    <h3 className="text-lg font-display text-[#f5f4f0] mb-3">Verdict</h3>
+                    <p className="text-sm leading-relaxed text-[#c9ccc4]">{p.verdict}</p>
+                  </div>
+                  <div className="p-6 md:p-8" style={{ backgroundColor: "#1a1e16" }}>
+                    <h3 className="text-lg font-display text-[#f5f4f0] mb-3">
+                      {p.status === "preliminary" ? "Next steps" : "Improvements"}
+                    </h3>
+                    <ul className="space-y-2.5">
+                      {p.improvements.map((item) => (
+                        <li key={item} className="text-sm leading-relaxed text-[#c9ccc4] pl-4 relative">
+                          <span className="absolute left-0 top-[0.6em] w-1.5 h-px bg-[#a9ada3]" aria-hidden="true" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </motion.section>
+            );
+          })}
+        </div>
+      </div>
+    </PublicLayout>
+  );
+}
