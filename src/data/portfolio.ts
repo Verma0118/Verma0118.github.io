@@ -96,7 +96,7 @@ export const cadProjects = [
     description: "Haylon Technologies builds hybrid battery management systems for defense and electric aerospace, and partnered with NOBE to develop a small interceptor drone. As project manager of a six-developer team, I built the 12-week roadmap, wrote every weekly deliverable and rubric, reviewed every developer's CAD and code, and ran the design competition that chose the final airframe. V2 reworks the winglet joint with a redesigned female-to-male adapter for better structural stability, encloses the winglet on all four sides, and adds fillets to every sharp corner based on MATLAB results.",
     tags: ["Autodesk Fusion", "3D Printing", "UAV", "Project Management", "NOBE"],
     glbFileUrl: "/glb/interceptor-winglet-v2.glb",
-    link: { href: "/haylon-fea", label: "View FEA results" },
+    link: { href: "/haylon-fea", label: "Build log and FEA" },
     slides: [
       {
         label: "Interceptor V2",
@@ -258,7 +258,6 @@ export const haylonFea = {
     {
       id: "fuselage",
       name: "Fuselage Body",
-      developer: "Tharun Velavan",
       peakStress: "1.01 MPa",
       safetyFactor: "49.5",
       status: "pass" as FeaStatus,
@@ -290,7 +289,6 @@ export const haylonFea = {
     {
       id: "electronics",
       name: "Electronics Mounting Plate",
-      developer: "PK",
       peakStress: "0.016 MPa",
       safetyFactor: "> 2,000",
       status: "pass" as FeaStatus,
@@ -318,7 +316,6 @@ export const haylonFea = {
     {
       id: "winglet",
       name: "Winglet",
-      developer: "Revanth Karthikeyan",
       peakStress: "0.0248 MPa",
       safetyFactor: "2,013",
       status: "pass" as FeaStatus,
@@ -348,7 +345,6 @@ export const haylonFea = {
     {
       id: "camera",
       name: "Camera Mount",
-      developer: "Revanth Karthikeyan",
       peakStress: "50.26 MPa",
       safetyFactor: "0.99",
       status: "flag" as FeaStatus,
@@ -380,7 +376,6 @@ export const haylonFea = {
     {
       id: "nacelle",
       name: "Nacelle",
-      developer: "Solange",
       peakStress: "0.977 MPa",
       safetyFactor: "51.2",
       status: "preliminary" as FeaStatus,
@@ -408,6 +403,72 @@ export const haylonFea = {
         "Repair the arm and motor-mount STL geometry, then run a finer mesh to rule out mesh artifacts.",
         "Fillet sharp transitions and thicken the walls around attachment points.",
       ],
+    },
+  ],
+};
+
+// Build log for the Haylon interceptor, from the team engineering journal.
+export const haylonBuild = {
+  entry: "Entry 1",
+  date: "November 1, 2026",
+  intro:
+    "The project moved from CAD to physical parts on November 1. Every item on the BOM arrived, assembly started, and the first fall tests broke the original winglet adapter. The fixes written up in that session are what became the V2 airframe.",
+  workCompleted: [
+    "Received every part on the BOM and staged the first full build session.",
+    "Started installation, with everyone getting hands-on practice on the soldering iron and heat-set inserts.",
+    "Widened the ESP32 slots on the old holder to test-fit the board and see how much the electronics bay had to change.",
+  ],
+  problems: [
+    {
+      problem: "Heat-set insert holes too small",
+      happened: "Inserts went in hard and not always straight.",
+      fix: "Every insert hole set to a 3.70 mm inner diameter.",
+    },
+    {
+      problem: "Electronics holder does not fit the ESP32",
+      happened: "Our boards have no mounting holes, and the pin headers hit the plate.",
+      fix: "New modular electronics bay sized for our ESP32.",
+    },
+    {
+      problem: "Winglet male adapter on the fuselage",
+      happened: "Snapped off too easily and did not survive fall tests.",
+      fix: "Four-wall design with a hollow center and thicker walls.",
+    },
+  ],
+  changes: [
+    { part: "Winglet male adapter", change: "Four walls around a hollow center, every wall thickened and the base filleted." },
+    { part: "Winglet adapter hole", change: "Opened from 5.0 mm to 6 mm on the fuselage." },
+    { part: "Winglets", change: "Thicker for strength." },
+    { part: "Electronics bay", change: "Redesigned around our ESP32, with chamfered standoff screw holes so the screws sit flush." },
+    { part: "Heat-set insert holes", change: "3.70 mm inner diameter on every part." },
+    { part: "Landing gear", change: "Filleted." },
+  ],
+  statusNote:
+    "Each of these changes is queued for the next print round, then the four-wall adapter goes back through the same fall tests that broke the first one.",
+  photos: [
+    {
+      src: "/projects/build/parts-kit.jpg",
+      alt: "Printed interceptor parts laid out on a cutting mat, including red mounting plates, the black fuselage, four arms, and red nose cones",
+      caption: "The printed part set laid out before assembly.",
+      wide: true,
+    },
+    {
+      src: "/projects/build/airframe-front.jpg",
+      alt: "Assembled interceptor fuselage standing upright with two arms and red nose cones fitted to the nacelles",
+      caption: "Fuselage and arms assembled, nose cones fitted to the nacelles.",
+      wide: false,
+    },
+    {
+      src: "/projects/build/airframe-top.jpg",
+      alt: "Top view of the assembled interceptor frame showing four arms, red nose cones, and the open electronics bay at the center",
+      caption: "Top view. The electronics bay sits open at the center of the fuselage.",
+      wide: false,
+    },
+    {
+      src: "/projects/build/build-session.jpg",
+      alt: "Printed interceptor parts staged across a cutting mat on a workbench during a build session",
+      caption: "Parts staged on the bench during the first build session.",
+      wide: true,
     },
   ],
 };
