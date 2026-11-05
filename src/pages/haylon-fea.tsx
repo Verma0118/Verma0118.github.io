@@ -107,7 +107,7 @@ export default function HaylonFea() {
         </motion.header>
 
         {/* Tabs */}
-        <div role="tablist" aria-label="Interceptor documentation" className="flex gap-1 mb-16 border-b border-[#2e3328]">
+        <div role="tablist" aria-label="Interceptor documentation" className="flex gap-1 mb-12 border-b border-[#2e3328]">
           {TABS.map((t, i) => (
             <button
               key={t.id}
@@ -218,25 +218,31 @@ export default function HaylonFea() {
 
         {/* ── STRUCTURAL ANALYSIS ── */}
         <div role="tabpanel" id="panel-analysis" aria-labelledby="tab-analysis" tabIndex={0} hidden={tab !== "analysis"} className="focus-visible:outline-none">
-          <motion.section {...reveal()} aria-labelledby="fea-intro-heading" className="mb-20">
-            <h2 id="fea-intro-heading" className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-5" style={{ fontWeight: 400 }}>
-              {haylonFea.title}
-            </h2>
-            <p className="text-base leading-relaxed text-[#c9ccc4] max-w-[65ch] mb-12">{haylonFea.intro}</p>
+          <motion.section {...reveal()} aria-labelledby="fea-intro-heading" className="mb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+              <div className="lg:col-span-5">
+                <h2 id="fea-intro-heading" className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-5" style={{ fontWeight: 400 }}>
+                  {haylonFea.title}
+                </h2>
+                <p className="text-base leading-relaxed text-[#c9ccc4]">{haylonFea.intro}</p>
+              </div>
 
-            <h3 className="text-lg font-display text-[#f5f4f0] mb-5">Shared assumptions</h3>
-            <dl className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
-              {haylonFea.assumptions.map((a) => (
-                <div key={a.label} className="p-5 flex flex-col-reverse gap-1" style={{ backgroundColor: "#1a1e16" }}>
-                  <dt className="text-xs text-[#a9ada3]">{a.label}</dt>
-                  <dd className="text-xl md:text-2xl font-display text-[#f5f4f0] lining-nums tabular-nums">{a.value}</dd>
-                </div>
-              ))}
-            </dl>
+              <div className="lg:col-span-7">
+                <h3 className="text-sm text-[#a9ada3] mb-3">Shared assumptions</h3>
+                <dl className="grid grid-cols-2 sm:grid-cols-3 gap-px" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+                  {haylonFea.assumptions.map((a) => (
+                    <div key={a.label} className="p-5 flex flex-col-reverse gap-1" style={{ backgroundColor: "#1a1e16" }}>
+                      <dt className="text-xs text-[#a9ada3]">{a.label}</dt>
+                      <dd className="text-xl font-display text-[#f5f4f0] lining-nums tabular-nums">{a.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
           </motion.section>
 
           {/* Results overview */}
-          <motion.section {...reveal(0.05)} aria-labelledby="results-heading" className="mb-24">
+          <motion.section {...reveal(0.05)} aria-labelledby="results-heading" className="mb-20">
             <h2 id="results-heading" className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-6" style={{ fontWeight: 400 }}>
               Results at a glance
             </h2>
@@ -273,7 +279,7 @@ export default function HaylonFea() {
           </motion.section>
 
           {/* Per-part detail */}
-          <div className="space-y-28">
+          <div className="space-y-20">
             {haylonFea.parts.map((p, idx) => {
               const flipped = idx % 2 === 1;
               const oddImages = p.images.length % 2 === 1 && p.images.length > 1;
@@ -283,7 +289,7 @@ export default function HaylonFea() {
                   id={p.id}
                   {...reveal()}
                   aria-labelledby={`${p.id}-heading`}
-                  className="scroll-mt-28 pt-10"
+                  className="scroll-mt-28 pt-12"
                   style={{ borderTop: "1px solid #2e3328" }}
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
@@ -343,7 +349,7 @@ export default function HaylonFea() {
                   </div>
 
                   {/* Verdict + improvements */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-px mt-12" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-px mt-10" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
                     <div className="p-6 md:p-8" style={{ backgroundColor: "#232820" }}>
                       <h3 className="text-lg font-display text-[#f5f4f0] mb-3">Verdict</h3>
                       <p className="text-sm leading-relaxed text-[#c9ccc4]">{p.verdict}</p>

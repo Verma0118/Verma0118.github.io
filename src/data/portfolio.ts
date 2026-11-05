@@ -93,15 +93,15 @@ export const cadProjects = [
     role: "Project Manager",
     dateRange: "June 2026 to Present",
     location: "UIUC",
-    description: "Haylon Technologies builds hybrid battery management systems for defense and electric aerospace, and partnered with NOBE to develop a small interceptor drone. As project manager of a six-developer team, I built the 12-week roadmap, wrote every weekly deliverable and rubric, reviewed every developer's CAD and code, and ran the design competition that chose the final airframe. V2 reworks the winglet joint with a redesigned female-to-male adapter for better structural stability, encloses the winglet on all four sides, and adds fillets to every sharp corner based on MATLAB results.",
+    description: "Haylon builds hybrid battery systems for defense and electric aerospace, and partnered with NOBE on a small interceptor drone. As project manager of six developers, I set the 12-week roadmap, wrote every deliverable and rubric, and reviewed all CAD and code. V2 reworks the winglet adapter, encloses the winglet on all four sides, and fillets every sharp corner.",
     tags: ["Autodesk Fusion", "3D Printing", "UAV", "Project Management", "NOBE"],
     glbFileUrl: "/glb/interceptor-winglet-v2.glb",
-    link: { href: "/haylon-fea", label: "Build log and FEA" },
+    link: { href: "/haylon-fea", label: "Build log and stress analysis" },
     slides: [
       {
         label: "Interceptor V2",
         title: "Haylon Technologies Interceptor Drone, V2",
-        description: "Haylon Technologies builds hybrid battery management systems for defense and electric aerospace, and partnered with NOBE to develop a small interceptor drone. As project manager of a six-developer team, I built the 12-week roadmap, wrote every weekly deliverable and rubric, reviewed every developer's CAD and code, and ran the design competition that chose the final airframe. V2 reworks the winglet joint with a redesigned female-to-male adapter for better structural stability, encloses the winglet on all four sides, and adds fillets to every sharp corner based on MATLAB results.",
+        description: "Haylon builds hybrid battery systems for defense and electric aerospace, and partnered with NOBE on a small interceptor drone. As project manager of six developers, I set the 12-week roadmap, wrote every deliverable and rubric, and reviewed all CAD and code. V2 reworks the winglet adapter, encloses the winglet on all four sides, and fillets every sharp corner.",
         tags: ["Autodesk Fusion", "MATLAB", "3D Printing", "UAV", "Project Management"],
         glbFileUrl: "/glb/interceptor-winglet-v2.glb",
       },
@@ -196,6 +196,8 @@ export const simulationProjects = [
       { src: "/projects/fea/camera-stress.png", alt: "Von Mises stress plot of the camera mount under side impact, peaking near PLA yield at the attachment corner", label: "Camera mount" },
       { src: "/projects/fea/fuselage-stress.png", alt: "Von Mises stress plot of the fuselage at full throttle with peak stress at the arm tab roots", label: "Fuselage" },
       { src: "/projects/fea/winglet-stress.png", alt: "Von Mises stress plot of the winglet under 35 meter per second airflow", label: "Winglet" },
+      { src: "/projects/fea/electronics-stress.png", alt: "Von Mises stress plot of the electronics mounting plate at a 5 g landing load, with peak stress at the screw hole edges", label: "Electronics" },
+      { src: "/projects/fea/nacelle-stress.png", alt: "Von Mises stress plot of the nacelle under the preliminary motor load", label: "Nacelle" },
     ],
   },
   {
