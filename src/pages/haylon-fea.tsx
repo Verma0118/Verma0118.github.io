@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, CheckCircle2, AlertTriangle, Clock } from "lucide-react";
+import { ArrowLeft, CheckCircle2, AlertTriangle, Clock, ChevronDown } from "lucide-react";
 import { PublicLayout } from "@/components/layout/public-layout";
 import { haylonFea, haylonBuild, type FeaStatus } from "@/data/portfolio";
 
@@ -34,6 +34,14 @@ export default function HaylonFea() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [tab, setTab] = useState<TabId>("build");
+  const [openParts, setOpenParts] = useState<string[]>([haylonFea.parts[0].id]);
+
+  const togglePart = (id: string) =>
+    setOpenParts((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
+  const allOpen = openParts.length === haylonFea.parts.length;
+  const toggleAll = () => setOpenParts(allOpen ? [] : haylonFea.parts.map((p) => p.id));
+  // Opening a part from a link or a hash, so the target is never left collapsed.
+  const revealPart = (id: string) => setOpenParts((cur) => (cur.includes(id) ? cur : [...cur, id]));
 
   // New route: open the tab the link asked for, then settle focus on the heading.
   useEffect(() => {
@@ -44,6 +52,7 @@ export default function HaylonFea() {
       setTab("analysis");
       // The panel is hidden until this render lands, so scroll once it is on screen.
       if (hash !== "analysis") {
+        revealPart(hash);
         requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView());
         return;
       }
@@ -241,70 +250,65 @@ export default function HaylonFea() {
             </div>
           </motion.section>
 
-          {/* Results overview */}
-          <motion.section {...reveal(0.05)} aria-labelledby="results-heading" className="mb-20">
-            <h2 id="results-heading" className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-6" style={{ fontWeight: 400 }}>
-              Results at a glance
+          {/* Per-part detail, one expandable row each */}
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-2">
+            <h2 className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0]" style={{ fontWeight: 400 }}>
+              Results by part
             </h2>
-            <div className="overflow-x-auto" style={{ border: "1px solid #2e3328" }}>
-              <table className="w-full text-sm min-w-[560px]">
-                <caption className="sr-only">Peak stress, safety factor, and result for each interceptor part</caption>
-                <thead>
-                  <tr className="text-left text-[#a9ada3]" style={{ backgroundColor: "#232820" }}>
-                    <th scope="col" className="font-medium px-5 py-3">Part</th>
-                    <th scope="col" className="font-medium px-5 py-3">Peak stress</th>
-                    <th scope="col" className="font-medium px-5 py-3">Safety factor</th>
-                    <th scope="col" className="font-medium px-5 py-3">Result</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {haylonFea.parts.map((p) => (
-                    <tr key={p.id} style={{ borderTop: "1px solid #2e3328" }}>
-                      <th scope="row" className="font-normal text-left px-5 py-4">
-                        <a
-                          href={`#${p.id}`}
-                          className="text-[#f5f4f0] underline decoration-[#5a6052] underline-offset-4 hover:decoration-[#f5f4f0] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
-                        >
-                          {p.name}
-                        </a>
-                      </th>
-                      <td className="px-5 py-4 text-[#c9ccc4] tabular-nums">{p.peakStress}</td>
-                      <td className="px-5 py-4 text-[#c9ccc4] tabular-nums">{p.safetyFactor}</td>
-                      <td className="px-5 py-4"><StatusBadge status={p.status} label={p.statusLabel} /></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.section>
+            <button
+              onClick={toggleAll}
+              className="text-sm text-[#a9ada3] hover:text-[#f5f4f0] underline underline-offset-4 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
+            >
+              {allOpen ? "Collapse all" : "Expand all"}
+            </button>
+          </div>
 
-          {/* Per-part detail */}
-          <div className="space-y-20">
+          <p className="text-sm text-[#a9ada3] mb-5">Open a part for its load case, plots, and verdict.</p>
+
+          <div style={{ borderTop: "1px solid #2e3328" }}>
             {haylonFea.parts.map((p, idx) => {
               const flipped = idx % 2 === 1;
               const oddImages = p.images.length % 2 === 1 && p.images.length > 1;
+              const isOpen = openParts.includes(p.id);
               return (
                 <motion.section
                   key={p.id}
                   id={p.id}
                   {...reveal()}
                   aria-labelledby={`${p.id}-heading`}
-                  className="scroll-mt-28 pt-12"
-                  style={{ borderTop: "1px solid #2e3328" }}
+                  className="scroll-mt-28"
+                  style={{ borderBottom: "1px solid #2e3328" }}
                 >
+                  <h2 id={`${p.id}-heading`} className="m-0">
+                    <button
+                      type="button"
+                      onClick={() => togglePart(p.id)}
+                      aria-expanded={isOpen}
+                      aria-controls={`${p.id}-panel`}
+                      className="group w-full text-left px-4 md:px-6 py-6 flex flex-wrap items-center gap-x-6 gap-y-3 transition-colors hover:bg-[#232820] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#f5f4f0]"
+                    >
+                      <span className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mr-auto" style={{ fontWeight: 400 }}>
+                        {p.name}
+                      </span>
+                      <span className="hidden md:flex items-center gap-6 text-sm text-[#a9ada3] lining-nums tabular-nums">
+                        <span>Peak {p.peakStress}</span>
+                        <span>SF {p.safetyFactor}</span>
+                      </span>
+                      <StatusBadge status={p.status} label={p.statusLabel} />
+                      <span className="flex items-center gap-2 text-sm text-[#c9ccc4] group-hover:text-[#f5f4f0] transition-colors">
+                        {isOpen ? "Hide details" : "Show details"}
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </button>
+                  </h2>
+
+                  <div id={`${p.id}-panel`} hidden={!isOpen} className="px-4 md:px-6 pb-12 pt-2">
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
                     {/* Text */}
                     <div className={`lg:col-span-5 ${flipped ? "lg:order-2" : ""}`}>
-                      <div className="mb-4">
-                        <StatusBadge status={p.status} label={p.statusLabel} />
-                      </div>
-                      <h2
-                        id={`${p.id}-heading`}
-                        className="text-3xl md:text-4xl font-display font-normal text-[#f5f4f0] mb-4"
-                        style={{ fontWeight: 400 }}
-                      >
-                        {p.name}
-                      </h2>
                       <p className="text-sm leading-relaxed text-[#c9ccc4] mb-8">{p.summary}</p>
 
                       <h3 className="text-lg font-display text-[#f5f4f0] mb-2">Load case: {p.loadCase}</h3>
@@ -367,6 +371,7 @@ export default function HaylonFea() {
                         ))}
                       </ul>
                     </div>
+                  </div>
                   </div>
                 </motion.section>
               );
