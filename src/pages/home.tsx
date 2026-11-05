@@ -350,12 +350,12 @@ export default function Home() {
                         <p className="text-sm mb-1" style={{ color: '#6b6966' }}>{project.kind}</p>
                         <h3 className="text-2xl font-display font-normal" style={{ color: '#111110', fontWeight: 400 }}>{project.title}</h3>
                       </div>
-                      {project.githubUrl && (
+                      {(project.githubUrl || project.demoUrl) && (
                         <a
-                          href={project.githubUrl}
+                          href={project.githubUrl ?? project.demoUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={`View ${project.title} on GitHub`}
+                          aria-label={project.githubUrl ? `View ${project.title} on GitHub` : `Open the ${project.title} live demo`}
                           className="shrink-0 h-11 w-11 -mr-2 -mt-2 flex items-center justify-center hover:opacity-60 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111110]"
                           style={{ color: '#111110' }}
                         >
@@ -364,6 +364,18 @@ export default function Home() {
                       )}
                     </div>
                     <p className="text-sm leading-relaxed mb-5" style={{ color: '#6b6966' }}>{project.description}</p>
+                    {project.demoUrl && (
+                      <a
+                        href={project.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 self-start text-sm mb-5 underline underline-offset-4 transition-colors hover:text-[#111110] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111110]"
+                        style={{ color: '#55534f' }}
+                      >
+                        Open the live demo
+                        <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                      </a>
+                    )}
                     <div className="flex flex-wrap gap-1.5 mt-auto" role="list" aria-label="Technologies used">
                       {project.tags.map(tag => (
                         <span key={tag} className="text-xs px-2.5 py-1" style={{ backgroundColor: '#d0cec9', color: '#55534f' }} role="listitem">{tag}</span>
