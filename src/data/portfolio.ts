@@ -93,15 +93,22 @@ export const cadProjects = [
     role: "Project Manager",
     dateRange: "June 2026 to Present",
     location: "UIUC",
-    description: "Haylon Technologies builds hybrid battery management systems for defense and electric aerospace, and partnered with NOBE to develop a small interceptor drone. As project manager of a six-developer team, I built the 12-week roadmap, wrote every weekly deliverable and rubric, reviewed every developer's CAD and code, and ran the design competition that chose the final airframe. It uses a streamlined fuselage with four motor nacelles, screw-on winglets, and strap slots that lock the battery in place.",
+    description: "Haylon Technologies builds hybrid battery management systems for defense and electric aerospace, and partnered with NOBE to develop a small interceptor drone. As project manager of a six-developer team, I built the 12-week roadmap, wrote every weekly deliverable and rubric, reviewed every developer's CAD and code, and ran the design competition that chose the final airframe. V2 reworks the winglet joint with a redesigned female-to-male adapter for better structural stability, encloses the winglet on all four sides, and adds fillets to every sharp corner based on MATLAB results.",
     tags: ["Autodesk Fusion", "3D Printing", "UAV", "Project Management", "NOBE"],
-    glbFileUrl: "/glb/interceptor-v2.glb",
+    glbFileUrl: "/glb/interceptor-winglet-v2.glb",
     slides: [
       {
-        label: "Interceptor",
-        title: "Haylon Technologies Interceptor Drone",
-        description: "Haylon Technologies builds hybrid battery management systems for defense and electric aerospace, and partnered with NOBE to develop a small interceptor drone. As project manager of a six-developer team, I built the 12-week roadmap, wrote every weekly deliverable and rubric, reviewed every developer's CAD and code, and ran the design competition that chose the final airframe. It uses a streamlined fuselage with four motor nacelles, screw-on winglets, and strap slots that lock the battery in place.",
-        tags: ["Autodesk Fusion", "3D Printing", "UAV", "Project Management"],
+        label: "Interceptor V2",
+        title: "Haylon Technologies Interceptor Drone, V2",
+        description: "Haylon Technologies builds hybrid battery management systems for defense and electric aerospace, and partnered with NOBE to develop a small interceptor drone. As project manager of a six-developer team, I built the 12-week roadmap, wrote every weekly deliverable and rubric, reviewed every developer's CAD and code, and ran the design competition that chose the final airframe. V2 reworks the winglet joint with a redesigned female-to-male adapter for better structural stability, encloses the winglet on all four sides, and adds fillets to every sharp corner based on MATLAB results.",
+        tags: ["Autodesk Fusion", "MATLAB", "3D Printing", "UAV", "Project Management"],
+        glbFileUrl: "/glb/interceptor-winglet-v2.glb",
+      },
+      {
+        label: "Interceptor V1",
+        title: "Haylon Technologies Interceptor Drone, V1",
+        description: "The airframe that won the team design competition: a streamlined fuselage with four motor nacelles, screw-on winglets, and strap slots that lock the battery in place. V2 kept this layout and reworked the winglet adapter, winglet enclosure, and sharp corners.",
+        tags: ["Autodesk Fusion", "3D Printing", "UAV", "Design Competition"],
         glbFileUrl: "/glb/interceptor-v2.glb",
       },
       {
