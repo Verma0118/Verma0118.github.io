@@ -7,6 +7,7 @@ import { ImageTabs } from "@/components/ui/image-tabs";
 import { ProjectCarousel } from "@/components/ui/project-carousel";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Download, Send, Loader2, ArrowRight, ArrowUpRight } from "lucide-react";
+import { Link } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -402,8 +403,43 @@ export default function Home() {
             </p>
           </ScrollFade>
 
+          {/* Lead study: the interceptor campaign, wide */}
+          {simulationProjects.filter(p => "featured" in p).map(project => (
+            <ScrollFade key={project.id} className="mb-4">
+              <article
+                aria-label={project.title}
+                className="border border-[#2e3328] bg-[#232820] p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start"
+              >
+                <ImageTabs images={project.images} />
+                <div className="flex flex-col h-full">
+                  <span className="text-sm block mb-1.5 text-[#8a8f84]">{project.category}</span>
+                  <h3 className="text-2xl md:text-3xl font-display font-normal text-foreground mb-3" style={{ fontWeight: 400 }}>
+                    {project.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground mb-6">{project.description}</p>
+                  {"link" in project && (
+                    <Link
+                      href={(project as any).link.href}
+                      className="group inline-flex items-center gap-2 self-start text-sm text-foreground hover:text-[#e8a33d] transition-colors mb-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e8a33d]"
+                    >
+                      {(project as any).link.label}
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                    </Link>
+                  )}
+                  <div className="flex flex-wrap gap-1.5 mt-auto" role="list" aria-label="Technologies used">
+                    {project.tags.map(tag => (
+                      <span key={tag} className="text-xs px-2.5 py-1 bg-[#1a1e16] text-[#8a8f84]" role="listitem">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            </ScrollFade>
+          ))}
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list">
-            {simulationProjects.map(project => (
+            {simulationProjects.filter(p => !("featured" in p)).map(project => (
               <ScrollFade key={project.id}>
                 <article
                   aria-label={project.title}

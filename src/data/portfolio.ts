@@ -184,6 +184,21 @@ export const softwareProjects = [
 // Simulation & analysis projects, MATLAB / Simulink, no GitHub repo
 export const simulationProjects = [
   {
+    id: 4,
+    title: "Interceptor UAV Stress Analysis Campaign",
+    category: "MATLAB PDE Toolbox and FEA",
+    dateRange: "2026",
+    featured: true,
+    description: "Wrote the FEA deliverable for the Haylon interceptor team: the load cases, the PLA material model, and the mesh and safety-factor standard every developer had to meet in MATLAB PDE Toolbox. Reviewed all five part studies, caught the camera mount sitting at a 0.99 safety factor under a 35 m/s side impact, and turned the fillet and wall-thickness findings into the V2 airframe.",
+    tags: ["MATLAB", "FEA", "Load Cases", "Design Review", "NOBE"],
+    link: { href: "/haylon-fea#analysis", label: "Read the full analysis" },
+    images: [
+      { src: "/projects/fea/camera-stress.png", alt: "Von Mises stress plot of the camera mount under side impact, peaking near PLA yield at the attachment corner", label: "Camera mount" },
+      { src: "/projects/fea/fuselage-stress.png", alt: "Von Mises stress plot of the fuselage at full throttle with peak stress at the arm tab roots", label: "Fuselage" },
+      { src: "/projects/fea/winglet-stress.png", alt: "Von Mises stress plot of the winglet under 35 meter per second airflow", label: "Winglet" },
+    ],
+  },
+  {
     id: 1,
     title: "Cascaded Flight Controller for Pitch, Roll, and Yaw",
     category: "Simulink and Controls",

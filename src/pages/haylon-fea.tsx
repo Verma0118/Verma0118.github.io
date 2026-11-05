@@ -35,11 +35,21 @@ export default function HaylonFea() {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [tab, setTab] = useState<TabId>("build");
 
-  // New route: start at the top and move focus to the page heading.
+  // New route: open the tab the link asked for, then settle focus on the heading.
   useEffect(() => {
+    document.title = "Interceptor Build and Analysis | Aarav Verma";
+    const hash = window.location.hash.slice(1);
+    const toAnalysis = hash === "analysis" || haylonFea.parts.some((p) => p.id === hash);
+    if (toAnalysis) {
+      setTab("analysis");
+      // The panel is hidden until this render lands, so scroll once it is on screen.
+      if (hash !== "analysis") {
+        requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView());
+        return;
+      }
+    }
     window.scrollTo(0, 0);
     headingRef.current?.focus();
-    document.title = "Interceptor Build and Analysis | Aarav Verma";
   }, []);
 
   const backToProject = (e: React.MouseEvent<HTMLAnchorElement>) => {
