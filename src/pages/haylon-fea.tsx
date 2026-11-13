@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, CheckCircle2, AlertTriangle, Clock, ChevronDown } from "lucide-react";
 import { PublicLayout } from "@/components/layout/public-layout";
-import { haylonFea, haylonBuild, type FeaStatus } from "@/data/portfolio";
+import { haylonFea, haylonBuildEntries, type BuildEntryData, type FeaStatus } from "@/data/portfolio";
 
 const STATUS: Record<FeaStatus, { color: string; Icon: typeof CheckCircle2 }> = {
   pass: { color: "#9cc59a", Icon: CheckCircle2 },
@@ -28,6 +28,141 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
+type Reveal = (delay?: number) => Record<string, unknown>;
+
+function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }) {
+  const problemCols = entry.problems.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3";
+  return (
+    <article
+      id={entry.id}
+      aria-labelledby={`${entry.id}-heading`}
+      className="mb-24 last:mb-0 pt-16 first:pt-0 border-t border-[#2e3328] first:border-t-0"
+    >
+      <motion.div {...reveal()} className="mb-20">
+        <p className="text-sm text-[#a9ada3] mb-3">
+          {entry.entry}, {entry.date}
+        </p>
+        <h2
+          id={`${entry.id}-heading`}
+          className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-5"
+          style={{ fontWeight: 400 }}
+        >
+          {entry.title}
+        </h2>
+        <p className="text-base leading-relaxed text-[#c9ccc4] max-w-[65ch] mb-10">{entry.intro}</p>
+        <ul className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+          {entry.workCompleted.map((item) => (
+            <li key={item} className="p-6 text-sm leading-relaxed text-[#c9ccc4]" style={{ backgroundColor: "#1a1e16" }}>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+
+      {/* Photos, and the clip when the entry has one */}
+      <motion.section {...reveal()} aria-labelledby={`${entry.id}-photos-heading`} className="mb-24">
+        <h3
+          id={`${entry.id}-photos-heading`}
+          className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-8"
+          style={{ fontWeight: 400 }}
+        >
+          From the bench
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {entry.photos.map((photo) => (
+            <figure key={photo.src} className={photo.wide ? "sm:col-span-2 lg:col-span-3" : ""}>
+              <a
+                href={photo.src}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`block relative overflow-hidden group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0] ${
+                  photo.wide ? "aspect-[21/10]" : "aspect-square"
+                }`}
+                style={{ backgroundColor: "#111410", border: "1px solid #2e3328" }}
+              >
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                />
+                <span className="sr-only"> (opens full size in a new tab)</span>
+              </a>
+              <figcaption className="text-xs leading-relaxed text-[#a9ada3] mt-2">{photo.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+        {entry.video && (
+          <figure className="mt-10 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
+            <div className="md:col-span-4 lg:col-span-3">
+              <video
+                src={entry.video.src}
+                poster={entry.video.poster}
+                controls
+                muted
+                playsInline
+                preload="none"
+                aria-label={entry.video.label}
+                className="block w-full"
+                style={{ backgroundColor: "#111410", border: "1px solid #2e3328" }}
+              />
+            </div>
+            <figcaption className="md:col-span-8 lg:col-span-6">
+              <p className="text-sm leading-relaxed text-[#c9ccc4] mb-3">{entry.video.caption}</p>
+              <p className="text-xs leading-relaxed text-[#a9ada3] max-w-[60ch]">{entry.video.description}</p>
+            </figcaption>
+          </figure>
+        )}
+      </motion.section>
+
+      {/* Problems found */}
+      <motion.section {...reveal()} aria-labelledby={`${entry.id}-problems-heading`} className={entry.changes ? "mb-24" : ""}>
+        <h3
+          id={`${entry.id}-problems-heading`}
+          className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-8"
+          style={{ fontWeight: 400 }}
+        >
+          What broke, and why
+        </h3>
+        <div className={`grid grid-cols-1 ${problemCols} gap-px`} style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+          {entry.problems.map((p) => (
+            <article key={p.problem} className="p-6 md:p-8 flex flex-col" style={{ backgroundColor: "#1a1e16" }}>
+              <h4 className="text-lg font-display text-[#f5f4f0] mb-4">{p.problem}</h4>
+              <p className="text-sm leading-relaxed text-[#a9ada3] mb-6 flex-grow">{p.happened}</p>
+              <p className="text-sm leading-relaxed text-[#c9ccc4] pt-5" style={{ borderTop: "1px solid #2e3328" }}>
+                <span className="text-[#9cc59a]">Fix. </span>
+                {p.fix}
+              </p>
+            </article>
+          ))}
+        </div>
+      </motion.section>
+
+      {/* Design changes */}
+      {entry.changes && (
+        <motion.section {...reveal()} aria-labelledby={`${entry.id}-changes-heading`}>
+          <h3
+            id={`${entry.id}-changes-heading`}
+            className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-8"
+            style={{ fontWeight: 400 }}
+          >
+            Changes into the next print
+          </h3>
+          <dl className="grid grid-cols-1 md:grid-cols-2 gap-px mb-8" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+            {entry.changes.map((c) => (
+              <div key={c.part} className="p-6" style={{ backgroundColor: "#1a1e16" }}>
+                <dt className="text-base font-display text-[#f5f4f0] mb-2">{c.part}</dt>
+                <dd className="text-sm leading-relaxed text-[#a9ada3]">{c.change}</dd>
+              </div>
+            ))}
+          </dl>
+          {entry.statusNote && <p className="text-sm leading-relaxed text-[#c9ccc4] max-w-[65ch]">{entry.statusNote}</p>}
+        </motion.section>
+      )}
+    </article>
+  );
+}
+
 export default function HaylonFea() {
   const [, setLocation] = useLocation();
   const reduce = useReducedMotion();
@@ -47,6 +182,12 @@ export default function HaylonFea() {
   useEffect(() => {
     document.title = "Interceptor Build and Analysis | Aarav Verma";
     const hash = window.location.hash.slice(1);
+    // A build entry link lands on the build tab and scrolls to that entry.
+    if (haylonBuildEntries.some((e) => e.id === hash)) {
+      setTab("build");
+      requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView());
+      return;
+    }
     const toAnalysis = hash === "analysis" || haylonFea.parts.some((p) => p.id === hash);
     if (toAnalysis) {
       setTab("analysis");
@@ -141,88 +282,9 @@ export default function HaylonFea() {
 
         {/* ── BUILD LOG ── */}
         <div role="tabpanel" id="panel-build" aria-labelledby="tab-build" tabIndex={0} hidden={tab !== "build"} className="focus-visible:outline-none">
-          <motion.section {...reveal()} aria-labelledby="build-intro-heading" className="mb-20">
-            <p className="text-sm text-[#a9ada3] mb-3">
-              {haylonBuild.entry}, {haylonBuild.date}
-            </p>
-            <h2 id="build-intro-heading" className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-5" style={{ fontWeight: 400 }}>
-              From CAD to parts in hand
-            </h2>
-            <p className="text-base leading-relaxed text-[#c9ccc4] max-w-[65ch] mb-10">{haylonBuild.intro}</p>
-            <ul className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
-              {haylonBuild.workCompleted.map((item) => (
-                <li key={item} className="p-6 text-sm leading-relaxed text-[#c9ccc4]" style={{ backgroundColor: "#1a1e16" }}>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </motion.section>
-
-          {/* Photos */}
-          <motion.section {...reveal()} aria-labelledby="photos-heading" className="mb-24">
-            <h2 id="photos-heading" className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-8" style={{ fontWeight: 400 }}>
-              Printed and assembled
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {haylonBuild.photos.map((photo) => (
-                <figure key={photo.src} className={photo.wide ? "sm:col-span-2" : ""}>
-                  <a
-                    href={photo.src}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`block relative overflow-hidden group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0] ${
-                      photo.wide ? "aspect-[21/10]" : "aspect-square"
-                    }`}
-                    style={{ backgroundColor: "#111410", border: "1px solid #2e3328" }}
-                  >
-                    <img
-                      src={photo.src}
-                      alt={photo.alt}
-                      loading="lazy"
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                    />
-                    <span className="sr-only"> (opens full size in a new tab)</span>
-                  </a>
-                  <figcaption className="text-xs leading-relaxed text-[#a9ada3] mt-2">{photo.caption}</figcaption>
-                </figure>
-              ))}
-            </div>
-          </motion.section>
-
-          {/* Problems found */}
-          <motion.section {...reveal()} aria-labelledby="problems-heading" className="mb-24">
-            <h2 id="problems-heading" className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-8" style={{ fontWeight: 400 }}>
-              What broke, and why
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
-              {haylonBuild.problems.map((p) => (
-                <article key={p.problem} className="p-6 md:p-8 flex flex-col" style={{ backgroundColor: "#1a1e16" }}>
-                  <h3 className="text-lg font-display text-[#f5f4f0] mb-4">{p.problem}</h3>
-                  <p className="text-sm leading-relaxed text-[#a9ada3] mb-6 flex-grow">{p.happened}</p>
-                  <p className="text-sm leading-relaxed text-[#c9ccc4] pt-5" style={{ borderTop: "1px solid #2e3328" }}>
-                    <span className="text-[#9cc59a]">Fix. </span>
-                    {p.fix}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </motion.section>
-
-          {/* Design changes */}
-          <motion.section {...reveal()} aria-labelledby="changes-heading">
-            <h2 id="changes-heading" className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-8" style={{ fontWeight: 400 }}>
-              Changes into the next print
-            </h2>
-            <dl className="grid grid-cols-1 md:grid-cols-2 gap-px mb-8" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
-              {haylonBuild.changes.map((c) => (
-                <div key={c.part} className="p-6" style={{ backgroundColor: "#1a1e16" }}>
-                  <dt className="text-base font-display text-[#f5f4f0] mb-2">{c.part}</dt>
-                  <dd className="text-sm leading-relaxed text-[#a9ada3]">{c.change}</dd>
-                </div>
-              ))}
-            </dl>
-            <p className="text-sm leading-relaxed text-[#c9ccc4] max-w-[65ch]">{haylonBuild.statusNote}</p>
-          </motion.section>
+          {haylonBuildEntries.map((e) => (
+            <BuildEntry key={e.id} entry={e} reveal={reveal} />
+          ))}
         </div>
 
         {/* ── STRUCTURAL ANALYSIS ── */}

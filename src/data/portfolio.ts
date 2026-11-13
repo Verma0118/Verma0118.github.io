@@ -429,67 +429,166 @@ export const haylonFea = {
 };
 
 // Build log for the Haylon interceptor, from the team engineering journal.
-export const haylonBuild = {
-  entry: "Entry 1",
-  date: "November 1, 2026",
-  intro:
-    "The project moved from CAD to physical parts on November 1. Every item on the BOM arrived, assembly started, and the first fall tests broke the original winglet adapter. The fixes written up in that session are what became the V2 airframe.",
-  workCompleted: [
-    "Received every part on the BOM and staged the first full build session.",
-    "Started installation, with everyone getting hands-on practice on the soldering iron and heat-set inserts.",
-    "Widened the ESP32 slots on the old holder to test-fit the board and see how much the electronics bay had to change.",
-  ],
-  problems: [
-    {
-      problem: "Heat-set insert holes too small",
-      happened: "Inserts went in hard and not always straight.",
-      fix: "Every insert hole set to a 3.70 mm inner diameter.",
-    },
-    {
-      problem: "Electronics holder does not fit the ESP32",
-      happened: "Our boards have no mounting holes, and the pin headers hit the plate.",
-      fix: "New modular electronics bay sized for our ESP32.",
-    },
-    {
-      problem: "Winglet male adapter on the fuselage",
-      happened: "Snapped off too easily and did not survive fall tests.",
-      fix: "Four-wall design with a hollow center and thicker walls.",
-    },
-  ],
-  changes: [
-    { part: "Winglet male adapter", change: "Four walls around a hollow center, every wall thickened and the base filleted." },
-    { part: "Winglet adapter hole", change: "Opened from 5.0 mm to 6 mm on the fuselage." },
-    { part: "Winglets", change: "Thicker for strength." },
-    { part: "Electronics bay", change: "Redesigned around our ESP32, with chamfered standoff screw holes so the screws sit flush." },
-    { part: "Heat-set insert holes", change: "3.70 mm inner diameter on every part." },
-    { part: "Landing gear", change: "Filleted." },
-  ],
-  statusNote:
-    "Each of these changes is queued for the next print round, then the four-wall adapter goes back through the same fall tests that broke the first one.",
-  photos: [
-    {
-      src: "/projects/build/parts-kit.jpg",
-      alt: "Printed interceptor parts laid out on a cutting mat, including red mounting plates, the black fuselage, four arms, and red nose cones",
-      caption: "The printed part set laid out before assembly.",
-      wide: true,
-    },
-    {
-      src: "/projects/build/airframe-front.jpg",
-      alt: "Assembled interceptor fuselage standing upright with two arms and red nose cones fitted to the nacelles",
-      caption: "Fuselage and arms assembled, nose cones fitted to the nacelles.",
-      wide: false,
-    },
-    {
-      src: "/projects/build/airframe-top.jpg",
-      alt: "Top view of the assembled interceptor frame showing four arms, red nose cones, and the open electronics bay at the center",
-      caption: "Top view. The electronics bay sits open at the center of the fuselage.",
-      wide: false,
-    },
-    {
-      src: "/projects/build/build-session.jpg",
-      alt: "Printed interceptor parts staged across a cutting mat on a workbench during a build session",
-      caption: "Parts staged on the bench during the first build session.",
-      wide: true,
-    },
-  ],
+// Newest entry first. changes and statusNote are optional.
+export type BuildPhoto = { src: string; alt: string; caption: string; wide?: boolean };
+
+export type BuildEntryData = {
+  id: string;
+  entry: string;
+  date: string;
+  title: string;
+  intro: string;
+  workCompleted: string[];
+  photos: BuildPhoto[];
+  video?: { src: string; poster: string; label: string; description: string; caption: string };
+  problems: { problem: string; happened: string; fix: string }[];
+  changes?: { part: string; change: string }[];
+  statusNote?: string;
 };
+
+export const haylonBuildEntries: BuildEntryData[] = [
+  {
+    id: "entry-2",
+    entry: "Entry 2",
+    date: "November 10, 2026",
+    title: "Electronics in, and the first full assembly",
+    intro:
+      "The V2 parts came off the printer and the build moved from fitting plastic to wiring a drone. One session took the interceptor from loose subassemblies to a fully wired airframe with every screw torqued down: motors into the winglet arms, the four-in-one ESC soldered to all four motors, the flight controller stacked on the electronics mount, and the battery strapped into the fuselage.",
+    workCompleted: [
+      "Mounted the motors in the winglet arms and dry-fitted the ESC stack, flight controller and battery before any solder went down.",
+      "Soldered all four motor leads to the ESC, then wired the ESC to the flight controller and checked every joint.",
+      "Extended the motor leads, reseated the electronics mount, and closed the airframe out with everything screwed down.",
+    ],
+    photos: [
+      {
+        src: "/projects/build/stack-dryfit-top.jpg",
+        alt: "Interceptor subassemblies laid out on a bench before wiring: a four-in-one ESC with battery pigtail, a LiPo battery, the round white electronics plate, the black fuselage with a motor nacelle, and four winglet arms with motors fitted",
+        caption: "Everything laid out before a single joint was soldered: ESC, battery, electronics plate, fuselage, and the four winglet arms with their motors.",
+      },
+      {
+        src: "/projects/build/mount-assembled-unwired.jpg",
+        alt: "The electronics mount assembled and standing on the red nose base, with the flight controller and pin headers stacked on the plate and no wiring attached yet",
+        caption: "Electronics mount assembled and standing on the nose base, flight controller stacked, still unwired.",
+      },
+      {
+        src: "/projects/build/esc-before-solder.jpg",
+        alt: "A four-in-one ESC board with its battery pigtail lying on the bench next to a fuselage nacelle and an arm, motor leads not yet attached",
+        caption: "The ESC before any motor leads went on.",
+      },
+      {
+        src: "/projects/build/esc-motor-solder.jpg",
+        alt: "Hands soldering motor leads onto the pads of the four-in-one ESC, with the soldering iron and the airframe arms on the bench",
+        caption: "Soldering the four motor leads onto the ESC pads.",
+      },
+      {
+        src: "/projects/build/mount-first-fit.jpg",
+        alt: "First attempt at seating the electronics mount in the fuselage, with the soldered ESC wiring loose and the stack standing proud of the body at an angle",
+        caption: "First try at seating the mount with the soldered wires attached. The stack would not sit down, and the flight controller's USB port ended up buried.",
+      },
+      {
+        src: "/projects/build/motor-wires-extended.jpg",
+        alt: "The ESC held in a soldering stand while the motor leads are stripped and extended, with parts bins, solder and the iron on the workbench",
+        caption: "Motor leads stripped and extended so the stack could sit lower and the USB port stayed reachable.",
+      },
+      {
+        src: "/projects/build/assembled-top.jpg",
+        alt: "Top view of the finished interceptor, with the round white top plate screwed down and four arms carrying red motors and propellers",
+        caption: "Top view, rewired with the extended leads and every screw driven home.",
+      },
+      {
+        src: "/projects/build/assembled-front.jpg",
+        alt: "Front view of the fully assembled interceptor standing upright on its red landing legs, with the black fuselage body, four arms and red motor caps",
+        caption: "The fully assembled interceptor standing on its own legs.",
+      },
+      {
+        src: "/projects/build/winglet-motors-bottom.jpg",
+        alt: "View of the lower half of the interceptor showing the red body section and the four motors mounted in the winglet arms with propellers fitted",
+        caption: "The bottom half, with all four motors seated in the winglet arms.",
+      },
+    ] as BuildPhoto[],
+    video: {
+      src: "/projects/build/fc-esc-soldered.mp4",
+      poster: "/projects/build/fc-esc-soldered-poster.jpg",
+      label: "Flight controller and ESC wired into the airframe",
+      description:
+        "Silent clip, 31 seconds. The assembled interceptor is turned on the bench to show the finished solder work: the four motor leads landing on the ESC, the ESC-to-flight-controller run, and the battery lead clear of the arms.",
+      caption: "Walkaround of the finished solder work. Silent, 31 seconds.",
+    },
+    problems: [
+      {
+        problem: "Electronics mount would not seat",
+        happened: "With the ESC soldered up, the wiring bundle was too short and too stiff to fold, so the stack stood proud of the fuselage.",
+        fix: "Motor leads stripped and extended, giving the bundle enough slack to route around the stack and let it drop in.",
+      },
+      {
+        problem: "Flight controller USB port buried",
+        happened: "In the first fit the USB port faced into the body, so reflashing meant pulling the whole stack back out.",
+        fix: "The extended leads let the stack be reseated with the port clear, so the board can be flashed with the drone assembled.",
+      },
+    ],
+  },
+  {
+    id: "entry-1",
+    entry: "Entry 1",
+    date: "November 1, 2026",
+    title: "From CAD to parts in hand",
+    intro:
+      "The project moved from CAD to physical parts on November 1. Every item on the BOM arrived, assembly started, and the first fall tests broke the original winglet adapter. The fixes written up in that session are what became the V2 airframe.",
+    workCompleted: [
+      "Received every part on the BOM and staged the first full build session.",
+      "Started installation, with everyone getting hands-on practice on the soldering iron and heat-set inserts.",
+      "Widened the ESP32 slots on the old holder to test-fit the board and see how much the electronics bay had to change.",
+    ],
+    photos: [
+      {
+        src: "/projects/build/parts-kit.jpg",
+        alt: "Printed interceptor parts laid out on a cutting mat, including red mounting plates, the black fuselage, four arms, and red nose cones",
+        caption: "The printed part set laid out before assembly.",
+        wide: true,
+      },
+      {
+        src: "/projects/build/airframe-front.jpg",
+        alt: "Assembled interceptor fuselage standing upright with two arms and red nose cones fitted to the nacelles",
+        caption: "Fuselage and arms assembled, nose cones fitted to the nacelles.",
+      },
+      {
+        src: "/projects/build/airframe-top.jpg",
+        alt: "Top view of the assembled interceptor frame showing four arms, red nose cones, and the open electronics bay at the center",
+        caption: "Top view. The electronics bay sits open at the center of the fuselage.",
+      },
+      {
+        src: "/projects/build/build-session.jpg",
+        alt: "Printed interceptor parts staged across a cutting mat on a workbench during a build session",
+        caption: "Parts staged on the bench during the first build session.",
+        wide: true,
+      },
+    ] as BuildPhoto[],
+    problems: [
+      {
+        problem: "Heat-set insert holes too small",
+        happened: "Inserts went in hard and not always straight.",
+        fix: "Every insert hole set to a 3.70 mm inner diameter.",
+      },
+      {
+        problem: "Electronics holder does not fit the ESP32",
+        happened: "Our boards have no mounting holes, and the pin headers hit the plate.",
+        fix: "New modular electronics bay sized for our ESP32.",
+      },
+      {
+        problem: "Winglet male adapter on the fuselage",
+        happened: "Snapped off too easily and did not survive fall tests.",
+        fix: "Four-wall design with a hollow center and thicker walls.",
+      },
+    ],
+    changes: [
+      { part: "Winglet male adapter", change: "Four walls around a hollow center, every wall thickened and the base filleted." },
+      { part: "Winglet adapter hole", change: "Opened from 5.0 mm to 6 mm on the fuselage." },
+      { part: "Winglets", change: "Thicker for strength." },
+      { part: "Electronics bay", change: "Redesigned around our ESP32, with chamfered standoff screw holes so the screws sit flush." },
+      { part: "Heat-set insert holes", change: "3.70 mm inner diameter on every part." },
+      { part: "Landing gear", change: "Filleted." },
+    ],
+    statusNote:
+      "Each of these changes went into the next print round, and the four-wall adapter is what Entry 2 was assembled from.",
+  },
+];
