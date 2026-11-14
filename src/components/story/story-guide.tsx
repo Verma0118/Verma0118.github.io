@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
 import { motion, useTransform, useMotionValueEvent, useReducedMotion, type MotionValue } from "framer-motion";
-import { guidePoses, guideCallouts, guideModelUrl, guideModelAlt, storyBeats } from "@/data/story";
+import {
+  guidePoses, guideCallouts, guideModelUrl, guideModelAlt, storyBeats,
+  mountModelUrl, mountModelAlt, mountBeatId,
+} from "@/data/story";
 import { useMediaQuery, DESKTOP_QUERY } from "@/hooks/use-media-query";
 
 /**
@@ -50,6 +53,29 @@ function sample(v: number, stops: number[], values: number[]): number {
   return values[last];
 }
 
+/**
+ * Extra per-beat motion layered on top of the pose interpolation, as a
+ * function of how far through that beat the scroll is (0 to 1).
+ *
+ * The software beat is about a guidance law, so the model flies an arc across
+ * its lane rather than sitting still: out, across and down, then back up. dx
+ * stays small enough that the model never crosses into the 52% text lane.
+ */
+const BEAT_ARCS: Record<string, (t: number) => { dx: number; dy: number }> = {
+  "story-software": (t) => ({
+    dx: 4 * Math.cos(Math.PI * t),
+    dy: 5 * Math.sin(Math.PI * t),
+  }),
+};
+
+/** How far through beat `i` the scroll is, 0 to 1. */
+function localProgress(v: number, stops: number[], i: number): number {
+  const a = stops[i];
+  const b = stops[i + 1] ?? 1;
+  if (b <= a) return 0;
+  return Math.min(1, Math.max(0, (v - a) / (b - a)));
+}
+
 export function StoryGuide({
   scrollYProgress,
   stopsRef,
@@ -67,12 +93,53 @@ export function StoryGuide({
   // value with no subscriber never recomputes, so camera-orbit silently stayed
   // on the hero pose while camera-target tracked correctly. Anything written
   // to the element as an attribute is sampled straight from progress instead.
+  const arcAt = (v: number) => {
+    const stops = stopsRef.current;
+    let i = 0;
+    for (let k = 0; k < storyBeats.length; k++) if (v >= stops[k]) i = k;
+    const fn = BEAT_ARCS[storyBeats[i]?.id ?? ""];
+    return fn ? fn(localProgress(v, stops, i)) : { dx: 0, dy: 0 };
+  };
+
   const x = useTransform(scrollYProgress, (v) =>
-    `${sample(v, stopsRef.current, guidePoses.map((p) => p.x))}vw`);
+    `${sample(v, stopsRef.current, guidePoses.map((p) => p.x)) + arcAt(v).dx}vw`);
   const y = useTransform(scrollYProgress, (v) =>
-    `${sample(v, stopsRef.current, guidePoses.map((p) => p.y))}vh`);
+    `${sample(v, stopsRef.current, guidePoses.map((p) => p.y)) + arcAt(v).dy}vh`);
   const scale = useTransform(scrollYProgress, (v) =>
     sample(v, stopsRef.current, guidePoses.map((p) => p.scale)));
+
+  // The electronics mount slides out of the fuselage.
+  //
+  // Timed against the approach, not the beat itself. A beat's composed framing
+  // is at its own t = 0, when its top meets the viewport top, so anything that
+  // should be settled by then has to animate on the way in. Keyed to the beat
+  // span instead, the stack was still invisible exactly when the beat looked
+  // its best.
+  const mountIndex = storyBeats.findIndex((b) => b.id === mountBeatId);
+  const mountWindow = (v: number) => {
+    const stops = stopsRef.current;
+    const here = stops[mountIndex];
+    const prev = stops[mountIndex - 1] ?? 0;
+    const next = stops[mountIndex + 1] ?? 1;
+    const inSpan = here - prev;
+    const outSpan = next - here;
+    // -1 .. 0 approaching, 0 .. 1 inside the beat.
+    return v < here
+      ? (inSpan > 0 ? (v - here) / inSpan : 0)
+      : (outSpan > 0 ? (v - here) / outSpan : 0);
+  };
+  const mountT = useTransform(scrollYProgress, mountWindow);
+  // Out and settled by the time the beat lands, gone as it leaves.
+  const mountOpacity = useTransform(mountT, [-0.5, -0.32, -0.05, 0.45, 0.7], [0, 0, 1, 1, 0]);
+  // Starts buried in the fuselage and ends clear of it, below and right of
+  // the airframe, so it reads as having come out rather than as a decal
+  // sitting on the body.
+  //
+  // In vw/vh, not percentages: a percentage here is of the element's own box,
+  // not the guide box, which put the stack straight back on the fuselage.
+  const mountX = useTransform(mountT, [-0.45, -0.05], ["7vw", "19vw"]);
+  const mountY = useTransform(mountT, [-0.45, -0.05], ["6vh", "27vh"]);
+  const mountScale = useTransform(mountT, [-0.45, -0.05], [0.5, 1]);
 
   // Clears out before the handoff beat fills the screen, since that beat's
   // link grid runs full width and has no lane reserved for the model.
@@ -139,7 +206,7 @@ export function StoryGuide({
           lane on the left (52%) and stay inside the viewport on the right, or
           it covers the headline and clips the callout. Apparent size of the
           model comes from the camera radius, not from scaling this box. */}
-      <div className="w-[40vw] h-[56vh] max-w-[700px]">
+      <div className="relative w-[40vw] h-[56vh] max-w-[700px]">
         <model-viewer
           ref={mvRef}
           src={guideModelUrl}
@@ -201,6 +268,38 @@ export function StoryGuide({
             </div>
           )}
         </model-viewer>
+
+        {/*
+          Second viewer, mounted only while the build beat is active. The
+          interceptor GLB is one merged mesh, so the stack inside it cannot be
+          moved or pulled out; showing the real electronics-mount model sliding
+          clear of the fuselage is the honest equivalent.
+        */}
+        {(activeBeat === mountIndex || activeBeat === mountIndex - 1) && !reduce && (
+          <motion.div
+            className="absolute left-0 top-0 w-[46%] h-[46%] pointer-events-none"
+            style={{ x: mountX, y: mountY, scale: mountScale, opacity: mountOpacity }}
+          >
+            <model-viewer
+              src={mountModelUrl}
+              alt={mountModelAlt}
+              camera-orbit="35deg 70deg auto"
+              exposure="1.1"
+              environment-image="neutral"
+              shadow-intensity="0"
+              tone-mapping="neutral"
+              interaction-prompt="none"
+              disable-zoom
+              disable-tap
+              disable-pan
+              tabIndex={-1}
+              class="w-full h-full block outline-none"
+              style={{ pointerEvents: "none", backgroundColor: "transparent" }}
+            >
+              <div slot="progress-bar" />
+            </model-viewer>
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );

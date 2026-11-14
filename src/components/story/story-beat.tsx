@@ -113,20 +113,22 @@ function BeatVisual({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | type
   const ev = beat.evidence;
   if (!ev) return null;
 
-  // Thumbnails stay in the text lane, so the guide keeps the right of the
-  // screen to itself. Two columns on phones, the beat's own count above md.
+  // The strip runs the full width of the beat, not the text lane, so the
+  // images are big enough to actually read. It clears the guide vertically
+  // instead of horizontally: the guide poses sit high (y around -15vh) so the
+  // model occupies roughly the upper 62% and this strip lives underneath.
   const cols = isDesktop ? ev.cols : 2;
 
   return (
     <ul
       className="grid gap-3 list-none p-0 m-0"
-      style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+      style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`, maxWidth: ev.maxW }}
     >
       {ev.items.map((img) => {
         const figure = (
           <figure className="m-0">
             <div
-              className={`${ev.aspect} overflow-hidden`}
+              className={`${ev.height} overflow-hidden`}
               style={{ border: `1px solid ${t.rule}`, backgroundColor: t.thumbBg }}
             >
               <img
@@ -134,7 +136,7 @@ function BeatVisual({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | type
                 alt={img.alt}
                 loading="lazy"
                 decoding="async"
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                className={`w-full h-full ${ev.fit === "cover" ? "object-cover" : "object-contain"} transition-transform duration-300 group-hover:scale-[1.03]`}
               />
             </div>
             {img.label && (
@@ -181,8 +183,10 @@ export function StoryBeatSection({ beat, nextId }: { beat: StoryBeat; nextId?: s
       {/* lg:pl-40 reserves the left gutter for the fixed progress rail. */}
       <div className="container mx-auto px-6 lg:pl-40 relative z-30">
         {/* Text lane. Must not extend past ~52% on large screens: the fixed
-            guide owns the right and cream type over the model is unreadable. */}
-        <div className="w-full lg:max-w-[52%]">
+            guide owns the right and cream type over the model is unreadable.
+            The evidence strip below deliberately breaks out of this lane. */}
+        <div className="w-full">
+          <div className="w-full lg:max-w-[52%]">
 
           <ScrollFade className="flex flex-col">
             <h2
@@ -223,8 +227,10 @@ export function StoryBeatSection({ beat, nextId }: { beat: StoryBeat; nextId?: s
             <BeatLink beat={beat} t={t} />
           </ScrollFade>
 
+          </div>
+
           {(beat.guideIsVisual || beat.evidence) && (
-            <ScrollFade delay={0.12} className="mt-10">
+            <ScrollFade delay={0.12} className={beat.guideIsVisual ? "mt-10 lg:max-w-[52%]" : "mt-10"}>
               <BeatVisual beat={beat} t={t} />
             </ScrollFade>
           )}

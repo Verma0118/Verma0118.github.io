@@ -33,8 +33,21 @@ export type StoryEvidence = {
   items: EvidenceItem[];
   /** Columns on large screens. Phones always collapse to two. */
   cols: number;
-  /** Tailwind aspect ratio class for each cell. */
-  aspect: string;
+  /**
+   * Fixed cell height rather than an aspect ratio. The evidence strip runs
+   * full width under the text and has to fit between the guide, which sits in
+   * the upper 62% of the screen, and the bottom of the beat. Driving height
+   * directly is the only way to guarantee that at every column count.
+   */
+  height: string;
+  /** Photos crop; screenshots and plots must not lose their edges. */
+  fit: "cover" | "contain";
+  /**
+   * Caps the strip's width. Only needed where `fit` is "contain" and the
+   * natural aspect is much wider than the cell, which otherwise letterboxes
+   * the image inside a large empty box.
+   */
+  maxW?: string;
 };
 
 /**
@@ -89,7 +102,7 @@ const feaEvidence: EvidenceItem[] = feaCampaign.images.map((img) => ({
   page: true,
 }));
 
-const buildEvidence: EvidenceItem[] = entryTwo.photos.slice(0, 6).map((p) => ({
+const buildEvidence: EvidenceItem[] = entryTwo.photos.slice(0, 4).map((p) => ({
   src: p.src,
   alt: p.alt,
   href: "/haylon-fea#entry-2",
@@ -140,7 +153,7 @@ export const storyBeats: StoryBeat[] = [
       { value: "5", label: "part studies reviewed" },
     ],
     link: { href: "/haylon-fea#analysis", label: "Read the campaign", page: true },
-    evidence: { items: feaEvidence, cols: 5, aspect: "aspect-[4/3]" },
+    evidence: { items: feaEvidence, cols: 5, height: "h-[21vh] min-h-[150px]", fit: "contain" },
   },
   {
     id: "story-build",
@@ -155,7 +168,7 @@ export const storyBeats: StoryBeat[] = [
       { value: "13", label: "build photos logged" },
     ],
     link: { href: "/haylon-fea#entry-2", label: "Read the build log", page: true },
-    evidence: { items: buildEvidence, cols: 3, aspect: "aspect-[4/3]" },
+    evidence: { items: buildEvidence, cols: 4, height: "h-[22vh] min-h-[160px]", fit: "cover" },
   },
   {
     id: "story-software",
@@ -170,7 +183,7 @@ export const storyBeats: StoryBeat[] = [
       { value: "1", label: "live demo" },
     ],
     link: { href: "#software-projects", label: "See the software" },
-    evidence: { items: softwareEvidence, cols: 2, aspect: "aspect-[16/10]" },
+    evidence: { items: softwareEvidence, cols: 2, height: "h-[26vh] min-h-[190px]", fit: "contain", maxW: "880px" },
   },
   {
     id: "story-handoff",
@@ -235,19 +248,31 @@ export const GUIDE_LANDMARKS = {
  */
 export const guidePoses: GuidePose[] = [
   // Hero: distant three-quarter view of the whole aircraft.
-  { x: 29, y: 13, scale: 1.0, azimuth: 35, polar: 72, radius: 0.62, target: [0, 0, 0], exposure: 1.55 },
+  { x: 29, y: 2, scale: 1.0, azimuth: 35, polar: 72, radius: 0.62, target: [0, 0, 0], exposure: 1.55 },
   // Design: full airframe from above and behind. All four arms, props and
   // tail read clearly, which is the point of the design beat.
-  { x: 28, y: -2, scale: 1.0, azimuth: 125, polar: 64, radius: 0.42, target: [0, 0, -0.01], exposure: 1.0 },
+  { x: 28, y: -17, scale: 1.0, azimuth: 125, polar: 64, radius: 0.42, target: [0, 0, -0.01], exposure: 1.0 },
   // Analysis: in on the nose, the part that came back at 0.99.
-  { x: 29, y: -4, scale: 1.0, azimuth: 55, polar: 72, radius: 0.24, target: [0, 0, 0.055], exposure: 1.55 },
-  // Build: near-front, high, showing the four motor nacelles wired together.
-  { x: 28, y: 2, scale: 1.0, azimuth: -14, polar: 50, radius: 0.44, target: [0, 0.01, -0.015], exposure: 1.0 },
-  // Software: pulled back and well overhead, the whole system at once.
-  { x: 29, y: -3, scale: 1.0, azimuth: 70, polar: 40, radius: 0.54, target: [0, 0, 0], exposure: 1.55 },
+  { x: 29, y: -17, scale: 1.0, azimuth: 55, polar: 72, radius: 0.34, target: [0, 0, 0.045], exposure: 1.55 },
+  // Build: around the back, where all four motor nacelles and the tail read
+  // at once. The electronics mount slides out of the fuselage here.
+  { x: 28, y: -17, scale: 1.0, azimuth: 200, polar: 62, radius: 0.56, target: [0, 0, -0.015], exposure: 1.0 },
+  // Software: pulled back out, and flying an arc across the lane. See
+  // BEAT_ARCS in story-guide.
+  { x: 29, y: -17, scale: 1.0, azimuth: 70, polar: 44, radius: 0.54, target: [0, 0, 0], exposure: 1.55 },
   // Handoff: recedes and fades out before the link grid arrives.
-  { x: 30, y: 18, scale: 1.0, azimuth: 130, polar: 70, radius: 0.72, target: [0, 0, 0], exposure: 1.0 },
+  { x: 30, y: 10, scale: 1.0, azimuth: 130, polar: 70, radius: 0.72, target: [0, 0, 0], exposure: 1.0 },
 ];
+
+/**
+ * The flight-controller stack, shown sliding out of the fuselage on the build
+ * beat. A separate viewer rather than part of the interceptor GLB, because
+ * that model is one merged mesh and nothing inside it can be moved.
+ */
+export const mountModelUrl = "/glb/electronics-mount.glb";
+export const mountModelAlt =
+  "The interceptor's electronics mount, carrying the ESP32 flight controller on standoffs";
+export const mountBeatId = "story-build";
 
 /** Callout shown on each beat, by beat id. Beats absent here show none, which
  *  keeps the device from becoming a tic. */
