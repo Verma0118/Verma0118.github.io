@@ -9,6 +9,8 @@ interface ImageTabsProps {
 }
 
 // Reference image with optional tabs when a project has several views.
+// The tab row wraps: the analysis project carries five views, which overflowed
+// the viewport on phones and pushed the whole page sideways.
 export function ImageTabs({ images, className = "", fit = "contain" }: ImageTabsProps) {
   const [i, setI] = useState(0);
   const img = images[i];
@@ -23,7 +25,7 @@ export function ImageTabs({ images, className = "", fit = "contain" }: ImageTabs
         />
       </div>
       {images.length > 1 && (
-        <div className="flex gap-1 mt-2" role="tablist" aria-label="Choose a view">
+        <div className="flex flex-wrap gap-1 mt-2" role="tablist" aria-label="Choose a view">
           {images.map((m, n) => (
             <button
               key={m.src}

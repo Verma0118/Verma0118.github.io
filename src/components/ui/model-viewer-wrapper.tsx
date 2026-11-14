@@ -15,13 +15,45 @@ interface ModelViewerProps {
   className?: string;
 }
 
+/**
+ * The <model-viewer> element is only mounted once it is near the viewport.
+ *
+ * The home page now carries the story guide, the featured carousel and the
+ * class-work grid on one scroll, and every GLB here is between 1 and 2 MB.
+ * Mounting them all on load would stall the first paint, so each one waits
+ * until it is within a screen of being seen.
+ */
+const ROOT_MARGIN = "600px 0px";
+
 export function ModelViewerWrapper({ src, alt, className = "" }: ModelViewerProps) {
   const [status, setStatus] = useState<"loading" | "loaded" | "error">("loading");
+  const [near, setNear] = useState(false);
+  const hostRef = useRef<HTMLDivElement>(null);
   const mvRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setNear(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setNear(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: ROOT_MARGIN },
+    );
+    io.observe(host);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
     setStatus("loading");
-    if (!src) return;
+    if (!src || !near) return;
     const el = mvRef.current;
     if (!el) return;
     const onLoad = () => setStatus("loaded");
@@ -35,7 +67,7 @@ export function ModelViewerWrapper({ src, alt, className = "" }: ModelViewerProp
       el.removeEventListener("error", onError);
       el.removeEventListener("progress", onProgress);
     };
-  }, [src]);
+  }, [src, near]);
 
   if (!src) {
     return (
@@ -47,8 +79,8 @@ export function ModelViewerWrapper({ src, alt, className = "" }: ModelViewerProp
   }
 
   return (
-    <div className={`relative group ${className}`}>
-      {status === "loading" && (
+    <div ref={hostRef} className={`relative group ${className}`}>
+      {(!near || status === "loading") && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/80 gap-2 pointer-events-none">
           <Loader2 className="w-7 h-7 text-primary animate-spin" />
           <span className="text-xs text-muted-foreground">Loading 3D model…</span>
@@ -60,21 +92,23 @@ export function ModelViewerWrapper({ src, alt, className = "" }: ModelViewerProp
           <span className="text-xs text-muted-foreground">Could not load model</span>
         </div>
       )}
-      <model-viewer
-        ref={mvRef}
-        src={src}
-        alt={alt}
-        camera-controls
-        auto-rotate
-        rotation-per-second="15deg"
-        interaction-prompt="none"
-        shadow-intensity="0.5"
-        exposure="1.2"
-        tone-mapping="neutral"
-        class="w-full h-full cursor-grab active:cursor-grabbing outline-none block"
-      >
-        <div slot="progress-bar" />
-      </model-viewer>
+      {near && (
+        <model-viewer
+          ref={mvRef}
+          src={src}
+          alt={alt}
+          camera-controls
+          auto-rotate
+          rotation-per-second="15deg"
+          interaction-prompt="none"
+          shadow-intensity="0.5"
+          exposure="1.2"
+          tone-mapping="neutral"
+          class="w-full h-full cursor-grab active:cursor-grabbing outline-none block"
+        >
+          <div slot="progress-bar" />
+        </model-viewer>
+      )}
       {status === "loaded" && (
         <div className="absolute bottom-2 right-2 px-2 py-1 rounded bg-black/60 border border-white/10 text-[10px] text-white/60 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
           Drag to rotate, scroll to zoom

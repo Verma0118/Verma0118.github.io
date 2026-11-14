@@ -5,14 +5,18 @@ import { FractalBackground } from "@/components/ui/fractal-background";
 import { ScrollFade } from "@/components/ui/scroll-fade";
 import { ImageTabs } from "@/components/ui/image-tabs";
 import { ProjectCarousel } from "@/components/ui/project-carousel";
-import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Download, Send, Loader2, ArrowRight, ArrowUpRight } from "lucide-react";
+import { StoryGuide } from "@/components/story/story-guide";
+import { StoryBeatSection } from "@/components/story/story-beat";
+import { StoryRail } from "@/components/story/story-rail";
+import { storyBeats, handoffLinks } from "@/data/story";
+import { motion, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
+import { Github, Linkedin, Mail, Download, Send, Loader2, ArrowRight, ArrowUpRight, ArrowDown } from "lucide-react";
 import { Link } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Get your free key at web3forms.com, paste it here
 const WEB3FORMS_KEY = "51cec2da-9568-4d72-a5ce-5523d3c2a7c8";
@@ -28,9 +32,47 @@ type ContactFormValues = z.infer<typeof contactSchema>;
 const FEATURED = [cadProjects[5], cadProjects[0]];
 const CAD_GRID = cadProjects.slice(1, 5);
 
+/** Beats rendered with the shared skeleton. Index 0 is the hero, 5 the handoff. */
+const STORY_MIDDLE = storyBeats.slice(1, 5);
+
 export default function Home() {
   const { toast } = useToast();
   const [isSending, setIsSending] = useState(false);
+
+  const reduce = useReducedMotion();
+  const storyRef = useRef<HTMLDivElement>(null);
+  const [activeBeat, setActiveBeat] = useState(0);
+  const [inStory, setInStory] = useState(true);
+
+  /**
+   * Latched once, on mount. Anyone arriving on a deep link to the browse act,
+   * coming back from a sub-page, or restored mid-page by the browser gets the
+   * clickable site immediately and never has the story replayed at them.
+   * A hash pointing at a beat still counts as entering the story.
+   */
+  const [skipStory] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const hash = window.location.hash;
+    if (hash && !hash.startsWith("#story-")) return true;
+    if (sessionStorage.getItem("scrollTarget")) return true;
+    return window.scrollY > 40;
+  });
+
+  const navHidden = !skipStory && inStory;
+
+  const { scrollYProgress } = useScroll({
+    target: storyRef,
+    offset: ["start start", "end end"],
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    const last = storyBeats.length - 1;
+    const idx = Math.min(last, Math.max(0, Math.round(v * last)));
+    setActiveBeat((prev) => (prev === idx ? prev : idx));
+    // The nav returns as soon as the handoff beat becomes the active one.
+    const handed = v >= (last - 0.5) / last;
+    setInStory((prev) => (prev === !handed ? prev : !handed));
+  });
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
@@ -92,11 +134,18 @@ export default function Home() {
   };
 
   return (
-    <PublicLayout>
+    <PublicLayout navHidden={navHidden} skipTarget="#cad-projects">
 
-      {/* ── HERO ── dark */}
+      <StoryGuide scrollYProgress={scrollYProgress} />
+      <StoryRail beats={storyBeats} activeIndex={activeBeat} visible={navHidden} />
+
+      {/* ── STORY ACT ── five beats, then the handoff back to browsing ── */}
+      <div ref={storyRef}>
+
+      {/* ── BEAT 0, the opening ── dark */}
       <section
-        className="min-h-screen flex flex-col items-center justify-center relative px-6 overflow-hidden"
+        id="story-open"
+        className="min-h-[100dvh] flex flex-col items-center justify-center relative px-6 overflow-hidden"
         aria-label="Introduction"
       >
         <FractalBackground />
@@ -105,8 +154,8 @@ export default function Home() {
           style={{ background: "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 35%, hsl(var(--background)) 100%)" }}
         />
 
-        <div className="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto">
-          <motion.div initial="hidden" animate="visible" variants={stagger} className="flex flex-col items-center">
+        <div className="relative z-30 flex flex-col items-center text-center max-w-3xl mx-auto">
+          <motion.div initial={reduce ? false : "hidden"} animate="visible" variants={stagger} className="flex flex-col items-center">
 
             <motion.div variants={fadeUp} className="mb-8">
               <span className="text-sm md:text-base tracking-wide text-[#8a8f84]">
@@ -117,7 +166,7 @@ export default function Home() {
             <motion.h1
               variants={fadeUp}
               className="font-display text-foreground leading-[0.95] tracking-tight mb-6"
-              style={{ fontSize: "clamp(4rem, 11vw, 8rem)", fontWeight: 400 }}
+              style={{ fontSize: "clamp(3rem, 11vw, 8rem)", fontWeight: 400 }}
             >
               Aarav Verma
             </motion.h1>
@@ -133,11 +182,12 @@ export default function Home() {
 
             <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4">
               <a
-                href="#cad-projects"
-                onClick={heroScroll("#cad-projects")}
+                href="#story-design"
+                onClick={heroScroll("#story-design")}
                 className="inline-flex items-center gap-2 px-7 py-3 bg-[#f5f4f0] text-[#111110] font-medium hover:bg-[#eeecea] transition-colors text-sm tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
               >
-                View Projects
+                See the work
+                <ArrowDown className="w-4 h-4" aria-hidden="true" />
               </a>
               <a
                 href="/resume.pdf"
@@ -154,8 +204,104 @@ export default function Home() {
 
       </section>
 
+      {/* ── BEATS 1 to 4 ── design, analysis, build, software ── */}
+      {STORY_MIDDLE.map((beat, i) => (
+        <StoryBeatSection
+          key={beat.id}
+          beat={beat}
+          nextId={STORY_MIDDLE[i + 1]?.id ?? "story-handoff"}
+        />
+      ))}
+
+      {/* ── BEAT 5, the handoff ── light. The site becomes clickable here. */}
+      <section
+        id="story-handoff"
+        aria-labelledby="story-handoff-heading"
+        className="relative min-h-[100dvh] flex items-center py-24 md:py-28"
+        style={{ backgroundColor: '#eeecea', borderTop: '1px solid #d0cec9' }}
+      >
+        <div className="container mx-auto px-6 lg:pl-40 relative z-30">
+          <ScrollFade className="max-w-2xl mb-14">
+            <h2
+              id="story-handoff-heading"
+              className="font-display font-normal mb-5 leading-[1.08]"
+              style={{ color: '#111110', fontWeight: 400, fontSize: 'clamp(2rem, 4.2vw, 3.25rem)' }}
+            >
+              {storyBeats[5].heading}
+            </h2>
+            <p className="text-base leading-relaxed" style={{ color: '#5c5a56' }}>
+              {storyBeats[5].body}
+            </p>
+          </ScrollFade>
+
+          <ScrollFade delay={0.1}>
+            <nav aria-label="Portfolio sections">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0 m-0">
+                {handoffLinks.map((dest) => {
+                  const body = (
+                    <>
+                      <span className="flex items-center justify-between gap-3">
+                        <span
+                          className="font-display font-normal text-xl md:text-2xl"
+                          style={{ color: '#111110', fontWeight: 400 }}
+                        >
+                          {dest.label}
+                        </span>
+                        <ArrowRight
+                          className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5"
+                          style={{ color: '#5c5a56' }}
+                          aria-hidden="true"
+                        />
+                      </span>
+                      <span className="block text-sm mt-2" style={{ color: '#5c5a56' }}>
+                        {dest.note}
+                      </span>
+                    </>
+                  );
+                  const cls =
+                    "group block p-6 h-full transition-colors hover:bg-[#e4e2de] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16]";
+                  const st = { border: '1px solid #d0cec9', backgroundColor: '#eeecea' };
+                  return (
+                    <li key={dest.href}>
+                      {dest.page ? (
+                        <Link href={dest.href} className={cls} style={st}>{body}</Link>
+                      ) : (
+                        <a
+                          href={dest.href}
+                          className={cls}
+                          style={st}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            document.querySelector(dest.href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }}
+                        >
+                          {body}
+                        </a>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+
+            <a
+              href={personalInfo.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center gap-2 px-6 h-12 text-sm font-medium transition-colors hover:bg-[#2e3328] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16]"
+              style={{ backgroundColor: '#1a1e16', color: '#f5f4f0' }}
+            >
+              <Download className="w-4 h-4" aria-hidden="true" /> Resume
+            </a>
+          </ScrollFade>
+        </div>
+      </section>
+
+      </div>
+      {/* ── END STORY ACT ── everything below is the browsable portfolio ── */}
+
       {/* ── FEATURED PROJECTS ── light */}
-      <section id="cad-projects" className="py-28 md:py-32" style={{ backgroundColor: '#eeecea' }}>
+      <section id="cad-projects" tabIndex={-1} className="py-28 md:py-32 outline-none" style={{ backgroundColor: '#eeecea' }}>
         <div className="container mx-auto px-6">
 
           <ScrollFade className="mb-16">

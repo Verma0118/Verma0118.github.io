@@ -4,7 +4,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Github, Linkedin, Mail } from "lucide-react";
 import { personalInfo } from "@/data/portfolio";
 
-export function PublicLayout({ children }: { children: React.ReactNode }) {
+/**
+ * `navHidden` is used by the home page's story act. While the narrative is on
+ * screen the nav is not rendered at all, rather than faded out, so it never
+ * becomes a set of invisible but focusable controls. The wordmark stays.
+ */
+export function PublicLayout({
+  children,
+  navHidden = false,
+  skipTarget = "#cad-projects",
+}: {
+  children: React.ReactNode;
+  navHidden?: boolean;
+  skipTarget?: string;
+}) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location, setLocation] = useLocation();
@@ -43,8 +56,27 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
     doScroll(href);
   };
 
+  // The story act can hide the nav while a menu is open on a small screen.
+  useEffect(() => {
+    if (navHidden && mobileMenuOpen) setMobileMenuOpen(false);
+  }, [navHidden, mobileMenuOpen]);
+
   return (
     <div className="min-h-screen flex flex-col relative">
+      <a
+        href={skipTarget}
+        onClick={(e) => {
+          e.preventDefault();
+          const el = document.querySelector(skipTarget);
+          if (!el) return;
+          el.scrollIntoView({ behavior: "auto", block: "start" });
+          (el as HTMLElement).focus?.();
+        }}
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:px-4 focus:py-2 focus:bg-[#f5f4f0] focus:text-[#111110] focus:text-sm focus:font-medium focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[#f5f4f0]"
+      >
+        Skip to the portfolio
+      </a>
+
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-[#2e3328] ${
           scrolled
@@ -59,6 +91,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
             </span>
           </Link>
 
+          {!navHidden && (
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               link.highlight ? (
@@ -82,15 +115,23 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
               )
             ))}
           </nav>
+          )}
 
-          <button className="md:hidden text-foreground" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle menu">
+          {!navHidden && (
+          <button
+            className="md:hidden text-foreground"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+          >
             {mobileMenuOpen ? <X /> : <Menu />}
           </button>
+          )}
         </div>
       </header>
 
       <AnimatePresence>
-        {mobileMenuOpen && (
+        {mobileMenuOpen && !navHidden && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
