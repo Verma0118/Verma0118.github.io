@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 // Get your free key at web3forms.com, paste it here
 const WEB3FORMS_KEY = "51cec2da-9568-4d72-a5ce-5523d3c2a7c8";
@@ -65,12 +65,45 @@ export default function Home() {
     offset: ["start start", "end end"],
   });
 
+  /**
+   * Scroll progress at which each beat reaches the top of the viewport.
+   * Measured rather than assumed: beats no longer all stand exactly one
+   * screen tall now that they carry evidence grids, so evenly spaced stops
+   * would drift the guide's framing away from the beat it belongs to.
+   */
+  const stopsRef = useRef<number[]>(storyBeats.map((_, i) => i / (storyBeats.length - 1)));
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const story = storyRef.current;
+      if (!story) return;
+      const total = story.scrollHeight - window.innerHeight;
+      if (total <= 0) return;
+      stopsRef.current = storyBeats.map((b, i) => {
+        const el = document.getElementById(b.id);
+        if (!el) return i / (storyBeats.length - 1);
+        return Math.min(1, Math.max(0, (el.offsetTop - story.offsetTop) / total));
+      });
+    };
+    measure();
+    // Images and the model change the story's height as they land.
+    const t = window.setTimeout(measure, 600);
+    window.addEventListener("resize", measure);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
   useMotionValueEvent(scrollYProgress, "change", (v) => {
+    const stops = stopsRef.current;
     const last = storyBeats.length - 1;
-    const idx = Math.min(last, Math.max(0, Math.round(v * last)));
+    // Active beat is the last one whose top the scroll has passed.
+    let idx = 0;
+    for (let i = 0; i <= last; i++) if (v >= stops[i] - 0.02) idx = i;
     setActiveBeat((prev) => (prev === idx ? prev : idx));
     // The nav returns as soon as the handoff beat becomes the active one.
-    const handed = v >= (last - 0.5) / last;
+    const handed = idx >= last;
     setInStory((prev) => (prev === !handed ? prev : !handed));
   });
 
@@ -136,7 +169,7 @@ export default function Home() {
   return (
     <PublicLayout navHidden={navHidden} skipTarget="#cad-projects">
 
-      <StoryGuide scrollYProgress={scrollYProgress} />
+      <StoryGuide scrollYProgress={scrollYProgress} stopsRef={stopsRef} activeBeat={activeBeat} />
       <StoryRail beats={storyBeats} activeIndex={activeBeat} visible={navHidden} />
 
       {/* ── STORY ACT ── five beats, then the handoff back to browsing ── */}

@@ -36,6 +36,7 @@ const THEME = {
     metricValue: "#111110",
     metricLabel: "#5c5a56",
     rule: "#d0cec9",
+    thumbBg: "#e4e2de",
     btnBg: "#1a1e16",
     btnText: "#f5f4f0",
     btnHover: "#2e3328",
@@ -48,6 +49,7 @@ const THEME = {
     metricValue: "#f5f4f0",
     metricLabel: "#8a8f84",
     rule: "#2e3328",
+    thumbBg: "#232820",
     btnBg: "#f5f4f0",
     btnText: "#111110",
     btnHover: "#eeecea",
@@ -95,13 +97,11 @@ function BeatLink({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | typeof
 
 function BeatVisual({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | typeof THEME.dark }) {
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
-  const visual = beat.visual;
-  if (!visual) return null;
 
   // On the design beat the fixed guide IS the visual, so nothing is rendered
   // here on desktop. Phones never run the guide, so the same model goes inline
   // and interactive instead.
-  if (visual.type === "guide") {
+  if (beat.guideIsVisual) {
     if (isDesktop) return null;
     return (
       <div className="h-[44vh] min-h-[260px]" style={{ border: `1px solid ${t.rule}`, backgroundColor: "#1a1e16" }}>
@@ -110,26 +110,61 @@ function BeatVisual({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | type
     );
   }
 
-  if (visual.type === "image") {
-    return (
-      <figure className="m-0 max-w-[420px]">
-        <div className="aspect-[16/11] overflow-hidden" style={{ border: `1px solid ${t.rule}`, backgroundColor: "#232820" }}>
-          <img src={visual.src} alt={visual.alt} loading="lazy" decoding="async" className="w-full h-full object-contain" />
-        </div>
-      </figure>
-    );
-  }
+  const ev = beat.evidence;
+  if (!ev) return null;
+
+  // Thumbnails stay in the text lane, so the guide keeps the right of the
+  // screen to itself. Two columns on phones, the beat's own count above md.
+  const cols = isDesktop ? ev.cols : 2;
 
   return (
-    <div className="grid grid-cols-2 gap-4 max-w-[420px]">
-      {visual.items.map((img) => (
-        <figure key={img.src} className="m-0">
-          <div className="aspect-[4/5] overflow-hidden" style={{ border: `1px solid ${t.rule}`, backgroundColor: "#e4e2de" }}>
-            <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="w-full h-full object-cover" />
-          </div>
-        </figure>
-      ))}
-    </div>
+    <ul
+      className="grid gap-3 list-none p-0 m-0"
+      style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+    >
+      {ev.items.map((img) => {
+        const figure = (
+          <figure className="m-0">
+            <div
+              className={`${ev.aspect} overflow-hidden`}
+              style={{ border: `1px solid ${t.rule}`, backgroundColor: t.thumbBg }}
+            >
+              <img
+                src={img.src}
+                alt={img.alt}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+              />
+            </div>
+            {img.label && (
+              <figcaption className="text-xs mt-2 leading-snug" style={{ color: t.metricLabel }}>
+                {img.label}
+              </figcaption>
+            )}
+          </figure>
+        );
+
+        if (!img.href) return <li key={img.src}>{figure}</li>;
+
+        const cls =
+          "group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
+        const style = { outlineColor: t.focus };
+        return (
+          <li key={img.src}>
+            {img.page ? (
+              <Link href={img.href} className={cls} style={style}>
+                {figure}
+              </Link>
+            ) : (
+              <a href={img.href} target="_blank" rel="noopener noreferrer" className={cls} style={style}>
+                {figure}
+              </a>
+            )}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
@@ -188,8 +223,8 @@ export function StoryBeatSection({ beat, nextId }: { beat: StoryBeat; nextId?: s
             <BeatLink beat={beat} t={t} />
           </ScrollFade>
 
-          {beat.visual && (
-            <ScrollFade delay={0.12} className="mt-12">
+          {(beat.guideIsVisual || beat.evidence) && (
+            <ScrollFade delay={0.12} className="mt-10">
               <BeatVisual beat={beat} t={t} />
             </ScrollFade>
           )}
