@@ -316,7 +316,7 @@ export default function Home() {
             </ScrollFade>
           )}
 
-          {/* Canary drone: mirrored, text first, on a light plinth. */}
+          {/* Canary drone: mirrored, text first. Every model sits on graphite. */}
           <ScrollFade>
             <article aria-label={FEATURED[1].title} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
               <div className="lg:col-span-4 order-2 lg:order-1">
@@ -329,7 +329,7 @@ export default function Home() {
                 <p className="text-[16px] leading-relaxed text-ink-2 mb-6">{FEATURED[1].description}</p>
                 <p className="tag-run"><span className="sr-only">Tools: </span>{FEATURED[1].tags.join(", ")}</p>
               </div>
-              <div className="lg:col-span-8 order-1 lg:order-2 h-[380px] md:h-[480px] lg:h-[560px] bg-paper-2 text-ink-2">
+              <div className="lg:col-span-8 order-1 lg:order-2 h-[380px] md:h-[480px] lg:h-[560px] bg-graphite text-graphite-ink-2">
                 <ModelViewerWrapper src={FEATURED[1].glbFileUrl} alt={FEATURED[1].title} className="w-full h-full" />
               </div>
             </article>

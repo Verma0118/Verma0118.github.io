@@ -69,7 +69,7 @@ function BeatVisual({ beat }: { beat: StoryBeat }) {
   if (beat.guideIsVisual) {
     if (isDesktop) return null;
     return (
-      <div className="h-[44vh] min-h-[260px] bg-paper-2">
+      <div className="h-[44vh] min-h-[260px] bg-graphite text-graphite-ink-2">
         <ModelViewerWrapper src={guideModelUrl} alt={guideModelAlt} className="w-full h-full" />
       </div>
     );
