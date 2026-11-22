@@ -5,17 +5,19 @@ import { ArrowLeft, CheckCircle2, AlertTriangle, Clock, ChevronDown } from "luci
 import { PublicLayout } from "@/components/layout/public-layout";
 import { haylonFea, haylonBuildEntries, type BuildEntryData, type FeaStatus } from "@/data/portfolio";
 
+// The icon and label carry the meaning; colour only reinforces it. Flag takes
+// the semantic error red, the other two stay in ink.
 const STATUS: Record<FeaStatus, { color: string; Icon: typeof CheckCircle2 }> = {
-  pass: { color: "#9cc59a", Icon: CheckCircle2 },
-  flag: { color: "#ef8f7d", Icon: AlertTriangle },
-  preliminary: { color: "#e8b14f", Icon: Clock },
+  pass: { color: "var(--color-ink)", Icon: CheckCircle2 },
+  flag: { color: "var(--color-destructive)", Icon: AlertTriangle },
+  preliminary: { color: "var(--color-ink-2)", Icon: Clock },
 };
 
 function StatusBadge({ status, label }: { status: FeaStatus; label: string }) {
   const { color, Icon } = STATUS[status];
   return (
     <span className="inline-flex items-center gap-1.5 text-sm whitespace-nowrap" style={{ color }}>
-      <Icon className="w-4 h-4 shrink-0" aria-hidden="true" />
+      <Icon className="w-4 h-4 shrink-0" strokeWidth={1.5} aria-hidden="true" />
       {label}
     </span>
   );
@@ -36,23 +38,22 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
     <article
       id={entry.id}
       aria-labelledby={`${entry.id}-heading`}
-      className="mb-24 last:mb-0 pt-16 first:pt-0 border-t border-[#2e3328] first:border-t-0"
+      className="mb-24 last:mb-0 pt-16 first:pt-0 border-t border-rule first:border-t-0 scroll-mt-24"
     >
       <motion.div {...reveal()} className="mb-20">
-        <p className="text-sm text-[#a9ada3] mb-3">
+        <p className="text-sm text-ink-2 mb-3">
           {entry.entry}, {entry.date}
         </p>
         <h2
           id={`${entry.id}-heading`}
-          className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-5"
-          style={{ fontWeight: 400 }}
+          className="text-2xl md:text-3xl text-ink mb-5"
         >
           {entry.title}
         </h2>
-        <p className="text-base leading-relaxed text-[#c9ccc4] max-w-[65ch] mb-10">{entry.intro}</p>
-        <ul className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+        <p className="text-base leading-relaxed text-ink-2 max-w-[65ch] mb-10">{entry.intro}</p>
+        <ul className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: "var(--color-rule)", border: "1px solid var(--color-rule)" }}>
           {entry.workCompleted.map((item) => (
-            <li key={item} className="p-6 text-sm leading-relaxed text-[#c9ccc4]" style={{ backgroundColor: "#1a1e16" }}>
+            <li key={item} className="p-6 text-sm leading-relaxed text-ink-2" style={{ backgroundColor: "var(--color-paper)" }}>
               {item}
             </li>
           ))}
@@ -63,8 +64,7 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
       <motion.section {...reveal()} aria-labelledby={`${entry.id}-photos-heading`} className="mb-24">
         <h3
           id={`${entry.id}-photos-heading`}
-          className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-8"
-          style={{ fontWeight: 400 }}
+          className="text-2xl md:text-3xl text-ink mb-8"
         >
           From the bench
         </h3>
@@ -75,10 +75,10 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
                 href={photo.src}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`block relative overflow-hidden group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0] ${
+                className={`block relative overflow-hidden group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ${
                   photo.wide ? "aspect-[21/10]" : "aspect-square"
                 }`}
-                style={{ backgroundColor: "#111410", border: "1px solid #2e3328" }}
+                style={{ backgroundColor: "var(--color-graphite)" }}
               >
                 <img
                   src={photo.src}
@@ -88,7 +88,7 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
                 />
                 <span className="sr-only"> (opens full size in a new tab)</span>
               </a>
-              <figcaption className="text-xs leading-relaxed text-[#a9ada3] mt-2">{photo.caption}</figcaption>
+              <figcaption className="text-[14px] leading-relaxed text-ink-2 mt-2">{photo.caption}</figcaption>
             </figure>
           ))}
         </div>
@@ -104,12 +104,12 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
                 preload="none"
                 aria-label={entry.video.label}
                 className="block w-full"
-                style={{ backgroundColor: "#111410", border: "1px solid #2e3328" }}
+                style={{ backgroundColor: "var(--color-graphite)" }}
               />
             </div>
             <figcaption className="md:col-span-8 lg:col-span-6">
-              <p className="text-sm leading-relaxed text-[#c9ccc4] mb-3">{entry.video.caption}</p>
-              <p className="text-xs leading-relaxed text-[#a9ada3] max-w-[60ch]">{entry.video.description}</p>
+              <p className="text-sm leading-relaxed text-ink-2 mb-3">{entry.video.caption}</p>
+              <p className="text-[14px] leading-relaxed text-ink-2 max-w-[60ch]">{entry.video.description}</p>
             </figcaption>
           </figure>
         )}
@@ -119,18 +119,17 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
       <motion.section {...reveal()} aria-labelledby={`${entry.id}-problems-heading`} className={entry.changes ? "mb-24" : ""}>
         <h3
           id={`${entry.id}-problems-heading`}
-          className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-8"
-          style={{ fontWeight: 400 }}
+          className="text-2xl md:text-3xl text-ink mb-8"
         >
           What broke, and why
         </h3>
-        <div className={`grid grid-cols-1 ${problemCols} gap-px`} style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+        <div className={`grid grid-cols-1 ${problemCols} gap-px`} style={{ backgroundColor: "var(--color-rule)", border: "1px solid var(--color-rule)" }}>
           {entry.problems.map((p) => (
-            <article key={p.problem} className="p-6 md:p-8 flex flex-col" style={{ backgroundColor: "#1a1e16" }}>
-              <h4 className="text-lg font-display text-[#f5f4f0] mb-4">{p.problem}</h4>
-              <p className="text-sm leading-relaxed text-[#a9ada3] mb-6 flex-grow">{p.happened}</p>
-              <p className="text-sm leading-relaxed text-[#c9ccc4] pt-5" style={{ borderTop: "1px solid #2e3328" }}>
-                <span className="text-[#9cc59a]">Fix. </span>
+            <article key={p.problem} className="p-6 md:p-8 flex flex-col" style={{ backgroundColor: "var(--color-paper)" }}>
+              <h4 className="text-lg font-display text-ink mb-4">{p.problem}</h4>
+              <p className="text-sm leading-relaxed text-ink-2 mb-6 flex-grow">{p.happened}</p>
+              <p className="text-sm leading-relaxed text-ink-2 pt-5" style={{ borderTop: "1px solid var(--color-rule)" }}>
+                <span className="text-haylon font-medium">Fix. </span>
                 {p.fix}
               </p>
             </article>
@@ -143,20 +142,19 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
         <motion.section {...reveal()} aria-labelledby={`${entry.id}-changes-heading`}>
           <h3
             id={`${entry.id}-changes-heading`}
-            className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-8"
-            style={{ fontWeight: 400 }}
+            className="text-2xl md:text-3xl text-ink mb-8"
           >
             Changes into the next print
           </h3>
-          <dl className="grid grid-cols-1 md:grid-cols-2 gap-px mb-8" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+          <dl className="grid grid-cols-1 md:grid-cols-2 gap-px mb-8" style={{ backgroundColor: "var(--color-rule)", border: "1px solid var(--color-rule)" }}>
             {entry.changes.map((c) => (
-              <div key={c.part} className="p-6" style={{ backgroundColor: "#1a1e16" }}>
-                <dt className="text-base font-display text-[#f5f4f0] mb-2">{c.part}</dt>
-                <dd className="text-sm leading-relaxed text-[#a9ada3]">{c.change}</dd>
+              <div key={c.part} className="p-6" style={{ backgroundColor: "var(--color-paper)" }}>
+                <dt className="text-base font-display text-ink mb-2">{c.part}</dt>
+                <dd className="text-sm leading-relaxed text-ink-2">{c.change}</dd>
               </div>
             ))}
           </dl>
-          {entry.statusNote && <p className="text-sm leading-relaxed text-[#c9ccc4] max-w-[65ch]">{entry.statusNote}</p>}
+          {entry.statusNote && <p className="text-sm leading-relaxed text-ink-2 max-w-[65ch]">{entry.statusNote}</p>}
         </motion.section>
       )}
     </article>
@@ -178,14 +176,30 @@ export default function HaylonFea() {
   // Opening a part from a link or a hash, so the target is never left collapsed.
   const revealPart = (id: string) => setOpenParts((cur) => (cur.includes(id) ? cur : [...cur, id]));
 
+  // A hash target can sit inside a panel that is still hidden on mount, so the
+  // scroll waits until the render that shows it has committed.
+  const pendingScroll = useRef<string | null>(null);
+  // Bumped whenever a scroll is queued, so the effect runs even when the tab
+  // the target needs is already the active one.
+  const [scrollTick, setScrollTick] = useState(0);
+  useEffect(() => {
+    const id = pendingScroll.current;
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (!el || el.closest("[hidden]")) return;
+    pendingScroll.current = null;
+    el.scrollIntoView();
+  }, [tab, openParts, scrollTick]);
+
   // New route: open the tab the link asked for, then settle focus on the heading.
   useEffect(() => {
     document.title = "Interceptor Build and Analysis | Aarav Verma";
     const hash = window.location.hash.slice(1);
     // A build entry link lands on the build tab and scrolls to that entry.
     if (haylonBuildEntries.some((e) => e.id === hash)) {
+      pendingScroll.current = hash;
+      setScrollTick((n) => n + 1);
       setTab("build");
-      requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView());
       return;
     }
     const toAnalysis = hash === "analysis" || haylonFea.parts.some((p) => p.id === hash);
@@ -193,8 +207,9 @@ export default function HaylonFea() {
       setTab("analysis");
       // The panel is hidden until this render lands, so scroll once it is on screen.
       if (hash !== "analysis") {
+        pendingScroll.current = hash;
+        setScrollTick((n) => n + 1);
         revealPart(hash);
-        requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView());
         return;
       }
     }
@@ -230,34 +245,37 @@ export default function HaylonFea() {
 
   return (
     <PublicLayout>
-      <div className="container mx-auto px-6 pt-28 pb-24 max-w-6xl lining-nums">
+      <div className="container mx-auto px-6 pt-14 md:pt-20 pb-28 max-w-6xl lining-nums">
         {/* Header */}
         <motion.header {...reveal()} className="mb-10">
           <a
             href="/"
             onClick={backToProject}
-            className="inline-flex items-center gap-2 text-sm text-[#a9ada3] hover:text-[#f5f4f0] transition-colors mb-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f5f4f0]"
+            className="inline-flex items-center gap-2 text-sm text-ink-2 hover:text-ink transition-colors mb-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
           >
-            <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+            <ArrowLeft className="w-4 h-4" strokeWidth={1.5} aria-hidden="true" />
             Back to Haylon Interceptor
           </a>
-          <p className="text-sm mb-3 text-[#a9ada3]">NOBE, UIUC for Haylon Technologies</p>
+          <p className="text-sm mb-3 text-ink-2">NOBE, UIUC for Haylon Technologies</p>
           <h1
             ref={headingRef}
             tabIndex={-1}
-            className="text-4xl md:text-6xl font-display font-normal text-[#f5f4f0] leading-[1.05] mb-6 outline-none"
-            style={{ fontWeight: 400 }}
+            className="text-ink leading-[1.02] tracking-[-0.025em] mb-8 outline-none"
+            style={{ fontSize: "clamp(2.75rem, 7vw, 5.5rem)", fontWeight: 300 }}
           >
             Interceptor Build and Analysis
           </h1>
-          <p className="text-base leading-relaxed text-[#c9ccc4] max-w-[65ch]">
+          {/* The interceptor is the site's one bright moment, so its page
+              carries the accent rule. */}
+          <span aria-hidden="true" className="block w-16 h-px bg-haylon mb-8" />
+          <p className="text-[17px] leading-relaxed text-ink-2 max-w-[60ch]">
             Two halves of the same project: the build log from printing and assembling the airframe, and the structural
             simulations that sized its parts.
           </p>
         </motion.header>
 
         {/* Tabs */}
-        <div role="tablist" aria-label="Interceptor documentation" className="flex gap-1 mb-12 border-b border-[#2e3328]">
+        <div role="tablist" aria-label="Interceptor documentation" className="flex mb-16 border-b border-rule">
           {TABS.map((t, i) => (
             <button
               key={t.id}
@@ -269,10 +287,10 @@ export default function HaylonFea() {
               tabIndex={tab === t.id ? 0 : -1}
               onClick={() => setTab(t.id)}
               onKeyDown={(e) => onTabKey(e, i)}
-              className={`px-5 h-12 text-sm transition-colors -mb-px border-b-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0] ${
+              className={`px-1 mr-8 h-12 text-[15px] transition-colors -mb-px border-b focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ${
                 tab === t.id
-                  ? "border-[#f5f4f0] text-[#f5f4f0] font-medium"
-                  : "border-transparent text-[#a9ada3] hover:text-[#f5f4f0]"
+                  ? "border-ink text-ink font-medium"
+                  : "border-transparent text-ink-2 hover:text-ink"
               }`}
             >
               {t.label}
@@ -292,19 +310,19 @@ export default function HaylonFea() {
           <motion.section {...reveal()} aria-labelledby="fea-intro-heading" className="mb-16">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
               <div className="lg:col-span-5">
-                <h2 id="fea-intro-heading" className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mb-5" style={{ fontWeight: 400 }}>
+                <h2 id="fea-intro-heading" className="text-2xl md:text-3xl text-ink mb-5">
                   {haylonFea.title}
                 </h2>
-                <p className="text-base leading-relaxed text-[#c9ccc4]">{haylonFea.intro}</p>
+                <p className="text-base leading-relaxed text-ink-2">{haylonFea.intro}</p>
               </div>
 
               <div className="lg:col-span-7">
-                <h3 className="text-sm text-[#a9ada3] mb-3">Shared assumptions</h3>
-                <dl className="grid grid-cols-2 sm:grid-cols-3 gap-px" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+                <h3 className="text-sm text-ink-2 mb-3">Shared assumptions</h3>
+                <dl className="grid grid-cols-2 sm:grid-cols-3 gap-px" style={{ backgroundColor: "var(--color-rule)", border: "1px solid var(--color-rule)" }}>
                   {haylonFea.assumptions.map((a) => (
-                    <div key={a.label} className="p-5 flex flex-col-reverse gap-1" style={{ backgroundColor: "#1a1e16" }}>
-                      <dt className="text-xs text-[#a9ada3]">{a.label}</dt>
-                      <dd className="text-xl font-display text-[#f5f4f0] lining-nums tabular-nums">{a.value}</dd>
+                    <div key={a.label} className="p-5 flex flex-col-reverse gap-1" style={{ backgroundColor: "var(--color-paper)" }}>
+                      <dt className="text-[14px] text-ink-2">{a.label}</dt>
+                      <dd className="figure text-ink" style={{ fontSize: "1.875rem" }}>{a.value}</dd>
                     </div>
                   ))}
                 </dl>
@@ -314,20 +332,20 @@ export default function HaylonFea() {
 
           {/* Per-part detail, one expandable row each */}
           <div className="flex flex-wrap items-end justify-between gap-4 mb-2">
-            <h2 className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0]" style={{ fontWeight: 400 }}>
+            <h2 className="text-2xl md:text-3xl text-ink">
               Results by part
             </h2>
             <button
               onClick={toggleAll}
-              className="text-sm text-[#a9ada3] hover:text-[#f5f4f0] underline underline-offset-4 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
+              className="text-sm text-ink-2 hover:text-ink underline underline-offset-4 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
             >
               {allOpen ? "Collapse all" : "Expand all"}
             </button>
           </div>
 
-          <p className="text-sm text-[#a9ada3] mb-5">Open a part for its load case, plots, and verdict.</p>
+          <p className="text-sm text-ink-2 mb-5">Open a part for its load case, plots, and verdict.</p>
 
-          <div style={{ borderTop: "1px solid #2e3328" }}>
+          <div style={{ borderTop: "1px solid var(--color-rule)" }}>
             {haylonFea.parts.map((p, idx) => {
               const flipped = idx % 2 === 1;
               const oddImages = p.images.length % 2 === 1 && p.images.length > 1;
@@ -339,7 +357,7 @@ export default function HaylonFea() {
                   {...reveal()}
                   aria-labelledby={`${p.id}-heading`}
                   className="scroll-mt-28"
-                  style={{ borderBottom: "1px solid #2e3328" }}
+                  style={{ borderBottom: "1px solid var(--color-rule)" }}
                 >
                   <h2 id={`${p.id}-heading`} className="m-0">
                     <button
@@ -347,17 +365,17 @@ export default function HaylonFea() {
                       onClick={() => togglePart(p.id)}
                       aria-expanded={isOpen}
                       aria-controls={`${p.id}-panel`}
-                      className="group w-full text-left px-4 md:px-6 py-6 flex flex-wrap items-center gap-x-6 gap-y-3 transition-colors hover:bg-[#232820] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#f5f4f0]"
+                      className="group w-full text-left px-4 md:px-6 py-6 flex flex-wrap items-center gap-x-6 gap-y-3 transition-colors hover:bg-paper-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ink"
                     >
-                      <span className="text-2xl md:text-3xl font-display font-normal text-[#f5f4f0] mr-auto" style={{ fontWeight: 400 }}>
+                      <span className="text-2xl md:text-3xl text-ink mr-auto">
                         {p.name}
                       </span>
-                      <span className="hidden md:flex items-center gap-6 text-sm text-[#a9ada3] lining-nums tabular-nums">
+                      <span className="hidden md:flex items-center gap-6 text-sm text-ink-2 lining-nums tabular-nums">
                         <span>Peak {p.peakStress}</span>
                         <span>SF {p.safetyFactor}</span>
                       </span>
                       <StatusBadge status={p.status} label={p.statusLabel} />
-                      <span className="flex items-center gap-2 text-sm text-[#c9ccc4] group-hover:text-[#f5f4f0] transition-colors">
+                      <span className="flex items-center gap-2 text-sm text-ink-2 group-hover:text-ink transition-colors">
                         {isOpen ? "Hide details" : "Show details"}
                         <ChevronDown
                           className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
@@ -371,16 +389,16 @@ export default function HaylonFea() {
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
                     {/* Text */}
                     <div className={`lg:col-span-5 ${flipped ? "lg:order-2" : ""}`}>
-                      <p className="text-sm leading-relaxed text-[#c9ccc4] mb-8">{p.summary}</p>
+                      <p className="text-sm leading-relaxed text-ink-2 mb-8">{p.summary}</p>
 
-                      <h3 className="text-lg font-display text-[#f5f4f0] mb-2">Load case: {p.loadCase}</h3>
-                      <p className="text-sm leading-relaxed text-[#a9ada3] mb-8">{p.loadDetail}</p>
+                      <h3 className="text-lg font-display text-ink mb-2">Load case: {p.loadCase}</h3>
+                      <p className="text-sm leading-relaxed text-ink-2 mb-8">{p.loadDetail}</p>
 
-                      <dl className="grid grid-cols-2 gap-px" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
+                      <dl className="grid grid-cols-2 gap-px" style={{ backgroundColor: "var(--color-rule)", border: "1px solid var(--color-rule)" }}>
                         {p.metrics.map((m) => (
-                          <div key={m.label} className="p-4 flex flex-col-reverse gap-1" style={{ backgroundColor: "#1a1e16" }}>
-                            <dt className="text-xs text-[#a9ada3]">{m.label}</dt>
-                            <dd className="text-lg font-display text-[#f5f4f0] lining-nums tabular-nums">{m.value}</dd>
+                          <div key={m.label} className="p-4 flex flex-col-reverse gap-1" style={{ backgroundColor: "var(--color-paper)" }}>
+                            <dt className="text-[14px] text-ink-2">{m.label}</dt>
+                            <dd className="figure text-ink" style={{ fontSize: "1.5rem" }}>{m.value}</dd>
                           </div>
                         ))}
                       </dl>
@@ -397,8 +415,8 @@ export default function HaylonFea() {
                             href={img.src}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="block relative aspect-[4/3] overflow-hidden group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
-                            style={{ backgroundColor: "#111410", border: "1px solid #2e3328" }}
+                            className="block relative aspect-[4/3] overflow-hidden group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                            style={{ backgroundColor: "var(--color-graphite)" }}
                           >
                             <img
                               src={img.src}
@@ -408,26 +426,26 @@ export default function HaylonFea() {
                             />
                             <span className="sr-only"> (opens full size in a new tab)</span>
                           </a>
-                          <figcaption className="text-xs leading-relaxed text-[#a9ada3] mt-2">{img.caption}</figcaption>
+                          <figcaption className="text-[14px] leading-relaxed text-ink-2 mt-2">{img.caption}</figcaption>
                         </figure>
                       ))}
                     </div>
                   </div>
 
                   {/* Verdict + improvements */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-px mt-10" style={{ backgroundColor: "#2e3328", border: "1px solid #2e3328" }}>
-                    <div className="p-6 md:p-8" style={{ backgroundColor: "#232820" }}>
-                      <h3 className="text-lg font-display text-[#f5f4f0] mb-3">Verdict</h3>
-                      <p className="text-sm leading-relaxed text-[#c9ccc4]">{p.verdict}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-px mt-10" style={{ backgroundColor: "var(--color-rule)", border: "1px solid var(--color-rule)" }}>
+                    <div className="p-6 md:p-8" style={{ backgroundColor: "var(--color-paper-2)" }}>
+                      <h3 className="text-lg font-display text-ink mb-3">Verdict</h3>
+                      <p className="text-sm leading-relaxed text-ink-2">{p.verdict}</p>
                     </div>
-                    <div className="p-6 md:p-8" style={{ backgroundColor: "#1a1e16" }}>
-                      <h3 className="text-lg font-display text-[#f5f4f0] mb-3">
+                    <div className="p-6 md:p-8" style={{ backgroundColor: "var(--color-paper)" }}>
+                      <h3 className="text-lg font-display text-ink mb-3">
                         {p.status === "preliminary" ? "Next steps" : "Improvements"}
                       </h3>
                       <ul className="space-y-2.5">
                         {p.improvements.map((item) => (
-                          <li key={item} className="text-sm leading-relaxed text-[#c9ccc4] pl-4 relative">
-                            <span className="absolute left-0 top-[0.6em] w-1.5 h-px bg-[#a9ada3]" aria-hidden="true" />
+                          <li key={item} className="text-sm leading-relaxed text-ink-2 pl-4 relative">
+                            <span className="absolute left-0 top-[0.6em] w-1.5 h-px bg-ink-3" aria-hidden="true" />
                             {item}
                           </li>
                         ))}

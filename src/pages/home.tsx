@@ -111,6 +111,8 @@ export default function Home() {
   });
 
   useEffect(() => {
+    // Sub-pages set their own titles; restore this one on the way back.
+    document.title = "Aarav Verma Portfolio";
     const target = sessionStorage.getItem("scrollTarget");
     if (target) {
       sessionStorage.removeItem("scrollTarget");
