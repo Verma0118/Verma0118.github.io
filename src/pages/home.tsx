@@ -85,11 +85,13 @@ export default function Home() {
       });
     };
     measure();
-    // Images and the model change the story's height as they land.
-    const t = window.setTimeout(measure, 600);
+    // Images and the model change the story's height as they land, so the
+    // stops are re-measured whenever the story container changes size.
+    const ro = typeof ResizeObserver !== "undefined" && storyRef.current ? new ResizeObserver(measure) : null;
+    if (ro && storyRef.current) ro.observe(storyRef.current);
     window.addEventListener("resize", measure);
     return () => {
-      window.clearTimeout(t);
+      ro?.disconnect();
       window.removeEventListener("resize", measure);
     };
   }, []);
@@ -187,12 +189,12 @@ export default function Home() {
         className="min-h-[calc(100dvh-72px)] flex items-center relative bg-paper"
         aria-label="Introduction"
       >
-        <div className="container mx-auto px-6 lg:pl-40 relative z-30 py-16">
+        <div className="story-pad w-full relative z-30 py-16">
           <motion.div
             initial={reduce ? false : "hidden"}
             animate="visible"
             variants={stagger}
-            className="w-full lg:max-w-[52%]"
+            className="story-lane"
           >
             <motion.p variants={fadeUp} className="text-[17px] text-ink-2 mb-6">
               Aerospace engineer and startup founder
@@ -200,8 +202,10 @@ export default function Home() {
 
             <motion.h1
               variants={fadeUp}
-              className="text-ink leading-[0.98] tracking-[-0.03em] mb-8"
-              style={{ fontSize: "clamp(3.5rem, 9vw, 7.5rem)", fontWeight: 300, fontVariationSettings: '"opsz" 72' }}
+              className="text-ink leading-[0.98] tracking-[-0.03em] mb-8 whitespace-nowrap"
+              // Sized to the text lane (52vw less the rail gutter) so the name
+              // always sits on one line and never reaches the guide.
+              style={{ fontSize: "clamp(3.25rem, calc((52vw - var(--lane-left)) / 5.2), 7.25rem)", fontWeight: 300, fontVariationSettings: '"opsz" 72' }}
             >
               Aarav Verma
             </motion.h1>
@@ -239,7 +243,7 @@ export default function Home() {
         aria-labelledby="story-handoff-heading"
         className="relative min-h-[100dvh] flex items-center py-24 md:py-28 bg-paper"
       >
-        <div className="container mx-auto px-6 lg:pl-40 relative z-30">
+        <div className="story-pad w-full pr-6 lg:pr-12 relative z-30">
           <ScrollFade className="max-w-2xl mb-14">
             <h2 id="story-handoff-heading" className={`${sectionHeading} mb-5`} style={sectionHeadingSize}>
               {storyBeats[5].heading}

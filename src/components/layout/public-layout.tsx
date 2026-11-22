@@ -88,9 +88,9 @@ export function PublicLayout({
           scrolled ? "border-rule" : "border-transparent"
         }`}
       >
-        <div className="container mx-auto px-6 flex items-center justify-between">
+        <div className="w-full px-6 md:px-10 xl:px-14 flex items-center justify-between">
           <Link href="/" className="focus-ring">
-            <span className="font-display text-[22px] text-ink tracking-[-0.01em]" style={{ fontWeight: 400 }}>
+            <span className="font-display text-[26px] text-ink tracking-[-0.01em]" style={{ fontWeight: 400 }}>
               Aarav Verma
             </span>
           </Link>

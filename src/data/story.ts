@@ -50,6 +50,9 @@ export type StoryEvidence = {
    * the image inside a large empty box.
    */
   maxW?: string;
+  /** No plinth and no fixed height: the image shows at its natural aspect.
+   *  For screenshots that already have their own dark UI around them. */
+  bare?: boolean;
 };
 
 /**
@@ -179,7 +182,7 @@ export const storyBeats: StoryBeat[] = [
       { value: "1", label: "live demo" },
     ],
     link: { href: "#software-projects", label: "See the software" },
-    evidence: { items: softwareEvidence, cols: 2, height: "h-[26vh] min-h-[190px]", fit: "contain", maxW: "880px" },
+    evidence: { items: softwareEvidence, cols: 2, height: "", fit: "contain", maxW: "1280px", bare: true },
   },
   {
     id: "story-handoff",
@@ -244,20 +247,20 @@ export const GUIDE_LANDMARKS = {
  */
 export const guidePoses: GuidePose[] = [
   // Hero: distant three-quarter view of the whole aircraft.
-  { x: 29, y: 2, scale: 1.0, azimuth: 35, polar: 72, radius: 0.62, target: [0, 0, 0], exposure: 0.9 },
+  { x: 26, y: 2, scale: 1.0, azimuth: 35, polar: 72, radius: 0.55, target: [0, 0, 0], exposure: 0.9 },
   // Design: full airframe from above and behind. All four arms, props and
   // tail read clearly, which is the point of the design beat.
-  { x: 28, y: -17, scale: 1.0, azimuth: 125, polar: 64, radius: 0.42, target: [0, 0, -0.01], exposure: 0.9 },
+  { x: 26, y: -7, scale: 1.0, azimuth: 125, polar: 64, radius: 0.5, target: [0, 0, -0.01], exposure: 0.9 },
   // Analysis: in on the nose, the part that came back at 0.99.
-  { x: 29, y: -17, scale: 1.0, azimuth: 55, polar: 72, radius: 0.34, target: [0, 0, 0.045], exposure: 0.9 },
+  { x: 26, y: -7, scale: 1.0, azimuth: 55, polar: 72, radius: 0.56, target: [0, 0, 0.03], exposure: 0.9 },
   // Build: around the back, where all four motor nacelles and the tail read
   // at once. The electronics mount slides out of the fuselage here.
-  { x: 28, y: -17, scale: 1.0, azimuth: 200, polar: 62, radius: 0.56, target: [0, 0, -0.015], exposure: 0.9 },
+  { x: 26, y: -7, scale: 1.0, azimuth: 200, polar: 62, radius: 0.56, target: [0, 0, -0.015], exposure: 0.9 },
   // Software: pulled back out, and flying an arc across the lane. See
   // BEAT_ARCS in story-guide.
-  { x: 29, y: -17, scale: 1.0, azimuth: 70, polar: 44, radius: 0.54, target: [0, 0, 0], exposure: 0.9 },
+  { x: 26, y: -7, scale: 1.0, azimuth: 70, polar: 44, radius: 0.54, target: [0, 0, 0], exposure: 0.9 },
   // Handoff: recedes and fades out before the link grid arrives.
-  { x: 30, y: 10, scale: 1.0, azimuth: 130, polar: 70, radius: 0.72, target: [0, 0, 0], exposure: 0.9 },
+  { x: 27, y: 10, scale: 1.0, azimuth: 130, polar: 70, radius: 0.72, target: [0, 0, 0], exposure: 0.9 },
 ];
 
 /**

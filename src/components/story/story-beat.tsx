@@ -78,7 +78,7 @@ function BeatVisual({ beat }: { beat: StoryBeat }) {
   const ev = beat.evidence;
   if (!ev) return null;
 
-  const cols = isDesktop ? ev.cols : 2;
+  const cols = isDesktop ? ev.cols : ev.bare ? 1 : 2;
 
   return (
     <ul
@@ -88,15 +88,29 @@ function BeatVisual({ beat }: { beat: StoryBeat }) {
       {ev.items.map((img) => {
         const figure = (
           <figure className="m-0">
-            <div className={`${ev.height} overflow-hidden bg-graphite`}>
-              <img
-                src={img.src}
-                alt={img.alt}
-                loading="lazy"
-                decoding="async"
-                className={`w-full h-full ${ev.fit === "cover" ? "object-cover" : "object-contain p-2"} transition-transform duration-500 ease-out group-hover:scale-[1.02]`}
-              />
-            </div>
+            {ev.bare ? (
+              // Screenshots that already carry their own dark UI: shown at
+              // their natural aspect with no plinth around them.
+              <div className="overflow-hidden">
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="block w-full h-auto transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                />
+              </div>
+            ) : (
+              <div className={`${ev.height} overflow-hidden bg-graphite`}>
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className={`w-full h-full ${ev.fit === "cover" ? "object-cover" : "object-contain p-2"} transition-transform duration-500 ease-out group-hover:scale-[1.02]`}
+                />
+              </div>
+            )}
             {img.label && (
               <figcaption className="text-[14px] mt-2 leading-snug text-ink-2 group-hover:text-ink transition-colors">
                 {img.label}
@@ -135,11 +149,11 @@ export function StoryBeatSection({ beat }: { beat: StoryBeat }) {
       aria-labelledby={`${beat.id}-heading`}
       className="relative min-h-[100dvh] flex items-center py-24 md:py-28 bg-paper"
     >
-      {/* lg:pl-40 reserves the left gutter for the fixed progress rail. */}
-      <div className="container mx-auto px-6 lg:pl-40 relative z-30">
+      {/* story-pad reserves the left gutter for the fixed progress rail. */}
+      <div className="story-pad w-full relative z-30">
         <div className="w-full">
-          {/* Text lane, held to ~52% on large screens. */}
-          <div className="w-full lg:max-w-[52%]">
+          {/* Text lane, ending at 52vw on desktop. */}
+          <div className="story-lane">
             <ScrollFade className="flex flex-col">
               <h2
                 id={`${beat.id}-heading`}
@@ -175,7 +189,7 @@ export function StoryBeatSection({ beat }: { beat: StoryBeat }) {
           </div>
 
           {(beat.guideIsVisual || beat.evidence) && (
-            <ScrollFade delay={0.12} className={beat.guideIsVisual ? "mt-12 lg:max-w-[52%]" : "mt-12"}>
+            <ScrollFade delay={0.12} className={beat.guideIsVisual ? "mt-12 story-lane" : "mt-12 pr-0 lg:pr-12"}>
               <BeatVisual beat={beat} />
             </ScrollFade>
           )}

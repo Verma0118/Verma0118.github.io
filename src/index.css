@@ -146,6 +146,21 @@
     outline-offset: 3px;
   }
 
+  /* Story act geometry. Text starts near the rail and its lane ends at 52vw,
+     so the guide (which spans roughly 53vw to 99vw) always has the right half. */
+  .story-pad {
+    --lane-left: 1.5rem;
+    padding-left: var(--lane-left);
+    padding-right: 1.5rem;
+  }
+  @media (min-width: 768px) { .story-pad { --lane-left: 3rem; } }
+  @media (min-width: 1024px) { .story-pad { --lane-left: 9.5rem; } }
+  @media (min-width: 1536px) { .story-pad { --lane-left: 11rem; } }
+  .story-lane { width: 100%; }
+  @media (min-width: 768px) {
+    .story-lane { max-width: calc(52vw - var(--lane-left)); }
+  }
+
   /* A run of tags set as plain text, separated by thin spaces and slashes. */
   .tag-run {
     font-size: 14px;

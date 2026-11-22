@@ -63,7 +63,7 @@ function sample(v: number, stops: number[], values: number[]): number {
  */
 const BEAT_ARCS: Record<string, (t: number) => { dx: number; dy: number }> = {
   "story-software": (t) => ({
-    dx: 4 * Math.cos(Math.PI * t),
+    dx: 2 * Math.cos(Math.PI * t),
     dy: 5 * Math.sin(Math.PI * t),
   }),
 };
@@ -205,7 +205,7 @@ export function StoryGuide({
       {/* The bottom fades out so the ground shadow never ends on a hard edge
           where the canvas stops. */}
       <div
-        className="relative w-[40vw] h-[56vh] max-w-[700px]"
+        className="relative w-[46vw] h-[72vh]"
         style={{
           maskImage: "linear-gradient(to bottom, black 78%, transparent 100%)",
           WebkitMaskImage: "linear-gradient(to bottom, black 78%, transparent 100%)",
