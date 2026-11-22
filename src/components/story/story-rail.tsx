@@ -9,8 +9,7 @@ import type { StoryBeat } from "@/data/story";
  * jumps a mouse user gets. Node state is carried by fill, size and an
  * aria-current attribute, never by colour alone.
  *
- * Colours follow the active beat's theme because the rail is fixed over
- * sections that alternate between olive and cream.
+ * Every beat shares the paper ground, so the rail is ink throughout.
  */
 export function StoryRail({
   beats,
@@ -21,10 +20,9 @@ export function StoryRail({
   activeIndex: number;
   visible: boolean;
 }) {
-  const onDark = beats[activeIndex]?.theme !== "cream";
-  const ink = onDark ? "#f5f4f0" : "#111110";
-  const dim = onDark ? "#8a8f84" : "#5c5a56";
-  const line = onDark ? "#2e3328" : "#d0cec9";
+  const ink = "var(--color-ink)";
+  const dim = "var(--color-ink-2)";
+  const line = "var(--color-rule)";
 
   return (
     <AnimatePresence>
@@ -62,7 +60,7 @@ export function StoryRail({
                   }}
                 />
                 <span
-                  className="text-xs tracking-wide transition-colors whitespace-nowrap"
+                  className="text-[13px] transition-colors whitespace-nowrap"
                   style={{ color: isActive ? ink : dim, fontWeight: isActive ? 500 : 400 }}
                 >
                   {beat.railLabel}

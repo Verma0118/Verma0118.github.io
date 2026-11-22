@@ -1,7 +1,6 @@
 import { personalInfo, cadProjects, softwareProjects, simulationProjects } from "@/data/portfolio";
 import { PublicLayout } from "@/components/layout/public-layout";
 import { ModelViewerWrapper } from "@/components/ui/model-viewer-wrapper";
-import { FractalBackground } from "@/components/ui/fractal-background";
 import { ScrollFade } from "@/components/ui/scroll-fade";
 import { ImageTabs } from "@/components/ui/image-tabs";
 import { ProjectCarousel } from "@/components/ui/project-carousel";
@@ -10,7 +9,7 @@ import { StoryBeatSection } from "@/components/story/story-beat";
 import { StoryRail } from "@/components/story/story-rail";
 import { storyBeats, handoffLinks } from "@/data/story";
 import { motion, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
-import { Github, Linkedin, Mail, Download, Send, Loader2, ArrowRight, ArrowUpRight, ArrowDown } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ArrowDown } from "lucide-react";
 import { Link } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -166,6 +165,11 @@ export default function Home() {
     document.querySelector(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const sectionHeading = "text-ink leading-[1.04]";
+  const sectionHeadingSize = { fontSize: "clamp(2.5rem, 5vw, 4.25rem)", fontWeight: 300 } as const;
+  const inputCls =
+    "w-full bg-transparent border border-ink-3 h-12 px-3 text-ink text-[16px] placeholder:text-ink-3 outline-none transition-colors focus:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
+
   return (
     <PublicLayout navHidden={navHidden} skipTarget="#cad-projects">
 
@@ -175,137 +179,99 @@ export default function Home() {
       {/* ── STORY ACT ── five beats, then the handoff back to browsing ── */}
       <div ref={storyRef}>
 
-      {/* ── BEAT 0, the opening ── dark */}
+      {/* ── BEAT 0, the opening. Left-aligned; the guide owns the right. */}
       <section
         id="story-open"
-        className="min-h-[100dvh] flex flex-col items-center justify-center relative px-6 overflow-hidden"
+        className="min-h-[calc(100dvh-72px)] flex items-center relative bg-paper"
         aria-label="Introduction"
       >
-        <FractalBackground />
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 35%, hsl(var(--background)) 100%)" }}
-        />
-
-        <div className="relative z-30 flex flex-col items-center text-center max-w-3xl mx-auto">
-          <motion.div initial={reduce ? false : "hidden"} animate="visible" variants={stagger} className="flex flex-col items-center">
-
-            <motion.div variants={fadeUp} className="mb-8">
-              <span className="text-sm md:text-base tracking-wide text-[#8a8f84]">
-                Aerospace Engineer and Startup Founder
-              </span>
-            </motion.div>
+        <div className="container mx-auto px-6 lg:pl-40 relative z-30 py-16">
+          <motion.div
+            initial={reduce ? false : "hidden"}
+            animate="visible"
+            variants={stagger}
+            className="w-full lg:max-w-[52%]"
+          >
+            <motion.p variants={fadeUp} className="text-[17px] text-ink-2 mb-6">
+              Aerospace engineer and startup founder
+            </motion.p>
 
             <motion.h1
               variants={fadeUp}
-              className="font-display text-foreground leading-[0.95] tracking-tight mb-6"
-              style={{ fontSize: "clamp(3rem, 11vw, 8rem)", fontWeight: 400 }}
+              className="text-ink leading-[0.98] tracking-[-0.03em] mb-8"
+              style={{ fontSize: "clamp(3.5rem, 9vw, 7.5rem)", fontWeight: 300, fontVariationSettings: '"opsz" 72' }}
             >
               Aarav Verma
             </motion.h1>
 
-            <motion.p
-              variants={fadeUp}
-              className="flex flex-wrap justify-center gap-x-10 gap-y-2 text-sm md:text-base tracking-wide text-muted-foreground mb-14"
-            >
-              <span>NOBE</span>
-              <span>UAV@Illinois</span>
-              <span>Incoming L3Harris Intern</span>
+            <motion.p variants={fadeUp} className="text-[17px] leading-relaxed text-ink-2 max-w-[44ch] mb-12">
+              Project manager at NOBE, build team engineer at UAV@Illinois, and an incoming intern at L3Harris.
             </motion.p>
 
-            <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4">
-              <a
-                href="#story-design"
-                onClick={heroScroll("#story-design")}
-                className="inline-flex items-center gap-2 px-7 py-3 bg-[#f5f4f0] text-[#111110] font-medium hover:bg-[#eeecea] transition-colors text-sm tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
-              >
+            <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-x-8 gap-y-4">
+              <a href="#story-design" onClick={heroScroll("#story-design")} className="group btn-outline focus-ring">
                 See the work
-                <ArrowDown className="w-4 h-4" aria-hidden="true" />
+                <ArrowDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" strokeWidth={1.5} aria-hidden="true" />
               </a>
               <a
-                href="/resume.pdf"
+                href={personalInfo.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-7 py-3 bg-transparent border border-[#2e3328] text-[#8a8f84] font-medium hover:border-[#f5f4f0]/30 hover:text-[#f5f4f0] transition-all text-sm tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8a8f84]"
+                className="text-[15px] text-ink link-rule focus-ring"
               >
                 Resume
               </a>
             </motion.div>
-
           </motion.div>
         </div>
-
       </section>
 
       {/* ── BEATS 1 to 4 ── design, analysis, build, software ── */}
-      {STORY_MIDDLE.map((beat, i) => (
-        <StoryBeatSection
-          key={beat.id}
-          beat={beat}
-          nextId={STORY_MIDDLE[i + 1]?.id ?? "story-handoff"}
-        />
+      {STORY_MIDDLE.map((beat) => (
+        <StoryBeatSection key={beat.id} beat={beat} />
       ))}
 
-      {/* ── BEAT 5, the handoff ── light. The site becomes clickable here. */}
+      {/* ── BEAT 5, the handoff. The site becomes clickable here. */}
       <section
         id="story-handoff"
         aria-labelledby="story-handoff-heading"
-        className="relative min-h-[100dvh] flex items-center py-24 md:py-28"
-        style={{ backgroundColor: '#eeecea', borderTop: '1px solid #d0cec9' }}
+        className="relative min-h-[100dvh] flex items-center py-24 md:py-28 bg-paper"
       >
         <div className="container mx-auto px-6 lg:pl-40 relative z-30">
           <ScrollFade className="max-w-2xl mb-14">
-            <h2
-              id="story-handoff-heading"
-              className="font-display font-normal mb-5 leading-[1.08]"
-              style={{ color: '#111110', fontWeight: 400, fontSize: 'clamp(2rem, 4.2vw, 3.25rem)' }}
-            >
+            <h2 id="story-handoff-heading" className={`${sectionHeading} mb-5`} style={sectionHeadingSize}>
               {storyBeats[5].heading}
             </h2>
-            <p className="text-base leading-relaxed" style={{ color: '#5c5a56' }}>
-              {storyBeats[5].body}
-            </p>
+            <p className="text-[17px] leading-relaxed text-ink-2">{storyBeats[5].body}</p>
           </ScrollFade>
 
           <ScrollFade delay={0.1}>
             <nav aria-label="Portfolio sections">
-              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0 m-0">
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-12 list-none p-0 m-0 border-t border-rule">
                 {handoffLinks.map((dest) => {
                   const body = (
                     <>
-                      <span className="flex items-center justify-between gap-3">
-                        <span
-                          className="font-display font-normal text-xl md:text-2xl"
-                          style={{ color: '#111110', fontWeight: 400 }}
-                        >
-                          {dest.label}
-                        </span>
-                        <ArrowRight
-                          className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5"
-                          style={{ color: '#5c5a56' }}
-                          aria-hidden="true"
-                        />
+                      <span className="font-display text-ink text-[28px] md:text-[32px] leading-tight" style={{ fontWeight: 350 }}>
+                        {dest.label}
                       </span>
-                      <span className="block text-sm mt-2" style={{ color: '#5c5a56' }}>
-                        {dest.note}
+                      <span className="flex items-center gap-4 text-[15px] text-ink-2">
+                        <span className="hidden sm:inline">{dest.note}</span>
+                        <ArrowRight className="w-4 h-4 shrink-0 text-ink transition-transform group-hover:translate-x-1" strokeWidth={1.5} aria-hidden="true" />
                       </span>
                     </>
                   );
-                  const cls =
-                    "group block p-6 h-full transition-colors hover:bg-[#e4e2de] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16]";
-                  const st = { border: '1px solid #d0cec9', backgroundColor: '#eeecea' };
+                  const cls = "group flex items-center justify-between gap-6 py-5 border-b border-rule focus-ring";
                   return (
                     <li key={dest.href}>
                       {dest.page ? (
-                        <Link href={dest.href} className={cls} style={st}>{body}</Link>
+                        <Link href={dest.href} className={cls}>{body}</Link>
                       ) : (
                         <a
                           href={dest.href}
                           className={cls}
-                          style={st}
                           onClick={(e) => {
                             e.preventDefault();
-                            document.querySelector(dest.href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            document.querySelector(dest.href)?.scrollIntoView({ behavior: "smooth", block: "start" });
                           }}
                         >
                           {body}
@@ -316,16 +282,6 @@ export default function Home() {
                 })}
               </ul>
             </nav>
-
-            <a
-              href={personalInfo.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-2 px-6 h-12 text-sm font-medium transition-colors hover:bg-[#2e3328] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16]"
-              style={{ backgroundColor: '#1a1e16', color: '#f5f4f0' }}
-            >
-              <Download className="w-4 h-4" aria-hidden="true" /> Resume
-            </a>
           </ScrollFade>
         </div>
       </section>
@@ -333,127 +289,75 @@ export default function Home() {
       </div>
       {/* ── END STORY ACT ── everything below is the browsable portfolio ── */}
 
-      {/* ── FEATURED PROJECTS ── light */}
-      <section id="cad-projects" tabIndex={-1} className="py-28 md:py-32 outline-none" style={{ backgroundColor: '#eeecea' }}>
+      {/* ── HARDWARE DESIGN ── the interceptor leads, the Canary drone follows */}
+      <section id="cad-projects" tabIndex={-1} aria-labelledby="cad-heading" className="py-28 md:py-36 outline-none border-t border-rule">
         <div className="container mx-auto px-6">
-
-          <ScrollFade className="mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-normal mb-4" style={{ color: '#111110', fontWeight: 400 }}>
-              Hardware Design
+          <ScrollFade className="mb-16 md:mb-20 max-w-3xl">
+            <h2 id="cad-heading" className={`${sectionHeading} mb-5`} style={sectionHeadingSize}>
+              Hardware design
             </h2>
-            <p className="text-base leading-relaxed max-w-xl" style={{ color: '#6b6966' }}>
-              Mechanical designs and structural analysis. Interact with the 3D models directly.
+            <p className="text-[17px] leading-relaxed text-ink-2 max-w-[52ch]">
+              Mechanical designs and structural analysis. Every model below can be turned and zoomed.
             </p>
           </ScrollFade>
 
-          <div className="space-y-6">
-            {FEATURED.map((project, idx) => {
-              const isReversed = idx % 2 === 1;
-              return (
-                <ScrollFade key={project.id} delay={idx * 0.1}>
-                  {"slides" in project ? (
-                    <ProjectCarousel
-                      organization={project.organization}
-                      dateRange={project.dateRange}
-                      slides={(project as any).slides}
-                      link={(project as any).link}
-                      reversed={isReversed}
-                    />
-                  ) : (
-                  <article
-                    className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden"
-                    style={{ border: '1px solid #d0cec9' }}
-                    aria-label={project.title}
-                  >
-                    {/* 3D viewer */}
-                    <div
-                      className={`h-[380px] lg:h-[500px] ${isReversed ? 'order-1 lg:order-2' : 'order-1'}`}
-                      style={{ backgroundColor: '#1a1e16' }}
-                    >
-                      <ModelViewerWrapper src={project.glbFileUrl} alt={project.title} className="w-full h-full" />
-                    </div>
+          {/* The interceptor: the page's one bright moment. */}
+          {"slides" in FEATURED[0] && (
+            <ScrollFade className="mb-28 md:mb-36">
+              <ProjectCarousel
+                organization={FEATURED[0].organization}
+                dateRange={FEATURED[0].dateRange}
+                slides={(FEATURED[0] as any).slides}
+                link={(FEATURED[0] as any).link}
+                featured
+              />
+            </ScrollFade>
+          )}
 
-                    {/* text panel */}
-                    <div
-                      className={`flex flex-col justify-center p-8 md:p-12 ${isReversed ? 'order-2 lg:order-1' : 'order-2'}`}
-                      style={{
-                        backgroundColor: '#e4e2de',
-                        ...(isReversed
-                          ? { borderRight: '1px solid #d0cec9' }
-                          : { borderLeft: '1px solid #d0cec9' }),
-                      }}
-                    >
-                      <p className="text-sm mb-5" style={{ color: '#6b6966' }}>{project.organization}<br />{project.dateRange}</p>
-                      <h3 className="text-2xl md:text-3xl font-display font-normal mb-4" style={{ color: '#111110', fontWeight: 400 }}>
-                        {project.title}
-                      </h3>
-                      <p className="text-sm leading-relaxed mb-8" style={{ color: '#6b6966' }}>
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2" role="list" aria-label="Technologies used">
-                        {project.tags.map(tag => (
-                          <span
-                            key={tag}
-                            className="text-xs px-2.5 py-1"
-                            style={{ backgroundColor: '#d0cec9', color: '#6b6966' }}
-                            role="listitem"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </article>
-                  )}
-                </ScrollFade>
-              );
-            })}
-          </div>
+          {/* Canary drone: mirrored, text first, on a light plinth. */}
+          <ScrollFade>
+            <article aria-label={FEATURED[1].title} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+              <div className="lg:col-span-4 order-2 lg:order-1">
+                <p className="text-[14px] text-ink-2 mb-5 leading-relaxed">
+                  {FEATURED[1].organization}<br />{FEATURED[1].dateRange}
+                </p>
+                <h3 className="text-ink mb-5 leading-[1.08]" style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.25rem)" }}>
+                  {FEATURED[1].title}
+                </h3>
+                <p className="text-[16px] leading-relaxed text-ink-2 mb-6">{FEATURED[1].description}</p>
+                <p className="tag-run"><span className="sr-only">Tools: </span>{FEATURED[1].tags.join(", ")}</p>
+              </div>
+              <div className="lg:col-span-8 order-1 lg:order-2 h-[380px] md:h-[480px] lg:h-[560px] bg-paper-2 text-ink-2">
+                <ModelViewerWrapper src={FEATURED[1].glbFileUrl} alt={FEATURED[1].title} className="w-full h-full" />
+              </div>
+            </article>
+          </ScrollFade>
         </div>
       </section>
 
-      {/* ── CAD GRID (4 projects) ── dark */}
-      <section className="py-28 md:py-32" style={{ borderTop: '1px solid #2e3328', backgroundColor: '#1a1e16' }}>
+      {/* ── ENGINEERING PROJECTS ── staggered two-up plinths, text beneath */}
+      <section aria-labelledby="eng-heading" className="pb-28 md:pb-36">
         <div className="container mx-auto px-6">
-
-          <ScrollFade className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-display font-normal text-foreground" style={{ fontWeight: 400 }}>
-              Engineering Projects
+          <ScrollFade className="mb-14 border-t border-rule pt-14">
+            <h2 id="eng-heading" className="text-ink leading-[1.08]" style={{ fontSize: "clamp(2rem, 3.4vw, 2.75rem)", fontWeight: 300 }}>
+              More engineering projects
             </h2>
           </ScrollFade>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ backgroundColor: '#2e3328' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-16 gap-y-20">
             {CAD_GRID.map((project, idx) => (
-              <ScrollFade
-                key={project.id}
-                delay={idx * 0.07}
-                className="flex flex-col overflow-hidden"
-                style={{ backgroundColor: '#1a1e16' }}
-              >
-                <article
-                  className="flex flex-col flex-grow hover:bg-[#232820] transition-colors duration-300"
-                  aria-label={project.title}
-                >
-                  <div className="h-[340px] relative bg-black/40">
+              <ScrollFade key={project.id} delay={(idx % 2) * 0.08} className={idx % 2 === 1 ? "md:mt-28" : ""}>
+                <article aria-label={project.title}>
+                  {/* Graphite plinth: these are white prints and renders, which
+                      vanish against the paper ground. */}
+                  <div className="h-[340px] lg:h-[420px] bg-graphite text-graphite-ink-2">
                     <ModelViewerWrapper src={project.glbFileUrl} alt={project.title} className="w-full h-full" />
-                    <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-1.5" role="list" aria-label="Technologies">
-                      {project.tags.slice(0, 3).map(tag => (
-                        <span
-                          key={tag}
-                          className="px-2 py-0.5 bg-[#1a1e16]/90 backdrop-blur-md border border-[#2e3328] text-[#8a8f84] text-[10px]"
-                          role="listitem"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
                   </div>
-                  <div className="p-6 border-t border-[#2e3328] flex flex-col flex-grow">
-                    <p className="text-sm text-[#8a8f84] mb-3">{project.organization}<br />{project.dateRange}</p>
-                    <h3 className="text-lg font-display font-normal text-foreground mb-3" style={{ fontWeight: 400 }}>
-                      {project.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{project.description}</p>
+                  <div className="pt-6 max-w-[56ch]">
+                    <p className="text-[14px] text-ink-2 mb-3">{project.organization}, {project.dateRange}</p>
+                    <h3 className="text-ink mb-3 leading-tight" style={{ fontSize: "1.75rem" }}>{project.title}</h3>
+                    <p className="text-[16px] leading-relaxed text-ink-2 mb-4">{project.description}</p>
+                    <p className="tag-run"><span className="sr-only">Tools: </span>{project.tags.join(", ")}</p>
                   </div>
                 </article>
               </ScrollFade>
@@ -462,313 +366,252 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── SOFTWARE PROJECTS ── light */}
-      <section id="software-projects" className="py-28 md:py-32" style={{ borderTop: '1px solid #d0cec9', backgroundColor: '#eeecea' }}>
+      {/* ── SOFTWARE ── the intercept sim leads, the rest as an index */}
+      <section id="software-projects" aria-labelledby="sw-heading" className="py-28 md:py-36 border-t border-rule">
         <div className="container mx-auto px-6">
-
-          <ScrollFade className="mb-14">
-            <h2 className="text-4xl md:text-5xl font-display font-normal mb-4" style={{ color: '#111110', fontWeight: 400 }}>
-              Software Projects
+          <ScrollFade className="mb-16 max-w-3xl">
+            <h2 id="sw-heading" className={`${sectionHeading} mb-5`} style={sectionHeadingSize}>
+              Software
             </h2>
-            <p className="text-base leading-relaxed max-w-xl" style={{ color: '#6b6966' }}>
+            <p className="text-[17px] leading-relaxed text-ink-2 max-w-[52ch]">
               Simulation, flight software, and tools I use every day.
             </p>
           </ScrollFade>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            {/* Haylon Intercept Sim: lead project */}
-            <ScrollFade className="lg:col-span-7">
-              <article aria-label={softwareProjects[0].title} className="h-full flex flex-col p-8 md:p-12" style={{ backgroundColor: '#1a1e16', border: '1px solid #2e3328' }}>
-                <p className="text-sm text-[#8a8f84] mb-6">{softwareProjects[0].kind}</p>
-                <h3 className="text-3xl md:text-4xl font-display font-normal text-foreground mb-5" style={{ fontWeight: 400 }}>
+          <ScrollFade className="mb-20">
+            <article aria-labelledby="sw-lead" className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+              <div className="lg:col-span-7 order-1">
+                <ImageTabs images={softwareProjects[0].images!} />
+              </div>
+              <div className="lg:col-span-5 order-2">
+                <p className="text-[14px] text-ink-2 mb-4">{softwareProjects[0].kind}</p>
+                <h3 id="sw-lead" className="text-ink mb-5 leading-[1.08]" style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.25rem)" }}>
                   {softwareProjects[0].title}
                 </h3>
-                <p className="text-base leading-relaxed text-[#a9ada3] max-w-[52ch] mb-10">{softwareProjects[0].description}</p>
-
-                <ImageTabs images={softwareProjects[0].images!} className="mb-10" />
-
-                <ol className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-10 text-foreground font-display text-xl" aria-label="Control sequence">
+                <p className="text-[16px] leading-relaxed text-ink-2 mb-8">{softwareProjects[0].description}</p>
+                <ol className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-8 list-none p-0 font-display text-ink text-[22px]" aria-label="Control sequence">
                   {softwareProjects[0].steps!.map((step, i, all) => (
                     <li key={step} className="flex items-center gap-3">
-                      <span style={{ fontWeight: 400 }}>{step}</span>
-                      {i < all.length - 1 && <ArrowRight className="w-4 h-4 text-[#e8a33d]" aria-hidden="true" />}
+                      <span>{step}</span>
+                      {i < all.length - 1 && <ArrowRight className="w-4 h-4 text-ink-3" strokeWidth={1.5} aria-hidden="true" />}
                     </li>
                   ))}
                 </ol>
-
-                <div className="mt-auto flex flex-wrap items-end justify-between gap-6">
-                  <div className="flex flex-wrap gap-2" role="list" aria-label="Technologies used">
-                    {softwareProjects[0].tags.map(tag => (
-                      <span key={tag} className="text-xs px-2.5 py-1 bg-[#232820] text-[#a9ada3]" role="listitem">{tag}</span>
-                    ))}
-                  </div>
-                  {softwareProjects[0].githubUrl && (
-                    <a
-                      href={softwareProjects[0].githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm text-foreground hover:text-[#e8a33d] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e8a33d]"
-                    >
-                      View on GitHub <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-                    </a>
-                  )}
-                </div>
-              </article>
-            </ScrollFade>
-
-            {/* Other repos */}
-            <div className="lg:col-span-5 flex flex-col gap-4">
-              {softwareProjects.slice(1).map((project, idx) => (
-                <ScrollFade key={project.id} delay={idx * 0.08} className="flex-1">
-                  <article
-                    aria-label={project.title}
-                    className="h-full flex flex-col p-7 transition-colors duration-300 hover:bg-[#dedbd6]"
-                    style={{ border: '1px solid #d0cec9', backgroundColor: '#e4e2de' }}
+                <p className="tag-run mb-8"><span className="sr-only">Tools: </span>{softwareProjects[0].tags.join(", ")}</p>
+                {softwareProjects[0].githubUrl && (
+                  <a
+                    href={softwareProjects[0].githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[15px] font-medium text-ink link-rule focus-ring"
                   >
-                    <div className="flex items-start justify-between gap-4 mb-3">
-                      <div>
-                        <p className="text-sm mb-1" style={{ color: '#6b6966' }}>{project.kind}</p>
-                        <h3 className="text-2xl font-display font-normal" style={{ color: '#111110', fontWeight: 400 }}>{project.title}</h3>
+                    View on GitHub <ArrowUpRight className="w-4 h-4" strokeWidth={1.5} aria-hidden="true" />
+                  </a>
+                )}
+              </div>
+            </article>
+          </ScrollFade>
+
+          <ul className="list-none p-0 m-0 border-t border-rule">
+            {softwareProjects.slice(1).map((project) => {
+              const href = project.demoUrl ?? project.githubUrl;
+              const linkLabel = project.demoUrl ? "Open the live demo" : "View on GitHub";
+              return (
+                <li key={project.id} className="border-b border-rule">
+                  <ScrollFade>
+                    <article aria-labelledby={`sw-${project.id}`} className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-10 py-10">
+                      <div className="md:col-span-4">
+                        <p className="text-[14px] text-ink-2 mb-2">{project.kind}</p>
+                        <h3 id={`sw-${project.id}`} className="text-ink leading-tight" style={{ fontSize: "1.75rem" }}>
+                          {project.title}
+                        </h3>
                       </div>
-                      {(project.githubUrl || project.demoUrl) && (
-                        <a
-                          href={project.githubUrl ?? project.demoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={project.githubUrl ? `View ${project.title} on GitHub` : `Open the ${project.title} live demo`}
-                          className="shrink-0 h-11 w-11 -mr-2 -mt-2 flex items-center justify-center hover:opacity-60 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111110]"
-                          style={{ color: '#111110' }}
-                        >
-                          <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
-                        </a>
-                      )}
-                    </div>
-                    <p className="text-sm leading-relaxed mb-5" style={{ color: '#6b6966' }}>{project.description}</p>
-                    {project.demoUrl && (
-                      <a
-                        href={project.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 self-start text-sm mb-5 underline underline-offset-4 transition-colors hover:text-[#111110] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111110]"
-                        style={{ color: '#55534f' }}
-                      >
-                        Open the live demo
-                        <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-                      </a>
-                    )}
-                    <div className="flex flex-wrap gap-1.5 mt-auto" role="list" aria-label="Technologies used">
-                      {project.tags.map(tag => (
-                        <span key={tag} className="text-xs px-2.5 py-1" style={{ backgroundColor: '#d0cec9', color: '#55534f' }} role="listitem">{tag}</span>
-                      ))}
-                    </div>
-                  </article>
-                </ScrollFade>
-              ))}
-            </div>
-          </div>
+                      <div className="md:col-span-5">
+                        <p className="text-[16px] leading-relaxed text-ink-2 mb-3">{project.description}</p>
+                        <p className="tag-run"><span className="sr-only">Tools: </span>{project.tags.join(", ")}</p>
+                      </div>
+                      <div className="md:col-span-3 md:text-right">
+                        {href && (
+                          <a
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 text-[15px] font-medium text-ink link-rule focus-ring"
+                          >
+                            {linkLabel}
+                            <ArrowUpRight className="w-4 h-4" strokeWidth={1.5} aria-hidden="true" />
+                            <span className="sr-only">, {project.title}</span>
+                          </a>
+                        )}
+                      </div>
+                    </article>
+                  </ScrollFade>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </section>
 
-      {/* ── SIMULATION & ANALYSIS ── dark */}
-      <section id="simulation-projects" className="py-28 md:py-32 border-t border-[#2e3328]">
-        <div className="container mx-auto px-6">
-
-          <ScrollFade className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-display font-normal text-foreground mb-2" style={{ fontWeight: 400 }}>
-              Simulation &amp; Analysis
+      {/* ── SIMULATION & ANALYSIS ── the FEA campaign on a graphite band */}
+      <section id="simulation-projects" aria-labelledby="sim-heading" className="border-t border-rule">
+        <div className="container mx-auto px-6 pt-28 md:pt-36 pb-14">
+          <ScrollFade className="max-w-3xl">
+            <h2 id="sim-heading" className={`${sectionHeading} mb-5`} style={sectionHeadingSize}>
+              Simulation and analysis
             </h2>
-            <p className="text-base leading-relaxed text-muted-foreground">
-              MATLAB and Simulink work in controls modeling, FEA validation, mesh convergence.
+            <p className="text-[17px] leading-relaxed text-ink-2 max-w-[52ch]">
+              MATLAB and Simulink work in controls modeling, FEA validation and mesh convergence.
             </p>
           </ScrollFade>
+        </div>
 
-          {/* Lead study: the interceptor campaign, wide */}
-          {simulationProjects.filter(p => "featured" in p).map(project => (
-            <ScrollFade key={project.id} className="mb-4">
-              <article
-                aria-label={project.title}
-                className="border border-[#2e3328] bg-[#232820] p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start"
-              >
-                <ImageTabs images={project.images} />
-                <div className="flex flex-col h-full">
-                  <span className="text-sm block mb-1.5 text-[#8a8f84]">{project.category}</span>
-                  <h3 className="text-2xl md:text-3xl font-display font-normal text-foreground mb-3" style={{ fontWeight: 400 }}>
+        {simulationProjects.filter((p) => "featured" in p).map((project) => (
+          <div key={project.id} className="bg-graphite text-graphite-ink">
+            <div className="container mx-auto px-6 py-16 md:py-20">
+              <article aria-labelledby={`sim-${project.id}`} className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
+                <div className="lg:col-span-4">
+                  <p className="text-[14px] text-graphite-ink-2 mb-4">{project.category}, {project.dateRange}</p>
+                  <h3 id={`sim-${project.id}`} className="mb-5 leading-[1.08]" style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.25rem)" }}>
                     {project.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground mb-6">{project.description}</p>
+                  <p className="text-[16px] leading-relaxed text-graphite-ink-2 mb-8">{project.description}</p>
                   {"link" in project && (
                     <Link
                       href={(project as any).link.href}
-                      className="group inline-flex items-center gap-2 self-start text-sm text-foreground hover:text-[#e8a33d] transition-colors mb-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e8a33d]"
+                      className="group inline-flex items-center gap-2 text-[15px] font-medium text-graphite-ink underline underline-offset-[0.3em] decoration-1 decoration-graphite-ink-2 hover:decoration-graphite-ink outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-graphite-ink"
                     >
                       {(project as any).link.label}
-                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" strokeWidth={1.5} aria-hidden="true" />
                     </Link>
                   )}
-                  <div className="flex flex-wrap gap-1.5 mt-auto" role="list" aria-label="Technologies used">
-                    {project.tags.map(tag => (
-                      <span key={tag} className="text-xs px-2.5 py-1 bg-[#1a1e16] text-[#8a8f84]" role="listitem">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
                 </div>
+                {/* Five plots: the camera mount, the one that failed, leads at
+                    double size; the other four fill a 2x2 beside it. Fixed row
+                    heights keep every cell aligned. */}
+                <ul className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 auto-rows-[180px] md:auto-rows-[200px] gap-x-2 gap-y-8 list-none p-0 m-0">
+                  {project.images.map((img, n) => (
+                    <li key={img.src} className={n === 0 ? "col-span-2 row-span-2" : ""}>
+                      <figure className="m-0 h-full flex flex-col">
+                        <div className="bg-graphite-2 flex-1 min-h-0">
+                          <img src={img.src} alt={img.alt} loading="lazy" className="w-full h-full object-contain p-3" />
+                        </div>
+                        <figcaption className="text-[14px] text-graphite-ink-2 mt-2">{img.label}</figcaption>
+                      </figure>
+                    </li>
+                  ))}
+                </ul>
               </article>
-            </ScrollFade>
-          ))}
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list">
-            {simulationProjects.filter(p => !("featured" in p)).map(project => (
-              <ScrollFade key={project.id}>
-                <article
-                  aria-label={project.title}
-                  role="listitem"
-                  className="h-full border border-[#2e3328] bg-[#232820] p-6 flex flex-col gap-4"
-                >
-                  <ImageTabs images={project.images} />
-                  <div>
-                    <span className="text-sm block mb-1.5 text-[#8a8f84]">
-                      {project.category}
-                    </span>
-                    <h3 className="text-lg font-display font-normal text-foreground mb-2" style={{ fontWeight: 400 }}>
-                      {project.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{project.description}</p>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 mt-auto pt-2" role="list" aria-label="Technologies used">
-                    {project.tags.map(tag => (
-                      <span
-                        key={tag}
-                        className="text-xs px-2.5 py-1 bg-[#1a1e16] text-[#8a8f84]"
-                        role="listitem"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </article>
-              </ScrollFade>
-            ))}
+            </div>
           </div>
+        ))}
+
+        <div className="container mx-auto px-6 py-20 md:py-28">
+          <ul className="list-none p-0 m-0 border-t border-rule">
+            {simulationProjects.filter((p) => !("featured" in p)).map((project) => (
+              <li key={project.id} className="border-b border-rule">
+                <ScrollFade>
+                  <article aria-labelledby={`sim-${project.id}`} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 py-12">
+                    <div className="lg:col-span-5">
+                      <p className="text-[14px] text-ink-2 mb-3">{project.category}, {project.dateRange}</p>
+                      <h3 id={`sim-${project.id}`} className="text-ink leading-[1.12] mb-4" style={{ fontSize: "1.75rem" }}>
+                        {project.title}
+                      </h3>
+                      <p className="tag-run"><span className="sr-only">Tools: </span>{project.tags.join(", ")}</p>
+                    </div>
+                    <p className="lg:col-span-4 text-[16px] leading-relaxed text-ink-2">{project.description}</p>
+                    <div className="lg:col-span-3">
+                      <ImageTabs images={project.images} />
+                    </div>
+                  </article>
+                </ScrollFade>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/* ── ABOUT ── light, editorial */}
-      <section id="about" className="py-28 md:py-32" style={{ borderTop: '1px solid #d0cec9', backgroundColor: '#eeecea' }}>
+      {/* ── ABOUT ── portrait, statement, then the record as plain lists */}
+      <section id="about" aria-labelledby="about-heading" className="py-28 md:py-36 border-t border-rule">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+            <ScrollFade className="lg:col-span-4">
+              <img
+                src="/photo.jpg"
+                alt="Aarav Verma"
+                className="w-full object-cover block bg-paper-2"
+                style={{ aspectRatio: "4/5", objectPosition: "center 12%" }}
+              />
+            </ScrollFade>
 
-            {/* Photo */}
-            <div className="lg:col-span-3">
-              <ScrollFade direction="left">
-                <div className="overflow-hidden" style={{ border: '1px solid #d0cec9' }}>
-                  <img
-                    src="/photo.jpg"
-                    alt="Aarav Verma"
-                    className="w-full object-cover"
-                    style={{ aspectRatio: '3/4', display: 'block', objectPosition: 'center 12%' }}
-                  />
-                </div>
-              </ScrollFade>
-            </div>
-
-            {/* Bio + info */}
-            <div className="lg:col-span-4">
+            <div className="lg:col-span-7 lg:col-start-6">
               <ScrollFade>
-                <h2 className="text-3xl md:text-4xl font-display font-normal mb-5" style={{ color: '#111110', fontWeight: 400 }}>
-                  About Me
+                <h2 id="about-heading" className={`${sectionHeading} mb-8`} style={sectionHeadingSize}>
+                  About
                 </h2>
-                <p className="text-sm leading-relaxed mb-8" style={{ color: '#6b6966' }}>{personalInfo.bio}</p>
+                <p className="font-display text-ink leading-[1.3] mb-14" style={{ fontSize: "clamp(1.375rem, 2vw, 1.75rem)", fontWeight: 350 }}>
+                  {personalInfo.bio}
+                </p>
+              </ScrollFade>
 
-                <div className="space-y-4">
+              <ScrollFade delay={0.08}>
+                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-10 mb-14">
                   <div>
-                    <p className="text-sm mb-1.5" style={{ color: '#6b6966' }}>Education</p>
-                    <p className="text-sm" style={{ color: '#111110' }}>{personalInfo.education}</p>
+                    <dt className="text-[14px] text-ink-2 mb-2">Education</dt>
+                    <dd className="m-0 text-[16px] text-ink leading-relaxed">{personalInfo.education}</dd>
                   </div>
                   {personalInfo.currentFocus && (
                     <div>
-                      <p className="text-sm mb-1.5" style={{ color: '#6b6966' }}>Current Focus</p>
-                      <p className="text-sm" style={{ color: '#111110' }}>{personalInfo.currentFocus}</p>
+                      <dt className="text-[14px] text-ink-2 mb-2">Current focus</dt>
+                      <dd className="m-0 text-[16px] text-ink leading-relaxed">{personalInfo.currentFocus}</dd>
                     </div>
                   )}
                   {personalInfo.organizations.length > 0 && (
                     <div>
-                      <p className="text-sm mb-1.5" style={{ color: '#6b6966' }}>Organizations</p>
-                      <ul className="space-y-1">
-                        {personalInfo.organizations.map(org => (
-                          <li key={org} className="text-sm" style={{ color: '#111110' }}>
-                            {org}
-                          </li>
-                        ))}
-                      </ul>
+                      <dt className="text-[14px] text-ink-2 mb-2">Organizations</dt>
+                      <dd className="m-0">
+                        <ul className="list-none p-0 m-0 space-y-1 text-[16px] text-ink">
+                          {personalInfo.organizations.map((org) => <li key={org}>{org}</li>)}
+                        </ul>
+                      </dd>
                     </div>
                   )}
                   {personalInfo.previousWork.length > 0 && (
                     <div>
-                      <p className="text-sm mb-1.5" style={{ color: '#6b6966' }}>Previous Work</p>
-                      <ul className="space-y-1">
-                        {personalInfo.previousWork.map(job => (
-                          <li key={job} className="text-sm" style={{ color: '#111110' }}>
-                            {job}
-                          </li>
-                        ))}
-                      </ul>
+                      <dt className="text-[14px] text-ink-2 mb-2">Previous work</dt>
+                      <dd className="m-0">
+                        <ul className="list-none p-0 m-0 space-y-1 text-[16px] text-ink">
+                          {personalInfo.previousWork.map((job) => <li key={job}>{job}</li>)}
+                        </ul>
+                      </dd>
                     </div>
                   )}
-                </div>
+                </dl>
 
-                <div className="mt-8 flex flex-wrap gap-3">
+                <dl className="border-t border-rule">
+                  {[
+                    { label: "CAD and simulation", skills: personalInfo.skills.cadSimulation },
+                    { label: "Software and programming", skills: personalInfo.skills.software },
+                    { label: "Manufacturing and hardware", skills: personalInfo.skills.manufacturing },
+                  ].map(({ label, skills }) => (
+                    <div key={label} className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-6 py-5 border-b border-rule">
+                      <dt className="text-[14px] text-ink-2">{label}</dt>
+                      <dd className="m-0 sm:col-span-2 text-[16px] text-ink leading-relaxed">{skills.join(", ")}</dd>
+                    </div>
+                  ))}
+                </dl>
+
+                <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
                   {personalInfo.resumeUrl && (
-                    <a
-                      href={personalInfo.resumeUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16] cursor-pointer"
-                      style={{ backgroundColor: '#1a1e16', color: '#f5f4f0' }}
-                    >
-                      <Download className="w-4 h-4" aria-hidden="true" /> Download Resume
+                    <a href={personalInfo.resumeUrl} target="_blank" rel="noopener noreferrer" className="btn-outline focus-ring">
+                      Resume, PDF
                     </a>
                   )}
                   {personalInfo.portfolioPdfUrl && (
-                    <a
-                      href={personalInfo.portfolioPdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium border hover:bg-[#1a1e16] hover:text-[#f5f4f0] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16] cursor-pointer"
-                      style={{ borderColor: '#1a1e16', color: '#1a1e16' }}
-                    >
-                      <Download className="w-4 h-4" aria-hidden="true" /> Download Portfolio PDF
+                    <a href={personalInfo.portfolioPdfUrl} target="_blank" rel="noopener noreferrer" className="text-[15px] text-ink link-rule focus-ring">
+                      Portfolio, PDF
                     </a>
                   )}
-                </div>
-              </ScrollFade>
-            </div>
-
-            {/* Skills */}
-            <div className="lg:col-span-5">
-              <ScrollFade direction="right">
-                <div className="space-y-6">
-                  {[
-                    { label: "CAD & Simulation", skills: personalInfo.skills.cadSimulation },
-                    { label: "Software & Programming", skills: personalInfo.skills.software },
-                    { label: "Manufacturing & Hardware", skills: personalInfo.skills.manufacturing },
-                  ].map(({ label, skills }) => (
-                    <div key={label} className="border-t pt-5" style={{ borderColor: '#d0cec9' }}>
-                      <p className="text-sm mb-3" style={{ color: '#6b6966' }}>{label}</p>
-                      <div className="flex flex-wrap gap-2" role="list" aria-label={`${label} skills`}>
-                        {skills.map(skill => (
-                          <span
-                            key={skill}
-                            className="px-3 py-1.5 text-sm border"
-                            style={{ backgroundColor: '#e4e2de', borderColor: '#d0cec9', color: '#111110' }}
-                            role="listitem"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </ScrollFade>
             </div>
@@ -776,151 +619,83 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CONTACT ── dark */}
-      <section id="contact" className="py-28 md:py-32 border-t border-[#2e3328]">
+      {/* ── CONTACT ── */}
+      <section id="contact" aria-labelledby="contact-heading" className="py-28 md:py-36 border-t border-rule">
         <div className="container mx-auto px-6">
-          <ScrollFade className="max-w-4xl mx-auto">
-            <div className="mb-12">
-              <h2 className="text-3xl md:text-4xl font-display font-normal text-foreground mb-3" style={{ fontWeight: 400 }}>
-                Get in Touch
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-12">
+            <ScrollFade className="lg:col-span-5">
+              <h2 id="contact-heading" className={`${sectionHeading} mb-6`} style={sectionHeadingSize}>
+                Get in touch
               </h2>
-              <p className="text-muted-foreground text-base">
+              <p className="text-[17px] leading-relaxed text-ink-2 mb-10 max-w-[40ch]">
                 Open to engineering internships, research opportunities, and technical conversations.
               </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-              <div className="border border-[#2e3328] bg-[#232820] p-7 flex flex-col gap-6">
-                <h3 className="font-display font-normal text-foreground text-base" style={{ fontWeight: 400 }}>Contact</h3>
-                <div className="space-y-4">
-                  <a
-                    href={`mailto:${personalInfo.email}`}
-                    className="flex items-center gap-3 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
-                  >
-                    <div className="w-9 h-9 bg-[#1a1e16] border border-[#2e3328] flex items-center justify-center group-hover:border-[#f5f4f0]/20 transition-colors" aria-hidden="true">
-                      <Mail className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-muted-foreground mb-0.5">Email</div>
-                      <div className="text-sm text-foreground font-medium">{personalInfo.email}</div>
-                    </div>
-                  </a>
-                  <a
-                    href={personalInfo.linkedinUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
-                  >
-                    <div className="w-9 h-9 bg-[#1a1e16] border border-[#2e3328] flex items-center justify-center group-hover:border-[#f5f4f0]/20 transition-colors" aria-hidden="true">
-                      <Linkedin className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-muted-foreground mb-0.5">LinkedIn</div>
-                      <div className="text-sm text-foreground font-medium">
-                        {personalInfo.linkedinUrl.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
-                      </div>
-                    </div>
-                  </a>
-                  <a
-                    href={personalInfo.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
-                  >
-                    <div className="w-9 h-9 bg-[#1a1e16] border border-[#2e3328] flex items-center justify-center group-hover:border-[#f5f4f0]/20 transition-colors" aria-hidden="true">
-                      <Github className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-muted-foreground mb-0.5">GitHub</div>
-                      <div className="text-sm text-foreground font-medium">
-                        {personalInfo.githubUrl.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <form
-                onSubmit={handleSubmit(onContactSubmit)}
-                noValidate
-                className="border border-[#2e3328] bg-[#232820] p-7 flex flex-col gap-4"
-                aria-label="Contact form"
+              <a
+                href={`mailto:${personalInfo.email}`}
+                className="font-display text-ink link-rule focus-ring break-all"
+                style={{ fontSize: "clamp(1.25rem, 2vw, 1.625rem)", fontWeight: 350 }}
               >
-                <h3 className="font-display font-normal text-foreground text-base" style={{ fontWeight: 400 }}>Send a Message</h3>
-                <div>
-                  <label htmlFor="contact-name" className="block text-xs font-medium text-muted-foreground mb-1.5">
-                    Your Name
-                  </label>
+                {personalInfo.email}
+              </a>
+            </ScrollFade>
+
+            <ScrollFade className="lg:col-span-6 lg:col-start-7" delay={0.08}>
+              <form onSubmit={handleSubmit(onContactSubmit)} noValidate className="flex flex-col gap-6" aria-label="Contact form">
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="contact-name" className="text-[15px] text-ink">Your name</label>
                   <input
                     {...register("name")}
                     id="contact-name"
                     type="text"
                     autoComplete="name"
-                    className="w-full bg-[#1a1e16] border border-[#2e3328] py-2.5 px-3 text-foreground text-sm focus:border-[#f5f4f0]/30 focus:ring-1 focus:ring-[#f5f4f0]/10 outline-none transition-all"
-                    placeholder="Jane Smith"
+                    className={inputCls}
                     aria-invalid={errors.name ? "true" : undefined}
                     aria-describedby={errors.name ? "name-error" : undefined}
                   />
                   {errors.name && (
-                    <span id="name-error" role="alert" className="text-destructive text-xs mt-1 block">
-                      {errors.name.message}
-                    </span>
+                    <span id="name-error" role="alert" className="text-destructive text-[14px]">{errors.name.message}</span>
                   )}
                 </div>
-                <div>
-                  <label htmlFor="contact-email" className="block text-xs font-medium text-muted-foreground mb-1.5">
-                    Email Address
-                  </label>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="contact-email" className="text-[15px] text-ink">Email address</label>
                   <input
                     {...register("email")}
                     id="contact-email"
                     type="email"
                     autoComplete="email"
-                    className="w-full bg-[#1a1e16] border border-[#2e3328] py-2.5 px-3 text-foreground text-sm focus:border-[#f5f4f0]/30 focus:ring-1 focus:ring-[#f5f4f0]/10 outline-none transition-all"
-                    placeholder="jane@example.com"
+                    className={inputCls}
                     aria-invalid={errors.email ? "true" : undefined}
                     aria-describedby={errors.email ? "email-error" : undefined}
                   />
                   {errors.email && (
-                    <span id="email-error" role="alert" className="text-destructive text-xs mt-1 block">
-                      {errors.email.message}
-                    </span>
+                    <span id="email-error" role="alert" className="text-destructive text-[14px]">{errors.email.message}</span>
                   )}
                 </div>
-                <div>
-                  <label htmlFor="contact-message" className="block text-xs font-medium text-muted-foreground mb-1.5">
-                    Message
-                  </label>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="contact-message" className="text-[15px] text-ink">Message</label>
                   <textarea
                     {...register("message")}
                     id="contact-message"
-                    rows={4}
-                    className="w-full bg-[#1a1e16] border border-[#2e3328] rounded-md py-2.5 px-3 text-foreground text-sm focus:border-[#f5f4f0]/30 focus:ring-1 focus:ring-[#f5f4f0]/10 outline-none transition-all resize-none"
-                    placeholder="Tell me about the opportunity or question..."
+                    rows={5}
+                    className={`${inputCls} h-auto py-3 resize-none`}
                     aria-invalid={errors.message ? "true" : undefined}
                     aria-describedby={errors.message ? "message-error" : undefined}
                   />
                   {errors.message && (
-                    <span id="message-error" role="alert" className="text-destructive text-xs mt-1 block">
-                      {errors.message.message}
-                    </span>
+                    <span id="message-error" role="alert" className="text-destructive text-[14px]">{errors.message.message}</span>
                   )}
                 </div>
                 <button
                   type="submit"
                   disabled={isSending}
-                  className="mt-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#f5f4f0] text-[#111110] font-medium hover:bg-[#eeecea] transition-colors disabled:opacity-50 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]"
-                  aria-label={isSending ? "Sending message" : "Send message"}
+                  className="btn-outline self-start focus-ring disabled:opacity-60 disabled:pointer-events-none"
                 >
-                  {isSending
-                    ? <><Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /><span>Sending…</span></>
-                    : <><Send className="w-4 h-4" aria-hidden="true" /> Send Message</>}
+                  {isSending ? "Sending" : "Send message"}
                 </button>
+                <span className="sr-only" role="status" aria-live="polite">{isSending ? "Sending message" : ""}</span>
               </form>
-
-            </div>
-          </ScrollFade>
+            </ScrollFade>
+          </div>
         </div>
       </section>
 

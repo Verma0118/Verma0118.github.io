@@ -10,14 +10,16 @@ import { simulationProjects, haylonBuildEntries, softwareProjects } from "./port
 //    alt text and file paths stay in one place.
 //  - Headings state what the work is. No self-branding one-liners.
 //  - Bodies stay at or under 25 words.
-//  - Beat themes must keep alternating, because the fixed 3D guide swaps its
-//    exposure on each boundary to stay legible.
+//  - Every beat sits on the same paper ground. The guide is tuned for that
+//    one ground, so do not reintroduce per-beat themes without retuning it.
 
 export type StoryMetric = {
   /** Large display figure. Sourced from portfolio.ts, never invented. */
   value: string;
   /** What the figure counts. Sentence case, no trailing period. */
   label: string;
+  /** Set in the Haylon accent. The page's one bright moment, so use once. */
+  accent?: boolean;
 };
 
 export type EvidenceItem = {
@@ -66,7 +68,6 @@ export type GuideCallout = {
 export type StoryBeat = {
   id: string;
   kind: "hero" | "beat" | "handoff";
-  theme: "dark" | "cream";
   /** Short label for the progress rail. One or two words. */
   railLabel: string;
   heading?: string;
@@ -122,13 +123,11 @@ export const storyBeats: StoryBeat[] = [
   {
     id: "story-open",
     kind: "hero",
-    theme: "dark",
     railLabel: "Start",
   },
   {
     id: "story-design",
     kind: "beat",
-    theme: "cream",
     railLabel: "Design",
     heading: "Six airframes and assemblies in Fusion and SolidWorks",
     body: "Each one modelled around how it would be printed or machined, and how it would come apart again for the next revision.",
@@ -143,12 +142,11 @@ export const storyBeats: StoryBeat[] = [
   {
     id: "story-analysis",
     kind: "beat",
-    theme: "dark",
     railLabel: "Analysis",
     heading: "Five FEA studies before anything got printed",
     body: "Every part ran in MATLAB PDE Toolbox under its own load case. One came back under a safety factor of 1.",
     metrics: [
-      { value: "0.99", label: "safety factor caught on the camera mount" },
+      { value: "0.99", label: "safety factor caught on the camera mount", accent: true },
       { value: "35 m/s", label: "side impact load case" },
       { value: "5", label: "part studies reviewed" },
     ],
@@ -158,7 +156,6 @@ export const storyBeats: StoryBeat[] = [
   {
     id: "story-build",
     kind: "beat",
-    theme: "cream",
     railLabel: "Build",
     heading: "The interceptor, wired and assembled",
     body: "V2 came off the printer in November. One session took it from loose subassemblies to a wired airframe with every screw driven home.",
@@ -173,7 +170,6 @@ export const storyBeats: StoryBeat[] = [
   {
     id: "story-software",
     kind: "beat",
-    theme: "dark",
     railLabel: "Software",
     heading: "Guidance logic proven in simulation before hardware existed",
     body: "The interceptor's control law ran in a browser sim before any CAD. Volant turns a drone walkaround into a compliance log.",
@@ -188,7 +184,6 @@ export const storyBeats: StoryBeat[] = [
   {
     id: "story-handoff",
     kind: "handoff",
-    theme: "cream",
     railLabel: "Everything",
     heading: "Everything, in detail",
     body: "The full work is below, in whatever order is useful.",
@@ -213,7 +208,8 @@ export type GuidePose = {
   radius: number;
   /** What the camera looks at, in model metres. */
   target: [number, number, number];
-  /** Higher over the dark beats so the white airframe reads. */
+  /** Kept low and even: on a paper ground, high exposure washes the white
+   *  airframe into the page. Shading has to carry the form instead. */
   exposure: number;
 };
 
@@ -248,20 +244,20 @@ export const GUIDE_LANDMARKS = {
  */
 export const guidePoses: GuidePose[] = [
   // Hero: distant three-quarter view of the whole aircraft.
-  { x: 29, y: 2, scale: 1.0, azimuth: 35, polar: 72, radius: 0.62, target: [0, 0, 0], exposure: 1.55 },
+  { x: 29, y: 2, scale: 1.0, azimuth: 35, polar: 72, radius: 0.62, target: [0, 0, 0], exposure: 0.9 },
   // Design: full airframe from above and behind. All four arms, props and
   // tail read clearly, which is the point of the design beat.
-  { x: 28, y: -17, scale: 1.0, azimuth: 125, polar: 64, radius: 0.42, target: [0, 0, -0.01], exposure: 1.0 },
+  { x: 28, y: -17, scale: 1.0, azimuth: 125, polar: 64, radius: 0.42, target: [0, 0, -0.01], exposure: 0.9 },
   // Analysis: in on the nose, the part that came back at 0.99.
-  { x: 29, y: -17, scale: 1.0, azimuth: 55, polar: 72, radius: 0.34, target: [0, 0, 0.045], exposure: 1.55 },
+  { x: 29, y: -17, scale: 1.0, azimuth: 55, polar: 72, radius: 0.34, target: [0, 0, 0.045], exposure: 0.9 },
   // Build: around the back, where all four motor nacelles and the tail read
   // at once. The electronics mount slides out of the fuselage here.
-  { x: 28, y: -17, scale: 1.0, azimuth: 200, polar: 62, radius: 0.56, target: [0, 0, -0.015], exposure: 1.0 },
+  { x: 28, y: -17, scale: 1.0, azimuth: 200, polar: 62, radius: 0.56, target: [0, 0, -0.015], exposure: 0.9 },
   // Software: pulled back out, and flying an arc across the lane. See
   // BEAT_ARCS in story-guide.
-  { x: 29, y: -17, scale: 1.0, azimuth: 70, polar: 44, radius: 0.54, target: [0, 0, 0], exposure: 1.55 },
+  { x: 29, y: -17, scale: 1.0, azimuth: 70, polar: 44, radius: 0.54, target: [0, 0, 0], exposure: 0.9 },
   // Handoff: recedes and fades out before the link grid arrives.
-  { x: 30, y: 10, scale: 1.0, azimuth: 130, polar: 70, radius: 0.72, target: [0, 0, 0], exposure: 1.0 },
+  { x: 30, y: 10, scale: 1.0, azimuth: 130, polar: 70, radius: 0.72, target: [0, 0, 0], exposure: 0.9 },
 ];
 
 /**

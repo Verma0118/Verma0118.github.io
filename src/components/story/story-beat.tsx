@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { ScrollFade } from "@/components/ui/scroll-fade";
 import { ModelViewerWrapper } from "@/components/ui/model-viewer-wrapper";
 import { useMediaQuery, DESKTOP_QUERY } from "@/hooks/use-media-query";
@@ -8,73 +8,39 @@ import { guideModelUrl, guideModelAlt, type StoryBeat } from "@/data/story";
 /**
  * One full-viewport beat of the story act.
  *
- * Same skeleton every time (heading, body, metrics, link, evidence) so the
- * five beats read as one authored sequence. Rhythm comes from the dark/cream
- * theme flip and from what the evidence is, not from moving the structure
- * around.
+ * Same skeleton every time (heading, body, figures, link, evidence) so the
+ * beats read as one authored sequence. Every beat sits on the same paper
+ * ground; rhythm comes from the camera move and from what the evidence is.
  *
  * Layout rule, and the reason this is not a two-column beat: the fixed 3D
  * guide needs a lane of its own. Text is held to the left ~52% on large
- * screens and the guide owns the right. An earlier two-column version swept
- * the model straight through the headline, and cream type over a white
- * fuselage is unreadable. Nothing in the text lane may cross into the guide's.
+ * screens and the guide owns the right. Nothing in the text lane may cross
+ * into the guide's.
  *
- * Evidence images sit under the text rather than opposite it, so they stay in
- * the text lane too. On phones the guide does not run at all, so the evidence
- * is the only visual and gets the full width.
+ * Evidence sits under the text on graphite cells, so FEA plots and build
+ * photos read like lab output. It breaks out of the text lane to full width
+ * and clears the guide vertically instead.
  *
  * `min-h-[100dvh]` rather than `h-screen`, so the iOS address bar cannot
  * shift the layout mid-scroll. Content sits at z-30 to clear the fixed guide
  * at z-20; this section must not declare a z-index of its own.
  */
 
-const THEME = {
-  cream: {
-    bg: "#eeecea",
-    heading: "#111110",
-    body: "#5c5a56",
-    metricValue: "#111110",
-    metricLabel: "#5c5a56",
-    rule: "#d0cec9",
-    thumbBg: "#e4e2de",
-    btnBg: "#1a1e16",
-    btnText: "#f5f4f0",
-    btnHover: "#2e3328",
-    focus: "#1a1e16",
-  },
-  dark: {
-    bg: "#1a1e16",
-    heading: "#f5f4f0",
-    body: "#8a8f84",
-    metricValue: "#f5f4f0",
-    metricLabel: "#8a8f84",
-    rule: "#2e3328",
-    thumbBg: "#232820",
-    btnBg: "#f5f4f0",
-    btnText: "#111110",
-    btnHover: "#eeecea",
-    focus: "#f5f4f0",
-  },
-} as const;
-
-function BeatLink({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | typeof THEME.dark }) {
+function BeatLink({ beat }: { beat: StoryBeat }) {
   if (!beat.link) return null;
   const { href, label, page } = beat.link;
 
-  const className =
-    "group inline-flex items-center gap-2 self-start px-6 h-12 text-sm font-medium transition-colors active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
-  const style = { backgroundColor: t.btnBg, color: t.btnText, outlineColor: t.focus };
-
+  const className = "group btn-outline self-start focus-ring";
   const inner = (
     <>
       {label}
-      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" strokeWidth={1.5} aria-hidden="true" />
     </>
   );
 
   if (page) {
     return (
-      <Link href={href} className={className} style={style}>
+      <Link href={href} className={className}>
         {inner}
       </Link>
     );
@@ -84,7 +50,6 @@ function BeatLink({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | typeof
     <a
       href={href}
       className={className}
-      style={style}
       onClick={(e) => {
         e.preventDefault();
         document.querySelector(href)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -95,16 +60,16 @@ function BeatLink({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | typeof
   );
 }
 
-function BeatVisual({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | typeof THEME.dark }) {
+function BeatVisual({ beat }: { beat: StoryBeat }) {
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
 
   // On the design beat the fixed guide IS the visual, so nothing is rendered
   // here on desktop. Phones never run the guide, so the same model goes inline
-  // and interactive instead.
+  // and interactive instead, on a light plinth.
   if (beat.guideIsVisual) {
     if (isDesktop) return null;
     return (
-      <div className="h-[44vh] min-h-[260px]" style={{ border: `1px solid ${t.rule}`, backgroundColor: "#1a1e16" }}>
+      <div className="h-[44vh] min-h-[260px] bg-paper-2">
         <ModelViewerWrapper src={guideModelUrl} alt={guideModelAlt} className="w-full h-full" />
       </div>
     );
@@ -113,34 +78,27 @@ function BeatVisual({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | type
   const ev = beat.evidence;
   if (!ev) return null;
 
-  // The strip runs the full width of the beat, not the text lane, so the
-  // images are big enough to actually read. It clears the guide vertically
-  // instead of horizontally: the guide poses sit high (y around -15vh) so the
-  // model occupies roughly the upper 62% and this strip lives underneath.
   const cols = isDesktop ? ev.cols : 2;
 
   return (
     <ul
-      className="grid gap-3 list-none p-0 m-0"
+      className="grid gap-2 list-none p-0 m-0"
       style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`, maxWidth: ev.maxW }}
     >
       {ev.items.map((img) => {
         const figure = (
           <figure className="m-0">
-            <div
-              className={`${ev.height} overflow-hidden`}
-              style={{ border: `1px solid ${t.rule}`, backgroundColor: t.thumbBg }}
-            >
+            <div className={`${ev.height} overflow-hidden bg-graphite`}>
               <img
                 src={img.src}
                 alt={img.alt}
                 loading="lazy"
                 decoding="async"
-                className={`w-full h-full ${ev.fit === "cover" ? "object-cover" : "object-contain"} transition-transform duration-300 group-hover:scale-[1.03]`}
+                className={`w-full h-full ${ev.fit === "cover" ? "object-cover" : "object-contain p-2"} transition-transform duration-500 ease-out group-hover:scale-[1.02]`}
               />
             </div>
             {img.label && (
-              <figcaption className="text-xs mt-2 leading-snug" style={{ color: t.metricLabel }}>
+              <figcaption className="text-[14px] mt-2 leading-snug text-ink-2 group-hover:text-ink transition-colors">
                 {img.label}
               </figcaption>
             )}
@@ -149,17 +107,15 @@ function BeatVisual({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | type
 
         if (!img.href) return <li key={img.src}>{figure}</li>;
 
-        const cls =
-          "group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
-        const style = { outlineColor: t.focus };
+        const cls = "group block focus-ring";
         return (
           <li key={img.src}>
             {img.page ? (
-              <Link href={img.href} className={cls} style={style}>
+              <Link href={img.href} className={cls}>
                 {figure}
               </Link>
             ) : (
-              <a href={img.href} target="_blank" rel="noopener noreferrer" className={cls} style={style}>
+              <a href={img.href} target="_blank" rel="noopener noreferrer" className={cls}>
                 {figure}
               </a>
             )}
@@ -170,88 +126,61 @@ function BeatVisual({ beat, t }: { beat: StoryBeat; t: typeof THEME.cream | type
   );
 }
 
-export function StoryBeatSection({ beat, nextId }: { beat: StoryBeat; nextId?: string }) {
-  const t = THEME[beat.theme];
+export function StoryBeatSection({ beat }: { beat: StoryBeat }) {
+  const accentHeading = beat.metrics?.some((m) => m.accent);
 
   return (
     <section
       id={beat.id}
       aria-labelledby={`${beat.id}-heading`}
-      className="relative min-h-[100dvh] flex items-center py-24 md:py-28"
-      style={{ backgroundColor: t.bg, borderTop: `1px solid ${t.rule}` }}
+      className="relative min-h-[100dvh] flex items-center py-24 md:py-28 bg-paper"
     >
       {/* lg:pl-40 reserves the left gutter for the fixed progress rail. */}
       <div className="container mx-auto px-6 lg:pl-40 relative z-30">
-        {/* Text lane. Must not extend past ~52% on large screens: the fixed
-            guide owns the right and cream type over the model is unreadable.
-            The evidence strip below deliberately breaks out of this lane. */}
         <div className="w-full">
+          {/* Text lane, held to ~52% on large screens. */}
           <div className="w-full lg:max-w-[52%]">
+            <ScrollFade className="flex flex-col">
+              <h2
+                id={`${beat.id}-heading`}
+                className="text-ink mb-6 leading-[1.06]"
+                style={{ fontSize: "clamp(2.25rem, 4.4vw, 3.75rem)", fontWeight: 300 }}
+              >
+                {beat.heading}
+              </h2>
 
-          <ScrollFade className="flex flex-col">
-            <h2
-              id={`${beat.id}-heading`}
-              className="font-display font-normal mb-5 leading-[1.08]"
-              style={{ color: t.heading, fontWeight: 400, fontSize: "clamp(2rem, 4.2vw, 3.25rem)" }}
-            >
-              {beat.heading}
-            </h2>
+              {accentHeading && <span aria-hidden="true" className="block w-16 h-px bg-haylon mb-6" />}
 
-            {beat.body && (
-              <p className="text-base leading-relaxed max-w-[52ch] mb-10" style={{ color: t.body }}>
-                {beat.body}
-              </p>
-            )}
+              {beat.body && (
+                <p className="text-[17px] leading-relaxed max-w-[52ch] mb-12 text-ink-2">
+                  {beat.body}
+                </p>
+              )}
 
-            {beat.metrics && (
-              <dl className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-                {beat.metrics.map((m) => (
-                  <div key={m.label} className="border-t pt-4" style={{ borderColor: t.rule }}>
-                    <dt className="sr-only">{m.label}</dt>
-                    <dd className="m-0">
-                      <span
-                        className="block font-display font-normal leading-none mb-2"
-                        style={{ color: t.metricValue, fontWeight: 400, fontSize: "clamp(1.875rem, 3vw, 2.5rem)" }}
-                      >
+              {beat.metrics && (
+                <dl className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-6 mb-12">
+                  {beat.metrics.map((m) => (
+                    <div key={m.label} className="flex flex-col-reverse">
+                      <dt className="text-[14px] leading-snug text-ink-2 mt-3">{m.label}</dt>
+                      <dd className={`m-0 figure whitespace-nowrap ${m.accent ? "text-haylon" : "text-ink"}`} style={{ fontSize: "clamp(2.25rem, 3.2vw, 3rem)" }}>
                         {m.value}
-                      </span>
-                      <span className="block text-sm leading-snug" style={{ color: t.metricLabel }}>
-                        {m.label}
-                      </span>
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            )}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
 
-            <BeatLink beat={beat} t={t} />
-          </ScrollFade>
-
+              <BeatLink beat={beat} />
+            </ScrollFade>
           </div>
 
           {(beat.guideIsVisual || beat.evidence) && (
-            <ScrollFade delay={0.12} className={beat.guideIsVisual ? "mt-10 lg:max-w-[52%]" : "mt-10"}>
-              <BeatVisual beat={beat} t={t} />
+            <ScrollFade delay={0.12} className={beat.guideIsVisual ? "mt-12 lg:max-w-[52%]" : "mt-12"}>
+              <BeatVisual beat={beat} />
             </ScrollFade>
           )}
-
         </div>
       </div>
-
-      {nextId && (
-        <a
-          href={`#${nextId}`}
-          onClick={(e) => {
-            e.preventDefault();
-            document.getElementById(nextId)?.scrollIntoView({ behavior: "smooth", block: "start" });
-          }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 inline-flex items-center justify-center w-11 h-11 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-          style={{ border: `1px solid ${t.rule}`, color: t.body, outlineColor: t.focus }}
-        >
-          <ArrowDown className="w-4 h-4" aria-hidden="true" />
-          <span className="sr-only">Continue to {nextId.replace("story-", "")}</span>
-        </a>
-      )}
     </section>
   );
 }

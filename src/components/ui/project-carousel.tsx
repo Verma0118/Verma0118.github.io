@@ -15,45 +15,53 @@ interface ProjectCarouselProps {
   organization: string;
   dateRange: string;
   slides: CarouselSlide[];
-  reversed?: boolean;
   link?: { href: string; label: string };
+  /** The page's one bright moment. Turns on the Haylon accent rule and link. */
+  featured?: boolean;
 }
 
-const btn =
-  "h-11 w-11 flex items-center justify-center bg-[#1a1e16]/85 border border-[#2e3328] text-[#f5f4f0] hover:border-[#f5f4f0]/40 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0]";
+const arrow =
+  "h-11 w-11 flex items-center justify-center border border-graphite-ink-2/50 text-graphite-ink hover:bg-graphite-ink hover:text-graphite transition-colors outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-graphite-ink";
 
-// Featured-card layout with a 3D viewer that cycles through several models, each with its own text.
-export function ProjectCarousel({ organization, dateRange, slides, reversed = false, link }: ProjectCarouselProps) {
+/**
+ * A project with several models: a large graphite plinth carrying the 3D
+ * viewer, and a narrow text column beside it. White PLA prints sit on the dark
+ * ground so their form reads; the model list runs underneath as text tabs.
+ */
+export function ProjectCarousel({ organization, dateRange, slides, link, featured = false }: ProjectCarouselProps) {
   const [i, setI] = useState(0);
   const slide = slides[i];
   const go = (n: number) => setI((n + slides.length) % slides.length);
 
   return (
     <article
-      className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden"
-      style={{ border: "1px solid #d0cec9" }}
+      className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
       aria-roledescription="carousel"
       aria-label={slides[0].title}
     >
-      <div className={`h-[380px] lg:h-[500px] relative ${reversed ? "order-1 lg:order-2" : "order-1"}`} style={{ backgroundColor: "#1a1e16" }}>
-        <ModelViewerWrapper key={slide.glbFileUrl} src={slide.glbFileUrl} alt={slide.title} className="w-full h-full" />
+      <div className="lg:col-span-8">
+        <div className="relative h-[380px] md:h-[480px] lg:h-[600px] bg-graphite text-graphite-ink-2">
+          <ModelViewerWrapper key={slide.glbFileUrl} src={slide.glbFileUrl} alt={slide.title} className="w-full h-full" />
 
-        <button onClick={() => go(i - 1)} aria-label="Previous model" className={`${btn} absolute left-3 top-1/2 -translate-y-1/2 z-20`}>
-          <ChevronLeft className="w-5 h-5" aria-hidden="true" />
-        </button>
-        <button onClick={() => go(i + 1)} aria-label="Next model" className={`${btn} absolute right-3 top-1/2 -translate-y-1/2 z-20`}>
-          <ChevronRight className="w-5 h-5" aria-hidden="true" />
-        </button>
+          <div className="absolute left-4 bottom-4 z-20 flex gap-2">
+            <button onClick={() => go(i - 1)} aria-label="Previous model" className={arrow}>
+              <ChevronLeft className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
+            </button>
+            <button onClick={() => go(i + 1)} aria-label="Next model" className={arrow}>
+              <ChevronRight className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
 
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-1 bg-[#1a1e16]/85 border border-[#2e3328] p-1" role="tablist" aria-label="Choose a model">
+        <div className="flex flex-wrap gap-x-6 gap-y-1 mt-3" role="tablist" aria-label="Choose a model">
           {slides.map((s, n) => (
             <button
               key={s.label}
               role="tab"
               aria-selected={n === i}
               onClick={() => setI(n)}
-              className={`px-3 h-9 text-xs whitespace-nowrap transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5f4f0] ${
-                n === i ? "bg-[#f5f4f0] text-[#111110] font-medium" : "text-[#c9ccc4] hover:text-[#f5f4f0]"
+              className={`h-10 text-[15px] border-b transition-colors focus-ring ${
+                n === i ? "text-ink border-ink" : "text-ink-2 border-transparent hover:text-ink"
               }`}
             >
               {s.label}
@@ -62,36 +70,29 @@ export function ProjectCarousel({ organization, dateRange, slides, reversed = fa
         </div>
       </div>
 
-      <div
-        className={`flex flex-col justify-center p-8 md:p-12 ${reversed ? "order-2 lg:order-1" : "order-2"}`}
-        style={{ backgroundColor: "#e4e2de", ...(reversed ? { borderRight: "1px solid #d0cec9" } : { borderLeft: "1px solid #d0cec9" }) }}
-        aria-live="polite"
-      >
-        <p className="text-sm mb-5" style={{ color: "#6b6966" }}>
+      <div className="lg:col-span-4 lg:pt-2" aria-live="polite">
+        {featured && <span aria-hidden="true" className="block w-16 h-px bg-haylon mb-6" />}
+        <p className="text-[14px] text-ink-2 mb-5 leading-relaxed">
           {organization}
           <br />
           {dateRange}
         </p>
-        <h3 className="text-2xl md:text-3xl font-display font-normal mb-4" style={{ color: "#111110", fontWeight: 400 }}>
+        <h3 className="text-ink mb-5 leading-[1.08]" style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.25rem)" }}>
           {slide.title}
         </h3>
-        <p className="text-sm leading-relaxed mb-8" style={{ color: "#6b6966" }}>
-          {slide.description}
+        <p className="text-[16px] leading-relaxed text-ink-2 mb-6">{slide.description}</p>
+        <p className="tag-run mb-8">
+          <span className="sr-only">Tools: </span>
+          {slide.tags.join(", ")}
         </p>
-        <div className="flex flex-wrap gap-2" role="list" aria-label="Technologies used">
-          {slide.tags.map((tag) => (
-            <span key={tag} className="text-xs px-2.5 py-1" style={{ backgroundColor: "#d0cec9", color: "#6b6966" }} role="listitem">
-              {tag}
-            </span>
-          ))}
-        </div>
         {link && (
           <Link
             href={link.href}
-            className="group mt-8 inline-flex items-center gap-2 self-start px-5 h-11 text-sm font-medium bg-[#1a1e16] text-[#f5f4f0] hover:bg-[#2e3328] active:scale-[0.98] transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a1e16]"
+            className={`group inline-flex items-center gap-2 text-[15px] font-medium link-rule focus-ring ${featured ? "text-haylon" : "text-ink"}`}
+            style={featured ? { textDecorationColor: "var(--color-haylon)" } : undefined}
           >
             {link.label}
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" strokeWidth={1.5} aria-hidden="true" />
           </Link>
         )}
       </div>

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Loader2, Box, AlertCircle } from "lucide-react";
 
 declare global {
   namespace JSX {
@@ -69,11 +68,12 @@ export function ModelViewerWrapper({ src, alt, className = "" }: ModelViewerProp
     };
   }, [src, near]);
 
+  // Status overlays inherit the plinth's text colour, so they read on both the
+  // light and the graphite grounds without knowing which one they sit on.
   if (!src) {
     return (
-      <div className={`relative overflow-hidden bg-secondary/30 flex flex-col items-center justify-center gap-2 ${className}`}>
-        <Box className="w-10 h-10 text-muted-foreground/40" />
-        <span className="text-xs text-muted-foreground">No 3D model</span>
+      <div className={`relative overflow-hidden flex items-center justify-center ${className}`}>
+        <span className="text-[14px] opacity-70">No 3D model</span>
       </div>
     );
   }
@@ -81,15 +81,13 @@ export function ModelViewerWrapper({ src, alt, className = "" }: ModelViewerProp
   return (
     <div ref={hostRef} className={`relative group ${className}`}>
       {(!near || status === "loading") && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/80 gap-2 pointer-events-none">
-          <Loader2 className="w-7 h-7 text-primary animate-spin" />
-          <span className="text-xs text-muted-foreground">Loading 3D model…</span>
+        <div className="absolute inset-0 z-10 flex items-end justify-start p-4 pointer-events-none" aria-hidden="true">
+          <span className="text-[14px] opacity-70 motion-safe:animate-pulse">Loading model</span>
         </div>
       )}
       {status === "error" && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/80 gap-2 pointer-events-none">
-          <AlertCircle className="w-7 h-7 text-destructive/70" />
-          <span className="text-xs text-muted-foreground">Could not load model</span>
+        <div className="absolute inset-0 z-10 flex items-end justify-start p-4 pointer-events-none" role="status">
+          <span className="text-[14px]">This model could not be loaded.</span>
         </div>
       )}
       {near && (
@@ -99,19 +97,22 @@ export function ModelViewerWrapper({ src, alt, className = "" }: ModelViewerProp
           alt={alt}
           camera-controls
           auto-rotate
-          rotation-per-second="15deg"
+          rotation-per-second="12deg"
           interaction-prompt="none"
-          shadow-intensity="0.5"
-          exposure="1.2"
+          shadow-intensity="0.8"
+          shadow-softness="0.9"
+          exposure="1"
+          environment-image="neutral"
           tone-mapping="neutral"
           class="w-full h-full cursor-grab active:cursor-grabbing outline-none block"
+          style={{ backgroundColor: "transparent" }}
         >
           <div slot="progress-bar" />
         </model-viewer>
       )}
       {status === "loaded" && (
-        <div className="absolute bottom-2 right-2 px-2 py-1 rounded bg-black/60 border border-white/10 text-[10px] text-white/60 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-          Drag to rotate, scroll to zoom
+        <div className="absolute bottom-3 right-4 text-[13px] opacity-0 group-hover:opacity-70 transition-opacity pointer-events-none" aria-hidden="true">
+          Drag to rotate
         </div>
       )}
     </div>

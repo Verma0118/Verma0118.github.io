@@ -187,10 +187,6 @@ export function StoryGuide({
 
   const beat = storyBeats[activeBeat];
   const callout = beat ? guideCallouts[beat.id] : undefined;
-  const onDark = beat?.theme !== "cream";
-  const ink = onDark ? "#f5f4f0" : "#111110";
-  const chipBg = onDark ? "rgba(26,30,22,0.82)" : "rgba(238,236,234,0.88)";
-  const chipBorder = onDark ? "#2e3328" : "#d0cec9";
 
   return (
     <motion.div
@@ -206,7 +202,15 @@ export function StoryGuide({
           lane on the left (52%) and stay inside the viewport on the right, or
           it covers the headline and clips the callout. Apparent size of the
           model comes from the camera radius, not from scaling this box. */}
-      <div className="relative w-[40vw] h-[56vh] max-w-[700px]">
+      {/* The bottom fades out so the ground shadow never ends on a hard edge
+          where the canvas stops. */}
+      <div
+        className="relative w-[40vw] h-[56vh] max-w-[700px]"
+        style={{
+          maskImage: "linear-gradient(to bottom, black 78%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 78%, transparent 100%)",
+        }}
+      >
         <model-viewer
           ref={mvRef}
           src={guideModelUrl}
@@ -215,7 +219,8 @@ export function StoryGuide({
           camera-target={`${guidePoses[0].target[0]}m ${guidePoses[0].target[1]}m ${guidePoses[0].target[2]}m`}
           exposure={guidePoses[0].exposure}
           environment-image="neutral"
-          shadow-intensity="0.3"
+          shadow-intensity="0.9"
+          shadow-softness="0.8"
           tone-mapping="neutral"
           interaction-prompt="none"
           disable-zoom
@@ -235,32 +240,26 @@ export function StoryGuide({
               className="flex flex-row-reverse items-center gap-2 whitespace-nowrap"
               style={{ pointerEvents: "none" }}
             >
+              {/* Marker, leader and label. The leader is the Haylon accent: the
+                  interceptor is the page's one bright moment. The label sits on
+                  a paper plate so it stays legible over the white airframe. */}
               <span
                 style={{
                   display: "block",
                   width: 7,
                   height: 7,
-                  backgroundColor: ink,
+                  border: "1.5px solid var(--color-haylon)",
+                  backgroundColor: "var(--color-paper)",
                   transform: "rotate(45deg)",
                 }}
               />
+              <span style={{ display: "block", width: 36, height: 1, backgroundColor: "var(--color-haylon)" }} />
               <span
                 style={{
-                  display: "block",
-                  width: 26,
-                  height: 1,
-                  backgroundColor: chipBorder,
-                }}
-              />
-              <span
-                style={{
-                  fontSize: 12,
-                  letterSpacing: "0.01em",
-                  color: ink,
-                  backgroundColor: chipBg,
-                  border: `1px solid ${chipBorder}`,
-                  padding: "4px 9px",
-                  backdropFilter: "blur(2px)",
+                  fontSize: 14,
+                  color: "var(--color-ink)",
+                  backgroundColor: "rgba(244,241,234,0.92)",
+                  padding: "3px 8px",
                 }}
               >
                 {callout.label}
@@ -284,7 +283,7 @@ export function StoryGuide({
               src={mountModelUrl}
               alt={mountModelAlt}
               camera-orbit="35deg 70deg auto"
-              exposure="1.1"
+              exposure="0.9"
               environment-image="neutral"
               shadow-intensity="0"
               tone-mapping="neutral"
