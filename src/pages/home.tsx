@@ -7,6 +7,7 @@ import { ProjectCarousel } from "@/components/ui/project-carousel";
 import { StoryGuide } from "@/components/story/story-guide";
 import { StoryBeatSection } from "@/components/story/story-beat";
 import { StoryRail } from "@/components/story/story-rail";
+import { PaperBeat } from "@/components/story/paper-beat";
 import { storyBeats, handoffLinks } from "@/data/story";
 import { motion, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight, ArrowDown } from "lucide-react";
@@ -31,8 +32,10 @@ type ContactFormValues = z.infer<typeof contactSchema>;
 const FEATURED = [cadProjects[5], cadProjects[0]];
 const CAD_GRID = cadProjects.slice(1, 5);
 
-/** Beats rendered with the shared skeleton. Index 0 is the hero, 5 the handoff. */
-const STORY_MIDDLE = storyBeats.slice(1, 5);
+/** Beats rendered with the shared skeleton. The hero, paper and handoff beats have their own layouts. */
+const STORY_MIDDLE = storyBeats.filter((b) => b.kind === "beat");
+const PAPER_BEAT = storyBeats.find((b) => b.kind === "paper")!;
+const HANDOFF = storyBeats.find((b) => b.kind === "handoff")!;
 
 export default function Home() {
   const { toast } = useToast();
@@ -237,7 +240,10 @@ export default function Home() {
         <StoryBeatSection key={beat.id} beat={beat} />
       ))}
 
-      {/* ── BEAT 5, the handoff. The site becomes clickable here. */}
+      {/* ── The paper: the current main project, as a page stack. */}
+      <PaperBeat beat={PAPER_BEAT} />
+
+      {/* ── The handoff. The site becomes clickable here. */}
       <section
         id="story-handoff"
         aria-labelledby="story-handoff-heading"
@@ -246,9 +252,9 @@ export default function Home() {
         <div className="story-pad w-full pr-6 lg:pr-12 relative z-30">
           <ScrollFade className="max-w-2xl mb-14">
             <h2 id="story-handoff-heading" className={`${sectionHeading} mb-5`} style={sectionHeadingSize}>
-              {storyBeats[5].heading}
+              {HANDOFF.heading}
             </h2>
-            <p className="text-[19px] leading-relaxed text-ink-2">{storyBeats[5].body}</p>
+            <p className="text-[19px] leading-relaxed text-ink-2">{HANDOFF.body}</p>
           </ScrollFade>
 
           <ScrollFade delay={0.1}>

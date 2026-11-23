@@ -143,8 +143,11 @@ export function StoryGuide({
 
   // Clears out before the handoff beat fills the screen, since that beat's
   // link grid runs full width and has no lane reserved for the model.
+  // Fully visible on the hero and the four content beats; gone on the paper
+  // beat (the page stack owns the right half) and the handoff.
+  const beatOpacity = storyBeats.map((b) => (b.kind === "hero" || b.kind === "beat" ? 1 : 0));
   const opacity = useTransform(scrollYProgress, (v) =>
-    sample(v, stopsRef.current, [1, 1, 1, 1, 1, 0]));
+    sample(v, stopsRef.current, beatOpacity));
 
   const targetFor = (v: number) => {
     const comp = (i: 0 | 1 | 2) => sample(v, stopsRef.current, guidePoses.map((p) => p.target[i]));

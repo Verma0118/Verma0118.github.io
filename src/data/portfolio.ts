@@ -592,3 +592,35 @@ export const haylonBuildEntries: BuildEntryData[] = [
       "Each of these changes went into the next print round, and the four-wall adapter is what Entry 2 was assembled from.",
   },
 ];
+
+// The current main project's paper, shown as a page stack in the story act.
+// Source: NOBE_X_Haylon_Technologies__Project_Paper, working draft, Nov 2026.
+// Page images are rendered from the PDF at 110 dpi (pdftoppm), 935 x 1210.
+export type PaperPage = { src: string; page: number; label: string; alt: string };
+
+export const currentPaper = {
+  title: "NOBE X Haylon Technologies: UAV Interceptor Project Paper",
+  status: "Working draft, November 2026",
+  pageCount: 22,
+  pdfUrl: "/papers/haylon-interceptor-paper.pdf",
+  pages: [
+    {
+      src: "/papers/page-1.jpg",
+      page: 1,
+      label: "Abstract",
+      alt: "Page 1 of the project paper: the title, author list, and abstract summarising the interceptor's design, two build sessions, and five FEA studies",
+    },
+    {
+      src: "/papers/page-9.jpg",
+      page: 9,
+      label: "Final design",
+      alt: "Page 9 of the project paper: section 2.4, the final integrated interceptor design, with a full render of version 2 and notes on the airframe and modular electronics bay",
+    },
+    {
+      src: "/papers/page-19.jpg",
+      page: 19,
+      label: "Camera mount FEA",
+      alt: "Page 19 of the project paper: the camera mount stress analysis under a 35 meter per second impact, with stress and displacement plots and the failed safety factor",
+    },
+  ] as PaperPage[],
+};

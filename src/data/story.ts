@@ -70,7 +70,7 @@ export type GuideCallout = {
 
 export type StoryBeat = {
   id: string;
-  kind: "hero" | "beat" | "handoff";
+  kind: "hero" | "beat" | "paper" | "handoff";
   /** Short label for the progress rail. One or two words. */
   railLabel: string;
   heading?: string;
@@ -185,6 +185,13 @@ export const storyBeats: StoryBeat[] = [
     evidence: { items: softwareEvidence, cols: 2, height: "", fit: "contain", maxW: "1280px", bare: true },
   },
   {
+    id: "story-paper",
+    kind: "paper",
+    railLabel: "Paper",
+    heading: "The interceptor, written up",
+    body: "A 22-page working draft covering the design competition, both build sessions, and all five FEA studies. The software track follows in the next revision.",
+  },
+  {
     id: "story-handoff",
     kind: "handoff",
     railLabel: "Everything",
@@ -259,6 +266,8 @@ export const guidePoses: GuidePose[] = [
   // Software: pulled back out, and flying an arc across the lane. See
   // BEAT_ARCS in story-guide.
   { x: 26, y: -7, scale: 1.0, azimuth: 70, polar: 44, radius: 0.54, target: [0, 0, 0], exposure: 0.9 },
+  // Paper: the guide fades out so the page stack has the right half.
+  { x: 27, y: 6, scale: 1.0, azimuth: 110, polar: 66, radius: 0.66, target: [0, 0, 0], exposure: 0.9 },
   // Handoff: recedes and fades out before the link grid arrives.
   { x: 27, y: 10, scale: 1.0, azimuth: 130, polar: 70, radius: 0.72, target: [0, 0, 0], exposure: 0.9 },
 ];
