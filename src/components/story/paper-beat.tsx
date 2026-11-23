@@ -84,7 +84,7 @@ function DesktopStack({ beat }: { beat: StoryBeat }) {
             </p>
             <ul
               aria-describedby="paper-stack-hint"
-              className="relative list-none p-0 m-0 h-[clamp(190px,23vw,260px)] [--w:clamp(140px,16vw,200px)] [--step:calc(var(--w)*0.5)]"
+              className="relative list-none p-0 m-0 h-[calc(var(--w)*1.36)] [--w:clamp(110px,calc((52vw_-_var(--lane-left)_-_2rem)_/_3.15),190px)] [--step:calc(var(--w)*0.5)]"
             >
               {pages.map((p, i) => {
                 const isOut = p.page === selected;
@@ -123,7 +123,7 @@ function DesktopStack({ beat }: { beat: StoryBeat }) {
               })}
               <li
                 className="absolute top-0"
-                style={{ left: `calc(${pages.length} * var(--step) + 1.5rem)`, width: "var(--w)", zIndex: pages.length + 1 }}
+                style={{ left: `calc(${pages.length - 1} * var(--step) + var(--w) + 2rem)`, width: "var(--w)", zIndex: pages.length + 1 }}
               >
                 <ReadMoreCard className="w-full" />
               </li>
@@ -133,7 +133,7 @@ function DesktopStack({ beat }: { beat: StoryBeat }) {
 
         {/* Reader: the page that was pulled out, at reading size. */}
         <div className="flex-1 flex justify-center items-center">
-          <figure className="m-0 w-[min(100%,calc(74dvh*0.773))]">
+          <figure className="m-0 w-[min(100%,calc(64dvh*0.773))]">
             <div className="relative" style={{ aspectRatio: PAGE_RATIO }}>
               <AnimatePresence initial={false}>
                 <motion.a
@@ -157,7 +157,7 @@ function DesktopStack({ beat }: { beat: StoryBeat }) {
             </div>
             <figcaption className="mt-4 flex items-baseline justify-between gap-4 text-[15px] text-ink-2" aria-live="polite">
               <span>
-                Page {current.page} of {currentPaper.pageCount}, {current.label.toLowerCase()}
+                Page {current.page} of {currentPaper.pageCount}, {current.label}
               </span>
               <a href={pageHref(current)} target="_blank" rel="noopener noreferrer" className="text-ink link-rule focus-ring whitespace-nowrap">
                 Open this page
@@ -180,12 +180,12 @@ function MobileStack({ beat }: { beat: StoryBeat }) {
         <span aria-hidden="true" className="block w-16 h-px bg-haylon mb-6" />
         <p className="text-[18px] leading-relaxed mb-10 text-ink-2">{beat.body}</p>
       </ScrollFade>
-      <ul className="flex gap-4 overflow-x-auto snap-x snap-mandatory list-none p-0 m-0 -mx-6 px-6 pb-4">
+      <ul className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-px-6 list-none p-0 m-0 -mx-6 px-6 pb-4">
         {currentPaper.pages.map((p) => (
           <li key={p.page} className="snap-start shrink-0 w-[68vw]">
             <a href={pageHref(p)} target="_blank" rel="noopener noreferrer" className="block focus-ring">
               <img src={p.src} alt={p.alt} loading="lazy" className="w-full bg-white border border-rule" style={{ aspectRatio: PAGE_RATIO }} />
-              <span className="block mt-2 text-[15px] text-ink-2">Page {p.page}, {p.label.toLowerCase()}</span>
+              <span className="block mt-2 text-[15px] text-ink-2">Page {p.page}, {p.label}</span>
             </a>
           </li>
         ))}
