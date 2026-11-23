@@ -199,7 +199,7 @@ export default function Home() {
             variants={stagger}
             className="story-lane"
           >
-            <motion.p variants={fadeUp} className="text-[19px] text-ink-2 mb-6">
+            <motion.p variants={fadeUp} className="text-[clamp(19px,1.55vw,24px)] text-ink-2 mb-6">
               Aerospace engineer and startup founder
             </motion.p>
 
@@ -213,12 +213,12 @@ export default function Home() {
               Aarav Verma
             </motion.h1>
 
-            <motion.p variants={fadeUp} className="text-[19px] leading-relaxed text-ink-2 max-w-[44ch] mb-12">
+            <motion.p variants={fadeUp} className="text-[clamp(19px,1.6vw,25px)] leading-relaxed text-ink-2 max-w-[44ch] mb-12">
               Project manager at NOBE, build team engineer at UAV@Illinois, and an incoming intern at L3Harris.
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-x-8 gap-y-4">
-              <a href="#story-design" onClick={heroScroll("#story-design")} className="group btn-outline focus-ring">
+              <a href="#story-design" onClick={heroScroll("#story-design")} className="group btn-outline btn-lg focus-ring">
                 See the work
                 <ArrowDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" strokeWidth={1.5} aria-hidden="true" />
               </a>
@@ -226,7 +226,7 @@ export default function Home() {
                 href={personalInfo.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[15px] text-ink link-rule focus-ring"
+                className="text-[clamp(15px,1.15vw,18px)] text-ink link-rule focus-ring"
               >
                 Resume
               </a>

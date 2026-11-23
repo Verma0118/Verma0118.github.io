@@ -104,16 +104,16 @@ export function PublicLayout({
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[15px] text-ink link-rule focus-ring"
+                  className="text-[16px] xl:text-[17px] text-ink link-rule focus-ring"
                 >
                   {link.label}
                 </a>
               ) : link.page ? (
-                <Link key={link.href} href={link.href} className="text-[15px] text-ink-2 hover:text-ink transition-colors focus-ring">
+                <Link key={link.href} href={link.href} className="text-[16px] xl:text-[17px] text-ink-2 hover:text-ink transition-colors focus-ring">
                   {link.label}
                 </Link>
               ) : (
-                <a key={link.href} href={link.href} onClick={(e) => scrollTo(e, link.href)} className="text-[15px] text-ink-2 hover:text-ink transition-colors focus-ring">
+                <a key={link.href} href={link.href} onClick={(e) => scrollTo(e, link.href)} className="text-[16px] xl:text-[17px] text-ink-2 hover:text-ink transition-colors focus-ring">
                   {link.label}
                 </a>
               )
@@ -171,7 +171,7 @@ export function PublicLayout({
         <div className="container mx-auto px-6 py-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <p className="font-display text-2xl text-ink" style={{ fontWeight: 400 }}>Aarav Verma</p>
-            <p className="text-[15px] text-ink-2 mt-1">Aerospace Engineering, University of Illinois Urbana-Champaign</p>
+            <p className="text-[16px] xl:text-[17px] text-ink-2 mt-1">Aerospace Engineering, University of Illinois Urbana-Champaign</p>
           </div>
           <ul className="flex flex-wrap items-center gap-x-6 gap-y-2 list-none p-0 m-0 text-[15px]">
             <li>

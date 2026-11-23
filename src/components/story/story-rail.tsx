@@ -60,7 +60,7 @@ export function StoryRail({
                   }}
                 />
                 <span
-                  className="text-[13px] transition-colors whitespace-nowrap"
+                  className="text-[14px] 2xl:text-[15px] transition-colors whitespace-nowrap"
                   style={{ color: isActive ? ink : dim, fontWeight: isActive ? 500 : 400 }}
                 >
                   {beat.railLabel}
