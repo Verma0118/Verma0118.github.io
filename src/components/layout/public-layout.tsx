@@ -171,7 +171,7 @@ export function PublicLayout({
         <div className="container mx-auto px-6 py-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <p className="font-display text-2xl text-ink" style={{ fontWeight: 400 }}>Aarav Verma</p>
-            <p className="text-[14px] text-ink-2 mt-1">Aerospace Engineering, University of Illinois Urbana-Champaign</p>
+            <p className="text-[15px] text-ink-2 mt-1">Aerospace Engineering, University of Illinois Urbana-Champaign</p>
           </div>
           <ul className="flex flex-wrap items-center gap-x-6 gap-y-2 list-none p-0 m-0 text-[15px]">
             <li>

@@ -33,7 +33,7 @@ export function ImageTabs({ images, className = "", fit = "contain" }: ImageTabs
               role="tab"
               aria-selected={n === i}
               onClick={() => setI(n)}
-              className={`h-9 text-[14px] border-b transition-colors focus-ring ${
+              className={`h-9 text-[15px] border-b transition-colors focus-ring ${
                 n === i ? "text-ink border-ink" : "text-ink-2 border-transparent hover:text-ink"
               }`}
             >

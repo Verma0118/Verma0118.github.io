@@ -172,7 +172,7 @@ export default function Home() {
   const sectionHeading = "text-ink leading-[1.04]";
   const sectionHeadingSize = { fontSize: "clamp(2.5rem, 5vw, 4.25rem)", fontWeight: 300 } as const;
   const inputCls =
-    "w-full bg-transparent border border-ink-3 h-12 px-3 text-ink text-[16px] placeholder:text-ink-3 outline-none transition-colors focus:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
+    "w-full bg-transparent border border-ink-3 h-12 px-3 text-ink text-[18px] placeholder:text-ink-3 outline-none transition-colors focus:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
 
   return (
     <PublicLayout navHidden={navHidden} skipTarget="#cad-projects">
@@ -196,7 +196,7 @@ export default function Home() {
             variants={stagger}
             className="story-lane"
           >
-            <motion.p variants={fadeUp} className="text-[17px] text-ink-2 mb-6">
+            <motion.p variants={fadeUp} className="text-[19px] text-ink-2 mb-6">
               Aerospace engineer and startup founder
             </motion.p>
 
@@ -210,7 +210,7 @@ export default function Home() {
               Aarav Verma
             </motion.h1>
 
-            <motion.p variants={fadeUp} className="text-[17px] leading-relaxed text-ink-2 max-w-[44ch] mb-12">
+            <motion.p variants={fadeUp} className="text-[19px] leading-relaxed text-ink-2 max-w-[44ch] mb-12">
               Project manager at NOBE, build team engineer at UAV@Illinois, and an incoming intern at L3Harris.
             </motion.p>
 
@@ -248,7 +248,7 @@ export default function Home() {
             <h2 id="story-handoff-heading" className={`${sectionHeading} mb-5`} style={sectionHeadingSize}>
               {storyBeats[5].heading}
             </h2>
-            <p className="text-[17px] leading-relaxed text-ink-2">{storyBeats[5].body}</p>
+            <p className="text-[19px] leading-relaxed text-ink-2">{storyBeats[5].body}</p>
           </ScrollFade>
 
           <ScrollFade delay={0.1}>
@@ -302,7 +302,7 @@ export default function Home() {
             <h2 id="cad-heading" className={`${sectionHeading} mb-5`} style={sectionHeadingSize}>
               Hardware design
             </h2>
-            <p className="text-[17px] leading-relaxed text-ink-2 max-w-[52ch]">
+            <p className="text-[19px] leading-relaxed text-ink-2 max-w-[52ch]">
               Mechanical designs and structural analysis. Every model below can be turned and zoomed.
             </p>
           </ScrollFade>
@@ -324,13 +324,13 @@ export default function Home() {
           <ScrollFade>
             <article aria-label={FEATURED[1].title} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
               <div className="lg:col-span-4 order-2 lg:order-1">
-                <p className="text-[14px] text-ink-2 mb-5 leading-relaxed">
+                <p className="text-[15px] text-ink-2 mb-5 leading-relaxed">
                   {FEATURED[1].organization}<br />{FEATURED[1].dateRange}
                 </p>
                 <h3 className="text-ink mb-5 leading-[1.08]" style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.25rem)" }}>
                   {FEATURED[1].title}
                 </h3>
-                <p className="text-[16px] leading-relaxed text-ink-2 mb-6">{FEATURED[1].description}</p>
+                <p className="text-[18px] leading-relaxed text-ink-2 mb-6">{FEATURED[1].description}</p>
                 <p className="tag-run"><span className="sr-only">Tools: </span>{FEATURED[1].tags.join(", ")}</p>
               </div>
               <div className="lg:col-span-8 order-1 lg:order-2 h-[380px] md:h-[480px] lg:h-[560px] bg-graphite text-graphite-ink-2">
@@ -360,9 +360,9 @@ export default function Home() {
                     <ModelViewerWrapper src={project.glbFileUrl} alt={project.title} className="w-full h-full" />
                   </div>
                   <div className="pt-6 max-w-[56ch]">
-                    <p className="text-[14px] text-ink-2 mb-3">{project.organization}, {project.dateRange}</p>
+                    <p className="text-[15px] text-ink-2 mb-3">{project.organization}, {project.dateRange}</p>
                     <h3 className="text-ink mb-3 leading-tight" style={{ fontSize: "1.75rem" }}>{project.title}</h3>
-                    <p className="text-[16px] leading-relaxed text-ink-2 mb-4">{project.description}</p>
+                    <p className="text-[18px] leading-relaxed text-ink-2 mb-4">{project.description}</p>
                     <p className="tag-run"><span className="sr-only">Tools: </span>{project.tags.join(", ")}</p>
                   </div>
                 </article>
@@ -379,7 +379,7 @@ export default function Home() {
             <h2 id="sw-heading" className={`${sectionHeading} mb-5`} style={sectionHeadingSize}>
               Software
             </h2>
-            <p className="text-[17px] leading-relaxed text-ink-2 max-w-[52ch]">
+            <p className="text-[19px] leading-relaxed text-ink-2 max-w-[52ch]">
               Simulation, flight software, and tools I use every day.
             </p>
           </ScrollFade>
@@ -390,11 +390,11 @@ export default function Home() {
                 <ImageTabs images={softwareProjects[0].images!} />
               </div>
               <div className="lg:col-span-5 order-2">
-                <p className="text-[14px] text-ink-2 mb-4">{softwareProjects[0].kind}</p>
+                <p className="text-[15px] text-ink-2 mb-4">{softwareProjects[0].kind}</p>
                 <h3 id="sw-lead" className="text-ink mb-5 leading-[1.08]" style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.25rem)" }}>
                   {softwareProjects[0].title}
                 </h3>
-                <p className="text-[16px] leading-relaxed text-ink-2 mb-8">{softwareProjects[0].description}</p>
+                <p className="text-[18px] leading-relaxed text-ink-2 mb-8">{softwareProjects[0].description}</p>
                 <ol className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-8 list-none p-0 font-display text-ink text-[22px]" aria-label="Control sequence">
                   {softwareProjects[0].steps!.map((step, i, all) => (
                     <li key={step} className="flex items-center gap-3">
@@ -427,13 +427,13 @@ export default function Home() {
                   <ScrollFade>
                     <article aria-labelledby={`sw-${project.id}`} className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-10 py-10">
                       <div className="md:col-span-4">
-                        <p className="text-[14px] text-ink-2 mb-2">{project.kind}</p>
+                        <p className="text-[15px] text-ink-2 mb-2">{project.kind}</p>
                         <h3 id={`sw-${project.id}`} className="text-ink leading-tight" style={{ fontSize: "1.75rem" }}>
                           {project.title}
                         </h3>
                       </div>
                       <div className="md:col-span-5">
-                        <p className="text-[16px] leading-relaxed text-ink-2 mb-3">{project.description}</p>
+                        <p className="text-[18px] leading-relaxed text-ink-2 mb-3">{project.description}</p>
                         <p className="tag-run"><span className="sr-only">Tools: </span>{project.tags.join(", ")}</p>
                       </div>
                       <div className="md:col-span-3 md:text-right">
@@ -466,7 +466,7 @@ export default function Home() {
             <h2 id="sim-heading" className={`${sectionHeading} mb-5`} style={sectionHeadingSize}>
               Simulation and analysis
             </h2>
-            <p className="text-[17px] leading-relaxed text-ink-2 max-w-[52ch]">
+            <p className="text-[19px] leading-relaxed text-ink-2 max-w-[52ch]">
               MATLAB and Simulink work in controls modeling, FEA validation and mesh convergence.
             </p>
           </ScrollFade>
@@ -477,11 +477,11 @@ export default function Home() {
             <div className="container mx-auto px-6 py-16 md:py-20">
               <article aria-labelledby={`sim-${project.id}`} className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
                 <div className="lg:col-span-4">
-                  <p className="text-[14px] text-graphite-ink-2 mb-4">{project.category}, {project.dateRange}</p>
+                  <p className="text-[15px] text-graphite-ink-2 mb-4">{project.category}, {project.dateRange}</p>
                   <h3 id={`sim-${project.id}`} className="mb-5 leading-[1.08]" style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.25rem)" }}>
                     {project.title}
                   </h3>
-                  <p className="text-[16px] leading-relaxed text-graphite-ink-2 mb-8">{project.description}</p>
+                  <p className="text-[18px] leading-relaxed text-graphite-ink-2 mb-8">{project.description}</p>
                   {"link" in project && (
                     <Link
                       href={(project as any).link.href}
@@ -502,7 +502,7 @@ export default function Home() {
                         <div className="bg-graphite-2 flex-1 min-h-0">
                           <img src={img.src} alt={img.alt} loading="lazy" className="w-full h-full object-contain p-3" />
                         </div>
-                        <figcaption className="text-[14px] text-graphite-ink-2 mt-2">{img.label}</figcaption>
+                        <figcaption className="text-[15px] text-graphite-ink-2 mt-2">{img.label}</figcaption>
                       </figure>
                     </li>
                   ))}
@@ -519,13 +519,13 @@ export default function Home() {
                 <ScrollFade>
                   <article aria-labelledby={`sim-${project.id}`} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 py-12">
                     <div className="lg:col-span-5">
-                      <p className="text-[14px] text-ink-2 mb-3">{project.category}, {project.dateRange}</p>
+                      <p className="text-[15px] text-ink-2 mb-3">{project.category}, {project.dateRange}</p>
                       <h3 id={`sim-${project.id}`} className="text-ink leading-[1.12] mb-4" style={{ fontSize: "1.75rem" }}>
                         {project.title}
                       </h3>
                       <p className="tag-run"><span className="sr-only">Tools: </span>{project.tags.join(", ")}</p>
                     </div>
-                    <p className="lg:col-span-4 text-[16px] leading-relaxed text-ink-2">{project.description}</p>
+                    <p className="lg:col-span-4 text-[18px] leading-relaxed text-ink-2">{project.description}</p>
                     <div className="lg:col-span-3">
                       <ImageTabs images={project.images} />
                     </div>
@@ -563,20 +563,20 @@ export default function Home() {
               <ScrollFade delay={0.08}>
                 <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-10 mb-14">
                   <div>
-                    <dt className="text-[14px] text-ink-2 mb-2">Education</dt>
-                    <dd className="m-0 text-[16px] text-ink leading-relaxed">{personalInfo.education}</dd>
+                    <dt className="text-[15px] text-ink-2 mb-2">Education</dt>
+                    <dd className="m-0 text-[18px] text-ink leading-relaxed">{personalInfo.education}</dd>
                   </div>
                   {personalInfo.currentFocus && (
                     <div>
-                      <dt className="text-[14px] text-ink-2 mb-2">Current focus</dt>
-                      <dd className="m-0 text-[16px] text-ink leading-relaxed">{personalInfo.currentFocus}</dd>
+                      <dt className="text-[15px] text-ink-2 mb-2">Current focus</dt>
+                      <dd className="m-0 text-[18px] text-ink leading-relaxed">{personalInfo.currentFocus}</dd>
                     </div>
                   )}
                   {personalInfo.organizations.length > 0 && (
                     <div>
-                      <dt className="text-[14px] text-ink-2 mb-2">Organizations</dt>
+                      <dt className="text-[15px] text-ink-2 mb-2">Organizations</dt>
                       <dd className="m-0">
-                        <ul className="list-none p-0 m-0 space-y-1 text-[16px] text-ink">
+                        <ul className="list-none p-0 m-0 space-y-1 text-[18px] text-ink">
                           {personalInfo.organizations.map((org) => <li key={org}>{org}</li>)}
                         </ul>
                       </dd>
@@ -584,9 +584,9 @@ export default function Home() {
                   )}
                   {personalInfo.previousWork.length > 0 && (
                     <div>
-                      <dt className="text-[14px] text-ink-2 mb-2">Previous work</dt>
+                      <dt className="text-[15px] text-ink-2 mb-2">Previous work</dt>
                       <dd className="m-0">
-                        <ul className="list-none p-0 m-0 space-y-1 text-[16px] text-ink">
+                        <ul className="list-none p-0 m-0 space-y-1 text-[18px] text-ink">
                           {personalInfo.previousWork.map((job) => <li key={job}>{job}</li>)}
                         </ul>
                       </dd>
@@ -601,8 +601,8 @@ export default function Home() {
                     { label: "Manufacturing and hardware", skills: personalInfo.skills.manufacturing },
                   ].map(({ label, skills }) => (
                     <div key={label} className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-6 py-5 border-b border-rule">
-                      <dt className="text-[14px] text-ink-2">{label}</dt>
-                      <dd className="m-0 sm:col-span-2 text-[16px] text-ink leading-relaxed">{skills.join(", ")}</dd>
+                      <dt className="text-[15px] text-ink-2">{label}</dt>
+                      <dd className="m-0 sm:col-span-2 text-[18px] text-ink leading-relaxed">{skills.join(", ")}</dd>
                     </div>
                   ))}
                 </dl>
@@ -633,7 +633,7 @@ export default function Home() {
               <h2 id="contact-heading" className={`${sectionHeading} mb-6`} style={sectionHeadingSize}>
                 Get in touch
               </h2>
-              <p className="text-[17px] leading-relaxed text-ink-2 mb-10 max-w-[40ch]">
+              <p className="text-[19px] leading-relaxed text-ink-2 mb-10 max-w-[40ch]">
                 Open to engineering internships, research opportunities, and technical conversations.
               </p>
               <a
@@ -659,7 +659,7 @@ export default function Home() {
                     aria-describedby={errors.name ? "name-error" : undefined}
                   />
                   {errors.name && (
-                    <span id="name-error" role="alert" className="text-destructive text-[14px]">{errors.name.message}</span>
+                    <span id="name-error" role="alert" className="text-destructive text-[15px]">{errors.name.message}</span>
                   )}
                 </div>
                 <div className="flex flex-col gap-2">
@@ -674,7 +674,7 @@ export default function Home() {
                     aria-describedby={errors.email ? "email-error" : undefined}
                   />
                   {errors.email && (
-                    <span id="email-error" role="alert" className="text-destructive text-[14px]">{errors.email.message}</span>
+                    <span id="email-error" role="alert" className="text-destructive text-[15px]">{errors.email.message}</span>
                   )}
                 </div>
                 <div className="flex flex-col gap-2">
@@ -688,7 +688,7 @@ export default function Home() {
                     aria-describedby={errors.message ? "message-error" : undefined}
                   />
                   {errors.message && (
-                    <span id="message-error" role="alert" className="text-destructive text-[14px]">{errors.message.message}</span>
+                    <span id="message-error" role="alert" className="text-destructive text-[15px]">{errors.message.message}</span>
                   )}
                 </div>
                 <button

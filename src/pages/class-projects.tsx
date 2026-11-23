@@ -31,7 +31,7 @@ export default function ClassProjects() {
           >
             Class work
           </h1>
-          <p className="text-[17px] leading-relaxed text-ink-2 max-w-[52ch]">
+          <p className="text-[19px] leading-relaxed text-ink-2 max-w-[52ch]">
             CAD models from my engineering coursework. Drag to rotate, scroll to zoom.
           </p>
         </motion.header>
@@ -43,8 +43,8 @@ export default function ClassProjects() {
                 <h2 id={`course-${course.id}`} className="text-ink" style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)" }}>
                   {course.code}
                 </h2>
-                <p className="text-[16px] text-ink-2 mr-auto">{course.name}</p>
-                <p className="text-[14px] text-ink-2 tabular-nums">
+                <p className="text-[18px] text-ink-2 mr-auto">{course.name}</p>
+                <p className="text-[15px] text-ink-2 tabular-nums">
                   {course.models.length} model{course.models.length !== 1 ? "s" : ""}
                 </p>
               </motion.div>
@@ -55,7 +55,7 @@ export default function ClassProjects() {
                     <div className="h-64 bg-graphite text-graphite-ink-2">
                       <ModelViewerWrapper src={model.glbFileUrl} alt={model.name} className="h-full w-full" />
                     </div>
-                    <p className="text-[16px] text-ink mt-3">{model.name}</p>
+                    <p className="text-[18px] text-ink mt-3">{model.name}</p>
                   </motion.li>
                 ))}
               </ul>

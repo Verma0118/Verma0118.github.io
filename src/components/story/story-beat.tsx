@@ -112,7 +112,7 @@ function BeatVisual({ beat }: { beat: StoryBeat }) {
               </div>
             )}
             {img.label && (
-              <figcaption className="text-[14px] mt-2 leading-snug text-ink-2 group-hover:text-ink transition-colors">
+              <figcaption className="text-[15px] mt-2 leading-snug text-ink-2 group-hover:text-ink transition-colors">
                 {img.label}
               </figcaption>
             )}
@@ -166,7 +166,7 @@ export function StoryBeatSection({ beat }: { beat: StoryBeat }) {
               {accentHeading && <span aria-hidden="true" className="block w-16 h-px bg-haylon mb-6" />}
 
               {beat.body && (
-                <p className="text-[17px] leading-relaxed max-w-[52ch] mb-12 text-ink-2">
+                <p className="text-[19px] leading-relaxed max-w-[52ch] mb-12 text-ink-2">
                   {beat.body}
                 </p>
               )}
@@ -175,7 +175,7 @@ export function StoryBeatSection({ beat }: { beat: StoryBeat }) {
                 <dl className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-6 mb-12">
                   {beat.metrics.map((m) => (
                     <div key={m.label} className="flex flex-col-reverse">
-                      <dt className="text-[14px] leading-snug text-ink-2 mt-3">{m.label}</dt>
+                      <dt className="text-[15px] leading-snug text-ink-2 mt-3">{m.label}</dt>
                       <dd className={`m-0 figure whitespace-nowrap ${m.accent ? "text-haylon" : "text-ink"}`} style={{ fontSize: "clamp(2.25rem, 3.2vw, 3rem)" }}>
                         {m.value}
                       </dd>

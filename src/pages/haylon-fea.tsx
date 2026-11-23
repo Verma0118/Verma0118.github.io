@@ -16,7 +16,7 @@ const STATUS: Record<FeaStatus, { color: string; Icon: typeof CheckCircle2 }> = 
 function StatusBadge({ status, label }: { status: FeaStatus; label: string }) {
   const { color, Icon } = STATUS[status];
   return (
-    <span className="inline-flex items-center gap-1.5 text-sm whitespace-nowrap" style={{ color }}>
+    <span className="inline-flex items-center gap-1.5 text-[17px] whitespace-nowrap" style={{ color }}>
       <Icon className="w-4 h-4 shrink-0" strokeWidth={1.5} aria-hidden="true" />
       {label}
     </span>
@@ -41,7 +41,7 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
       className="mb-24 last:mb-0 pt-16 first:pt-0 border-t border-rule first:border-t-0 scroll-mt-24"
     >
       <motion.div {...reveal()} className="mb-20">
-        <p className="text-sm text-ink-2 mb-3">
+        <p className="text-[17px] text-ink-2 mb-3">
           {entry.entry}, {entry.date}
         </p>
         <h2
@@ -50,10 +50,10 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
         >
           {entry.title}
         </h2>
-        <p className="text-base leading-relaxed text-ink-2 max-w-[65ch] mb-10">{entry.intro}</p>
+        <p className="text-[18px] leading-relaxed text-ink-2 max-w-[65ch] mb-10">{entry.intro}</p>
         <ul className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: "var(--color-rule)", border: "1px solid var(--color-rule)" }}>
           {entry.workCompleted.map((item) => (
-            <li key={item} className="p-6 text-sm leading-relaxed text-ink-2" style={{ backgroundColor: "var(--color-paper)" }}>
+            <li key={item} className="p-6 text-[17px] leading-relaxed text-ink-2" style={{ backgroundColor: "var(--color-paper)" }}>
               {item}
             </li>
           ))}
@@ -88,7 +88,7 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
                 />
                 <span className="sr-only"> (opens full size in a new tab)</span>
               </a>
-              <figcaption className="text-[14px] leading-relaxed text-ink-2 mt-2">{photo.caption}</figcaption>
+              <figcaption className="text-[15px] leading-relaxed text-ink-2 mt-2">{photo.caption}</figcaption>
             </figure>
           ))}
         </div>
@@ -108,8 +108,8 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
               />
             </div>
             <figcaption className="md:col-span-8 lg:col-span-6">
-              <p className="text-sm leading-relaxed text-ink-2 mb-3">{entry.video.caption}</p>
-              <p className="text-[14px] leading-relaxed text-ink-2 max-w-[60ch]">{entry.video.description}</p>
+              <p className="text-[17px] leading-relaxed text-ink-2 mb-3">{entry.video.caption}</p>
+              <p className="text-[15px] leading-relaxed text-ink-2 max-w-[60ch]">{entry.video.description}</p>
             </figcaption>
           </figure>
         )}
@@ -127,8 +127,8 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
           {entry.problems.map((p) => (
             <article key={p.problem} className="p-6 md:p-8 flex flex-col" style={{ backgroundColor: "var(--color-paper)" }}>
               <h4 className="text-lg font-display text-ink mb-4">{p.problem}</h4>
-              <p className="text-sm leading-relaxed text-ink-2 mb-6 flex-grow">{p.happened}</p>
-              <p className="text-sm leading-relaxed text-ink-2 pt-5" style={{ borderTop: "1px solid var(--color-rule)" }}>
+              <p className="text-[17px] leading-relaxed text-ink-2 mb-6 flex-grow">{p.happened}</p>
+              <p className="text-[17px] leading-relaxed text-ink-2 pt-5" style={{ borderTop: "1px solid var(--color-rule)" }}>
                 <span className="text-haylon font-medium">Fix. </span>
                 {p.fix}
               </p>
@@ -149,12 +149,12 @@ function BuildEntry({ entry, reveal }: { entry: BuildEntryData; reveal: Reveal }
           <dl className="grid grid-cols-1 md:grid-cols-2 gap-px mb-8" style={{ backgroundColor: "var(--color-rule)", border: "1px solid var(--color-rule)" }}>
             {entry.changes.map((c) => (
               <div key={c.part} className="p-6" style={{ backgroundColor: "var(--color-paper)" }}>
-                <dt className="text-base font-display text-ink mb-2">{c.part}</dt>
-                <dd className="text-sm leading-relaxed text-ink-2">{c.change}</dd>
+                <dt className="text-[18px] font-display text-ink mb-2">{c.part}</dt>
+                <dd className="text-[17px] leading-relaxed text-ink-2">{c.change}</dd>
               </div>
             ))}
           </dl>
-          {entry.statusNote && <p className="text-sm leading-relaxed text-ink-2 max-w-[65ch]">{entry.statusNote}</p>}
+          {entry.statusNote && <p className="text-[17px] leading-relaxed text-ink-2 max-w-[65ch]">{entry.statusNote}</p>}
         </motion.section>
       )}
     </article>
@@ -251,12 +251,12 @@ export default function HaylonFea() {
           <a
             href="/"
             onClick={backToProject}
-            className="inline-flex items-center gap-2 text-sm text-ink-2 hover:text-ink transition-colors mb-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+            className="inline-flex items-center gap-2 text-[17px] text-ink-2 hover:text-ink transition-colors mb-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
           >
             <ArrowLeft className="w-4 h-4" strokeWidth={1.5} aria-hidden="true" />
             Back to Haylon Interceptor
           </a>
-          <p className="text-sm mb-3 text-ink-2">NOBE, UIUC for Haylon Technologies</p>
+          <p className="text-[17px] mb-3 text-ink-2">NOBE, UIUC for Haylon Technologies</p>
           <h1
             ref={headingRef}
             tabIndex={-1}
@@ -268,7 +268,7 @@ export default function HaylonFea() {
           {/* The interceptor is the site's one bright moment, so its page
               carries the accent rule. */}
           <span aria-hidden="true" className="block w-16 h-px bg-haylon mb-8" />
-          <p className="text-[17px] leading-relaxed text-ink-2 max-w-[60ch]">
+          <p className="text-[19px] leading-relaxed text-ink-2 max-w-[60ch]">
             Two halves of the same project: the build log from printing and assembling the airframe, and the structural
             simulations that sized its parts.
           </p>
@@ -313,15 +313,15 @@ export default function HaylonFea() {
                 <h2 id="fea-intro-heading" className="text-2xl md:text-3xl text-ink mb-5">
                   {haylonFea.title}
                 </h2>
-                <p className="text-base leading-relaxed text-ink-2">{haylonFea.intro}</p>
+                <p className="text-[18px] leading-relaxed text-ink-2">{haylonFea.intro}</p>
               </div>
 
               <div className="lg:col-span-7">
-                <h3 className="text-sm text-ink-2 mb-3">Shared assumptions</h3>
+                <h3 className="text-[17px] text-ink-2 mb-3">Shared assumptions</h3>
                 <dl className="grid grid-cols-2 sm:grid-cols-3 gap-px" style={{ backgroundColor: "var(--color-rule)", border: "1px solid var(--color-rule)" }}>
                   {haylonFea.assumptions.map((a) => (
                     <div key={a.label} className="p-5 flex flex-col-reverse gap-1" style={{ backgroundColor: "var(--color-paper)" }}>
-                      <dt className="text-[14px] text-ink-2">{a.label}</dt>
+                      <dt className="text-[15px] text-ink-2">{a.label}</dt>
                       <dd className="figure text-ink" style={{ fontSize: "1.875rem" }}>{a.value}</dd>
                     </div>
                   ))}
@@ -337,13 +337,13 @@ export default function HaylonFea() {
             </h2>
             <button
               onClick={toggleAll}
-              className="text-sm text-ink-2 hover:text-ink underline underline-offset-4 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+              className="text-[17px] text-ink-2 hover:text-ink underline underline-offset-4 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
             >
               {allOpen ? "Collapse all" : "Expand all"}
             </button>
           </div>
 
-          <p className="text-sm text-ink-2 mb-5">Open a part for its load case, plots, and verdict.</p>
+          <p className="text-[17px] text-ink-2 mb-5">Open a part for its load case, plots, and verdict.</p>
 
           <div style={{ borderTop: "1px solid var(--color-rule)" }}>
             {haylonFea.parts.map((p, idx) => {
@@ -370,12 +370,12 @@ export default function HaylonFea() {
                       <span className="text-2xl md:text-3xl text-ink mr-auto">
                         {p.name}
                       </span>
-                      <span className="hidden md:flex items-center gap-6 text-sm text-ink-2 lining-nums tabular-nums">
+                      <span className="hidden md:flex items-center gap-6 text-[17px] text-ink-2 lining-nums tabular-nums">
                         <span>Peak {p.peakStress}</span>
                         <span>SF {p.safetyFactor}</span>
                       </span>
                       <StatusBadge status={p.status} label={p.statusLabel} />
-                      <span className="flex items-center gap-2 text-sm text-ink-2 group-hover:text-ink transition-colors">
+                      <span className="flex items-center gap-2 text-[17px] text-ink-2 group-hover:text-ink transition-colors">
                         {isOpen ? "Hide details" : "Show details"}
                         <ChevronDown
                           className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
@@ -389,15 +389,15 @@ export default function HaylonFea() {
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
                     {/* Text */}
                     <div className={`lg:col-span-5 ${flipped ? "lg:order-2" : ""}`}>
-                      <p className="text-sm leading-relaxed text-ink-2 mb-8">{p.summary}</p>
+                      <p className="text-[17px] leading-relaxed text-ink-2 mb-8">{p.summary}</p>
 
                       <h3 className="text-lg font-display text-ink mb-2">Load case: {p.loadCase}</h3>
-                      <p className="text-sm leading-relaxed text-ink-2 mb-8">{p.loadDetail}</p>
+                      <p className="text-[17px] leading-relaxed text-ink-2 mb-8">{p.loadDetail}</p>
 
                       <dl className="grid grid-cols-2 gap-px" style={{ backgroundColor: "var(--color-rule)", border: "1px solid var(--color-rule)" }}>
                         {p.metrics.map((m) => (
                           <div key={m.label} className="p-4 flex flex-col-reverse gap-1" style={{ backgroundColor: "var(--color-paper)" }}>
-                            <dt className="text-[14px] text-ink-2">{m.label}</dt>
+                            <dt className="text-[15px] text-ink-2">{m.label}</dt>
                             <dd className="figure text-ink" style={{ fontSize: "1.5rem" }}>{m.value}</dd>
                           </div>
                         ))}
@@ -426,7 +426,7 @@ export default function HaylonFea() {
                             />
                             <span className="sr-only"> (opens full size in a new tab)</span>
                           </a>
-                          <figcaption className="text-[14px] leading-relaxed text-ink-2 mt-2">{img.caption}</figcaption>
+                          <figcaption className="text-[15px] leading-relaxed text-ink-2 mt-2">{img.caption}</figcaption>
                         </figure>
                       ))}
                     </div>
@@ -436,7 +436,7 @@ export default function HaylonFea() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-px mt-10" style={{ backgroundColor: "var(--color-rule)", border: "1px solid var(--color-rule)" }}>
                     <div className="p-6 md:p-8" style={{ backgroundColor: "var(--color-paper-2)" }}>
                       <h3 className="text-lg font-display text-ink mb-3">Verdict</h3>
-                      <p className="text-sm leading-relaxed text-ink-2">{p.verdict}</p>
+                      <p className="text-[17px] leading-relaxed text-ink-2">{p.verdict}</p>
                     </div>
                     <div className="p-6 md:p-8" style={{ backgroundColor: "var(--color-paper)" }}>
                       <h3 className="text-lg font-display text-ink mb-3">
@@ -444,7 +444,7 @@ export default function HaylonFea() {
                       </h3>
                       <ul className="space-y-2.5">
                         {p.improvements.map((item) => (
-                          <li key={item} className="text-sm leading-relaxed text-ink-2 pl-4 relative">
+                          <li key={item} className="text-[17px] leading-relaxed text-ink-2 pl-4 relative">
                             <span className="absolute left-0 top-[0.6em] w-1.5 h-px bg-ink-3" aria-hidden="true" />
                             {item}
                           </li>

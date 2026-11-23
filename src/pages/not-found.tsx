@@ -11,7 +11,7 @@ export default function NotFound() {
         <h1 className="text-ink mb-4 leading-tight" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300 }}>
           This page does not exist.
         </h1>
-        <p className="text-[17px] text-ink-2 mb-10 max-w-[48ch]">
+        <p className="text-[19px] text-ink-2 mb-10 max-w-[48ch]">
           The link may be out of date. Everything on the site is reachable from the home page.
         </p>
         <Link href="/" className="group btn-outline focus-ring">

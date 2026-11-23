@@ -72,7 +72,7 @@ export function ProjectCarousel({ organization, dateRange, slides, link, feature
 
       <div className="lg:col-span-4 lg:pt-2" aria-live="polite">
         {featured && <span aria-hidden="true" className="block w-16 h-px bg-haylon mb-6" />}
-        <p className="text-[14px] text-ink-2 mb-5 leading-relaxed">
+        <p className="text-[15px] text-ink-2 mb-5 leading-relaxed">
           {organization}
           <br />
           {dateRange}
@@ -80,7 +80,7 @@ export function ProjectCarousel({ organization, dateRange, slides, link, feature
         <h3 className="text-ink mb-5 leading-[1.08]" style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.25rem)" }}>
           {slide.title}
         </h3>
-        <p className="text-[16px] leading-relaxed text-ink-2 mb-6">{slide.description}</p>
+        <p className="text-[18px] leading-relaxed text-ink-2 mb-6">{slide.description}</p>
         <p className="tag-run mb-8">
           <span className="sr-only">Tools: </span>
           {slide.tags.join(", ")}
